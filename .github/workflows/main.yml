@@ -30,7 +30,7 @@ jobs:
         id: extract
         with:
           image: ghcr.io/iofq/nvim:latest
-          path: /root/term.tgz
+          path: /root/neovim-x86_64-linux.AppImage
       -
         name: Upload archive to release
         uses: xresloader/upload-to-github-release@v1
