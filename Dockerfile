@@ -1,6 +1,6 @@
 FROM nixos/nix
 
-ADD .
+COPY . .
 
 RUN nix bundle --bundler github:ralismark/nix-appimage .
 
