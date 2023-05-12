@@ -1,5 +1,6 @@
 FROM nixos/nix
 
+WORKDIR /app
 COPY . .
 
 RUN nix bundle \
