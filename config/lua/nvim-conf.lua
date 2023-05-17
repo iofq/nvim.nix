@@ -3,7 +3,7 @@
 vim.opt.autoindent = true
 vim.opt.background = "light"
 vim.opt.backspace = "indent,eol,start"
-vim.opt.backup = false                      -- and auto backps, to instead use
+vim.opt.backup = false
 vim.opt.breakindent = true
 vim.opt.clipboard = "unnamedplus"           -- use system clipboard
 vim.opt.completeopt = "menuone"
@@ -13,11 +13,12 @@ vim.opt.guicursor = ""                      -- fixes alacritty changing cursor
 vim.opt.hidden = true                       -- dont save when switching buffers
 vim.opt.hlsearch = true
 vim.opt.ignorecase = true                   -- ignore case in searches
-vim.opt.inccommand = "split"              -- incremental live completion
+vim.opt.inccommand = "split"                -- incremental live completion
 vim.opt.incsearch = true
 vim.opt.laststatus = 1
 vim.opt.list = true
 vim.opt.listchars:append("trail:·")
+vim.opt.listchars:append("leadmultispace:╎ ")
 vim.opt.mouse = "a"
 vim.opt.nrformats:append("alpha")           -- let Ctrl-a do letters as well
 vim.opt.number = true
@@ -30,10 +31,10 @@ vim.opt.showmatch = true                    -- highlight matching brackets
 vim.opt.signcolumn= "number"
 vim.opt.smartcase = true                    -- unless capital query
 vim.opt.smartindent = true                  -- indent according to lang
-vim.opt.softtabstop = -1                     -- backspace removes tabstop
+vim.opt.softtabstop = -1                    -- backspace removes tabstop
 vim.opt.splitbelow = true
 vim.opt.splitright = true
-vim.opt.swapfile = false                    -- disable swapfiles
+vim.opt.swapfile = false
 vim.opt.tabstop = 4                         -- 4 space tabs
 vim.opt.undofile = true                     -- enable auto save of undos
 vim.opt.updatetime = 250                    -- decrease update time
@@ -46,9 +47,11 @@ vim.g.netrw_liststyle = 3                   -- tree view
 vim.g.fzf_layout = { window = { width = 0.9, height = 0.6 } }
 vim.g.indent_blankline_use_treesitter = true
 
+-- highlight indents
+vim.cmd([[ hi Whitespace ctermfg=240 ]])
 -- mappings
 ----------------------------------------
--- local func to set keybinds
+
 local remap = function(type, key, value)
     vim.api.nvim_set_keymap(type,key,value,{noremap = true, silent = true});
 end

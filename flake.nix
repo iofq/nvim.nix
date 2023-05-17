@@ -4,17 +4,18 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
   };
-  outputs = inputs @ {
-    self,
-    nixpkgs,
-    flake-utils,
-    ...
-  }:
+  outputs = inputs @ {self, nixpkgs, flake-utils, ...}:
   flake-utils.lib.eachDefaultSystem (system: let
     pkgs = import nixpkgs {
       inherit system;
     };
-
+    dependancies = with pkgs; [
+      bash fd fzf gopls ripgrep
+    ];
+    neovim-with-deps = recursiveMerge [
+      pkgs.neovim-unwrapped
+      {buildInputs = dependancies;}
+    ];
     recursiveMerge = attrList: let
       f = attrPath:
       builtins.zipAttrsWith (n: values:
@@ -28,20 +29,12 @@
     in
     f [] attrList;
   in rec {
-    deps = with pkgs; [
-      bash
-      fzf
-      ripgrep
-      gopls
-    ];
-    neovim-with-deps = recursiveMerge [
-      pkgs.neovim-unwrapped
-      {buildInputs = deps;}
-    ];
     packages.iofqvim = pkgs.wrapNeovim neovim-with-deps {
       viAlias = true;
       vimAlias = true;
-      extraMakeWrapperArgs = ''--prefix PATH : "${pkgs.lib.makeBinPath deps}"'';
+      withRuby = false;
+      withPython3 = false;
+      extraMakeWrapperArgs = ''--prefix PATH : "${pkgs.lib.makeBinPath dependancies}"'';
       configure = {
         customRC =
           ''
@@ -55,15 +48,10 @@
           packages.plugins = with pkgs.vimPlugins; {
             start = with pkgs.vimPlugins; [
               telescope-nvim
-              vim-commentary
-              vim-surround
               toggleterm-nvim
-              targets-vim
-              indent-blankline-nvim
+              mini-nvim
               vim-go
               vim-nix
-              nvim-treesitter-textobjects
-              leap-nvim
               (nvim-treesitter.withPlugins
               (
                 plugins: with plugins; [
@@ -74,6 +62,7 @@
                   tree-sitter-javascript
                   tree-sitter-json
                   tree-sitter-lua
+                  tree-sitter-markdown
                   tree-sitter-nix
                   tree-sitter-php
                   tree-sitter-python
@@ -81,14 +70,14 @@
                 ]
                 )
                 )
+                nvim-treesitter-textobjects
+                leap-nvim
               ];
             };
           };
         };
         apps.iofqvim = flake-utils.lib.mkApp {
-          drv = packages.iofqvim;
-          name = "iofqvim";
-          exePath = "/bin/nvim";
+          drv = packages.iofqvim; name = "iofqvim"; exePath = "/bin/nvim";
         };
         apps.default = apps.iofqvim;
         packages.default = packages.iofqvim;
