@@ -1,0 +1,6 @@
+require("nvim-conf")
+require("telescope-conf")
+require("toggleterm-conf")
+require("mini-conf")
+require("gitsigns-conf")
+require("oil-conf")

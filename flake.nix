@@ -9,12 +9,29 @@
     pkgs = import nixpkgs {
       inherit system;
     };
+    plugins = import ./plugins.nix {
+      inherit pkgs;
+    };
+    base = {
+      viAlias = true;
+      vimAlias = true;
+      withRuby = false;
+      withPython3 = false;
+      extraMakeWrapperArgs = ''--prefix PATH : "${pkgs.lib.makeBinPath dependancies}"'';
+    };
     dependancies = with pkgs; [
-      bash fd fzf gopls ripgrep
+      ripgrep
     ];
+    full-dependancies = with pkgs; [
+      gopls
+    ] ++ dependancies;
     neovim-with-deps = recursiveMerge [
       pkgs.neovim-unwrapped
-      {buildInputs = dependancies;}
+      { buildInputs = dependancies; }
+    ];
+    neovim-with-full-deps = recursiveMerge [
+      pkgs.neovim-unwrapped
+      { buildInputs = dependancies; }
     ];
     recursiveMerge = attrList: let
       f = attrPath:
@@ -29,57 +46,42 @@
     in
     f [] attrList;
   in rec {
-    packages.iofqvim = pkgs.wrapNeovim neovim-with-deps {
-      viAlias = true;
-      vimAlias = true;
-      withRuby = false;
-      withPython3 = false;
-      extraMakeWrapperArgs = ''--prefix PATH : "${pkgs.lib.makeBinPath dependancies}"'';
+    packages.full = pkgs.wrapNeovim neovim-with-full-deps (base // {
       configure = {
         customRC =
           ''
           lua << EOF
-          package.path = "${self}/config/lua/?.lua;" .. package.path
+          package.path = "${self}/config/?.lua;" .. "${self}/config/lua/?.lua;" .. package.path
           ''
           + pkgs.lib.readFile ./config/init.lua
           + ''
           EOF
           '';
           packages.plugins = with pkgs.vimPlugins; {
-            start = with pkgs.vimPlugins; [
-              telescope-nvim
-              toggleterm-nvim
-              mini-nvim
-              vim-go
-              vim-nix
-              (nvim-treesitter.withPlugins
-              (
-                plugins: with plugins; [
-                  tree-sitter-bash
-                  tree-sitter-c
-                  tree-sitter-dockerfile
-                  tree-sitter-go
-                  tree-sitter-javascript
-                  tree-sitter-json
-                  tree-sitter-lua
-                  tree-sitter-markdown
-                  tree-sitter-nix
-                  tree-sitter-php
-                  tree-sitter-python
-                  tree-sitter-yaml
-                ]
-                )
-                )
-                nvim-treesitter-textobjects
-                leap-nvim
-              ];
-            };
+            start = plugins.base ++ plugins.treesitter;
           };
         };
-        apps.iofqvim = flake-utils.lib.mkApp {
-          drv = packages.iofqvim; name = "iofqvim"; exePath = "/bin/nvim";
-        };
-        apps.default = apps.iofqvim;
-        packages.default = packages.iofqvim;
       });
-    }
+    packages.minimal = pkgs.wrapNeovim neovim-with-deps (base // {
+      configure = {
+        customRC =
+          ''
+          lua << EOF
+          package.path = "${self}/config/?.lua;" .. "${self}/config/lua/?.lua;" .. package.path
+          ''
+          + pkgs.lib.readFile ./config/minimal-init.lua
+          + ''
+          EOF
+          '';
+          packages.plugins = with pkgs.vimPlugins; {
+            start = plugins.base;
+          };
+        };
+      });
+      apps.full = flake-utils.lib.mkApp {
+        drv = packages.full; name = "neovim"; exePath = "/bin/nvim";
+      };
+      apps.default = apps.full;
+      packages.default = packages.full;
+    });
+  }

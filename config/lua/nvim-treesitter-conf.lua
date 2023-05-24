@@ -11,8 +11,6 @@ require("nvim-treesitter.configs").setup {
             enable = true,
             lookahead = true,
             keymaps = {
-                ['ac'] = '@comment.outer',
-                ['ic'] = '@comment.inner',
                 ["af"] = "@function.outer",
                 ["if"] = "@function.inner",
                 ["aa"] = "@call.inner",
@@ -25,17 +23,9 @@ require("nvim-treesitter.configs").setup {
                 [']]'] = '@function.outer',
                 [']m'] = '@class.outer',
             },
-            goto_next_end = {
-                [']['] = '@function.outer',
-                [']M'] = '@class.outer',
-            },
             goto_previous_start = {
                 ['[['] = '@function.outer',
                 ['[m'] = '@class.outer',
-            },
-            goto_previous_end = {
-                ['[]'] = '@function.outer',
-                ['[M'] = '@class.outer',
             },
         },
     },

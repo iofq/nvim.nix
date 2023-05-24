@@ -36,6 +36,7 @@ vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.swapfile = false
 vim.opt.tabstop = 4                         -- 4 space tabs
+vim.opt.termguicolors = true
 vim.opt.undofile = true                     -- enable auto save of undos
 vim.opt.updatetime = 250                    -- decrease update time
 vim.opt.virtualedit = "onemore"
@@ -49,6 +50,8 @@ vim.g.indent_blankline_use_treesitter = true
 
 -- highlight indents
 vim.cmd([[ hi Whitespace ctermfg=240 ]])
+-- highlight floats
+vim.cmd([[ hi NormalFloat ctermbg=none ]])
 -- mappings
 ----------------------------------------
 

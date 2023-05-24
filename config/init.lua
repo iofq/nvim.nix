@@ -1,6 +1,2 @@
-require("blankline-conf")
-require("nvim-conf")
+require("minimal-init")
 require("nvim-treesitter-conf")
-require("telescope-conf")
-require("toggleterm-conf")
-require("mini-conf")

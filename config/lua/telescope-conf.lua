@@ -11,7 +11,8 @@ vim.keymap.set("n", "<leader>fr", telescope.lsp_references, {noremap = true, sil
 -- fix highlighting
 vim.cmd([[ hi telescopeselection ctermfg=242 ctermbg=252 ]])
 
-require("telescope").setup({
+local telescope = require("telescope")
+telescope.setup({
     defaults = {
         layout_strategy = "vertical",
         layout_config = { width = .90, },
@@ -47,3 +48,4 @@ require("telescope").setup({
         },
     }
 })
+telescope.load_extension("fzf")
