@@ -6,6 +6,18 @@
   };
   outputs = inputs @ {self, nixpkgs, flake-utils, ...}:
   flake-utils.lib.eachDefaultSystem (system: let
+    recursiveMerge = attrList: let
+      f = attrPath:
+      builtins.zipAttrsWith (n: values:
+      if pkgs.lib.tail values == []
+      then pkgs.lib.head values
+      else if pkgs.lib.all pkgs.lib.isList values
+      then pkgs.lib.unique (pkgs.lib.concatLists values)
+      else if pkgs.lib.all pkgs.lib.isAttrs values
+      then f (attrPath ++ [n]) values
+      else pkgs.lib.last values);
+    in
+    f [] attrList;
     pkgs = import nixpkgs {
       inherit system;
     };
@@ -23,28 +35,17 @@
       ripgrep
     ];
     full-dependancies = with pkgs; [
+      go
       gopls
-    ] ++ dependancies;
+    ];
     neovim-with-deps = recursiveMerge [
       pkgs.neovim-unwrapped
       { buildInputs = dependancies; }
     ];
     neovim-with-full-deps = recursiveMerge [
       pkgs.neovim-unwrapped
-      { buildInputs = dependancies; }
+      { buildInputs = dependancies ++ full-dependancies; }
     ];
-    recursiveMerge = attrList: let
-      f = attrPath:
-      builtins.zipAttrsWith (n: values:
-      if pkgs.lib.tail values == []
-      then pkgs.lib.head values
-      else if pkgs.lib.all pkgs.lib.isList values
-      then pkgs.lib.unique (pkgs.lib.concatLists values)
-      else if pkgs.lib.all pkgs.lib.isAttrs values
-      then f (attrPath ++ [n]) values
-      else pkgs.lib.last values);
-    in
-    f [] attrList;
   in rec {
     packages.full = pkgs.wrapNeovim neovim-with-full-deps (base // {
       configure = {
