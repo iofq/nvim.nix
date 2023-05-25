@@ -1,5 +1,4 @@
 require("toggleterm").setup{
-    open_mapping = [[<leader>t]],
-    shade_terminals = true,
+    open_mapping = [[<C-\>]],
     size = vim.o.lines * 0.4
 }

@@ -29,25 +29,25 @@
       vimAlias = true;
       withRuby = false;
       withPython3 = false;
-      extraMakeWrapperArgs = ''--prefix PATH : "${pkgs.lib.makeBinPath dependancies}"'';
     };
     dependancies = with pkgs; [
       ripgrep
+      lazygit
     ];
     full-dependancies = with pkgs; [
-      go
       gopls
-    ];
+    ] ++ dependancies;
     neovim-with-deps = recursiveMerge [
       pkgs.neovim-unwrapped
       { buildInputs = dependancies; }
     ];
     neovim-with-full-deps = recursiveMerge [
       pkgs.neovim-unwrapped
-      { buildInputs = dependancies ++ full-dependancies; }
+      { buildInputs = full-dependancies; }
     ];
   in rec {
     packages.full = pkgs.wrapNeovim neovim-with-full-deps (base // {
+      extraMakeWrapperArgs = ''--prefix PATH : "${pkgs.lib.makeBinPath full-dependancies}"'';
       configure = {
         customRC =
           ''
@@ -64,6 +64,7 @@
         };
       });
     packages.minimal = pkgs.wrapNeovim neovim-with-deps (base // {
+      extraMakeWrapperArgs = ''--prefix PATH : "${pkgs.lib.makeBinPath dependancies}"'';
       configure = {
         customRC =
           ''

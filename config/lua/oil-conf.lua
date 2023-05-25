@@ -11,4 +11,4 @@ oil.setup({
         ["wq"] = "actions.close"
     }
 })
-vim.keymap.set("n", "<leader>c", oil.open, {noremap = true, silent = true});
+vim.keymap.set("n", "<leader>c", oil.toggle_float, {noremap = true, silent = true});
