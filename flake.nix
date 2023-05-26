@@ -53,13 +53,14 @@
           ''
           lua << EOF
           package.path = "${self}/config/?.lua;" .. "${self}/config/lua/?.lua;" .. package.path
+          vim.o.runtimepath = "${self}/config," .. vim.o.runtimepath
           ''
           + pkgs.lib.readFile ./config/init.lua
           + ''
           EOF
           '';
           packages.plugins = with pkgs.vimPlugins; {
-            start = plugins.base ++ plugins.treesitter;
+            start = plugins.base ++ plugins.extra ++ plugins.treesitter;
           };
         };
       });
@@ -70,6 +71,7 @@
           ''
           lua << EOF
           package.path = "${self}/config/?.lua;" .. "${self}/config/lua/?.lua;" .. package.path
+          vim.o.runtimepath = "${self}/config," .. vim.o.runtimepath
           ''
           + pkgs.lib.readFile ./config/minimal-init.lua
           + ''

@@ -10,6 +10,9 @@
     neogit
     rose-pine
   ];
+  extra = with pkgs.vimPlugins; [
+    vim-nix
+  ];
   treesitter = with pkgs.vimPlugins; [
     (nvim-treesitter.withPlugins
     (
