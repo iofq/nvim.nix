@@ -12,8 +12,11 @@
   ];
   extra = with pkgs.vimPlugins; [
     vim-nix
-  ];
-  treesitter = with pkgs.vimPlugins; [
+
+    #lsp
+    nvim-lspconfig
+
+    #treesitter
     (nvim-treesitter.withPlugins
     (
       plugins: with plugins; [

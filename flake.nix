@@ -60,32 +60,32 @@
           EOF
           '';
           packages.plugins = with pkgs.vimPlugins; {
-            start = plugins.base ++ plugins.extra ++ plugins.treesitter;
+            start = plugins.base ++ plugins.extra;
           };
         };
       });
-    packages.minimal = pkgs.wrapNeovim neovim-with-deps (base // {
-      extraMakeWrapperArgs = ''--prefix PATH : "${pkgs.lib.makeBinPath dependancies}"'';
-      configure = {
-        customRC =
-          ''
-          lua << EOF
-          package.path = "${self}/config/?.lua;" .. "${self}/config/lua/?.lua;" .. package.path
-          vim.o.runtimepath = "${self}/config," .. vim.o.runtimepath
-          ''
-          + pkgs.lib.readFile ./config/minimal-init.lua
-          + ''
-          EOF
-          '';
-          packages.plugins = with pkgs.vimPlugins; {
-            start = plugins.base;
+      packages.minimal = pkgs.wrapNeovim neovim-with-deps (base // {
+        extraMakeWrapperArgs = ''--prefix PATH : "${pkgs.lib.makeBinPath dependancies}"'';
+        configure = {
+          customRC =
+            ''
+            lua << EOF
+            package.path = "${self}/config/?.lua;" .. "${self}/config/lua/?.lua;" .. package.path
+            vim.o.runtimepath = "${self}/config," .. vim.o.runtimepath
+            ''
+            + pkgs.lib.readFile ./config/minimal-init.lua
+            + ''
+            EOF
+            '';
+            packages.plugins = with pkgs.vimPlugins; {
+              start = plugins.base;
+            };
           };
+        });
+        apps.full = flake-utils.lib.mkApp {
+          drv = packages.full; name = "neovim"; exePath = "/bin/nvim";
         };
+        apps.default = apps.full;
+        packages.default = packages.full;
       });
-      apps.full = flake-utils.lib.mkApp {
-        drv = packages.full; name = "neovim"; exePath = "/bin/nvim";
-      };
-      apps.default = apps.full;
-      packages.default = packages.full;
-    });
-  }
+    }
