@@ -32,7 +32,6 @@
     };
     dependancies = with pkgs; [
       ripgrep
-      lazygit
     ];
     full-dependancies = with pkgs; [
       gopls
@@ -84,6 +83,9 @@
         });
         apps.full = flake-utils.lib.mkApp {
           drv = packages.full; name = "neovim"; exePath = "/bin/nvim";
+        };
+        apps.minimal = flake-utils.lib.mkApp {
+          drv = packages.minimal; name = "neovim"; exePath = "/bin/nvim";
         };
         apps.default = apps.full;
         packages.default = packages.full;

@@ -7,14 +7,7 @@
     mini-nvim
     gitsigns-nvim
     oil-nvim
-    neogit
     rose-pine
-  ];
-  extra = with pkgs.vimPlugins; [
-    vim-nix
-
-    #lsp
-    nvim-lspconfig
 
     #treesitter
     (nvim-treesitter.withPlugins
@@ -29,7 +22,6 @@
         tree-sitter-lua
         tree-sitter-markdown
         tree-sitter-markdown-inline
-        tree-sitter-nix
         tree-sitter-php
         tree-sitter-python
         tree-sitter-yaml
@@ -37,5 +29,10 @@
       )
       )
       nvim-treesitter-textobjects
+    ];
+    extra = with pkgs.vimPlugins; [
+      vim-nix
+      #lsp
+      nvim-lspconfig
     ];
   }
