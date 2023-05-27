@@ -17,6 +17,6 @@ RUN mkdir -p /out && \
         --extra-experimental-features flakes .#minimal && \
         mv $(realpath nvim-minimal.AppImage) /out/neovim-x86_64-linux-minimal.AppImage
 
-FROM busybox:alpine
+FROM busybox
 WORKDIR /out
 COPY --from=build /out /out
