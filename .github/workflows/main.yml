@@ -23,15 +23,13 @@ jobs:
           push: true
           tags: ghcr.io/iofq/nvim:latest
 
-      - name: Extract full .tar.gz from container
-        uses: shrink/actions-docker-extract@v1
+      - uses: shrink/actions-docker-extract@v1
         id: extract
         with:
           image: ghcr.io/iofq/nvim:latest
           path: /out/neovim-x86_64-linux.AppImage
 
-      - name: Extract minimal .tar.gz from container
-        uses: shrink/actions-docker-extract@v1
+      - uses: shrink/actions-docker-extract@v1
         id: extract-minimal
         with:
           image: ghcr.io/iofq/nvim:latest
