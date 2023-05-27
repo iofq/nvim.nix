@@ -22,6 +22,7 @@ jobs:
         with:
           push: true
           tags: ghcr.io/iofq/nvim:latest
+
       - name: Extract full .tar.gz from container
         uses: shrink/actions-docker-extract@v1
         id: extract
