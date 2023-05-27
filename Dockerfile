@@ -1,5 +1,6 @@
 FROM nixos/nix as build
 
+WORKDIR /app
 COPY . .
 
 RUN mkdir -p /out && \
@@ -18,4 +19,4 @@ RUN mkdir -p /out && \
 
 FROM scratch
 WORKDIR /out
-COPY --from=build /out/* /out/
+COPY --from=build /out /out
