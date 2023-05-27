@@ -26,5 +26,3 @@ require('gitsigns').setup{
           return '<Ignore>'
         end, {expr=true})   end
 }
-
-require("neogit").setup()

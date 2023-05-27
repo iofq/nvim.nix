@@ -17,6 +17,7 @@
         tree-sitter-c
         tree-sitter-dockerfile
         tree-sitter-go
+        tree-sitter-html
         tree-sitter-javascript
         tree-sitter-json
         tree-sitter-lua
@@ -24,6 +25,8 @@
         tree-sitter-markdown-inline
         tree-sitter-php
         tree-sitter-python
+        tree-sitter-svelte
+        tree-sitter-typescript
         tree-sitter-yaml
       ]
       )
