@@ -13,7 +13,8 @@ require("nvim-treesitter.configs").setup {
             keymaps = {
                 ["af"] = "@function.outer",
                 ["if"] = "@function.inner",
-                ["aa"] = "@call.inner",
+                ["aa"] = "@statement.outer",
+                ["ia"] = "@parameter.inner",
             },
         },
         move = {
@@ -21,19 +22,26 @@ require("nvim-treesitter.configs").setup {
             set_jumps = true, -- whether to set jumps in the jumplist
             goto_next_start = {
                 [']]'] = '@function.outer',
-                [']m'] = '@class.outer',
+                [']a'] = '@parameter.inner',
             },
             goto_previous_start = {
                 ['[['] = '@function.outer',
-                ['[m'] = '@class.outer',
+                ['[a'] = '@parameter.inner',
             },
         },
-    },
+        swap = {
+            enable = true,
+            swap_next = {
+                ["p]"] = "@parameter.inner",
+            },
+            swap_previous = {
+                ["p["] = "@parameter.inner",
+            },
+        }, },
     incremental_selection = {
         enable = true,
         keymaps = {
             init_selection = '<CR>',
-            scope_incremental = '<CR>',
             node_incremental = '<TAB>',
             node_decremental = '<S-TAB>',
         },

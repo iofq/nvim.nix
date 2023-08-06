@@ -1,3 +1,5 @@
+-- din( dina
+require('mini.ai').setup()
 -- gc gcc
 require('mini.comment').setup()
 -- alt hjkl
@@ -62,3 +64,13 @@ indent.setup({
     draw =  { delay = 0 }
 })
 indent.gen_animation.none()
+
+-- <C-Space>
+require('mini.completion').setup({
+    delay = {completion = 10^7},
+    window = {
+        info = { height = 25, width = 80, border = 'single' },
+        signature = { height = 25, width = 80, border = 'single' },
+    },
+    fallback_action = "<C-x><C-n>"
+})

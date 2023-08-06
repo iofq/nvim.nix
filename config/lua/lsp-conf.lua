@@ -1,6 +1,9 @@
 -- Setup language servers.
 local lspconfig = require('lspconfig')
-lspconfig.gopls.setup {}
+lspconfig.gopls.setup { on_attach = function(_, bufnr)
+    vim.api.nvim_command("au BufWritePost <buffer> lua vim.lsp.buf.format { async = true }")
+end
+}
 
 -- Global mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
@@ -20,7 +23,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(ev)
         -- Enable completion triggered by <c-x><c-o>
         vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
-
         -- Buffer local mappings.
         -- See `:help vim.lsp.*` for documentation on any of the below functions
         local opts = { buffer = ev.buf }
