@@ -1,7 +1,7 @@
 -- Setup language servers.
 local lspconfig = require('lspconfig')
 lspconfig.gopls.setup { on_attach = function(_, bufnr)
-    vim.api.nvim_command("au BufWritePost <buffer> lua vim.lsp.buf.format { async = true }")
+    vim.api.nvim_command("au BufWritePre <buffer> lua vim.lsp.buf.format { async = false }")
 end
 }
 
