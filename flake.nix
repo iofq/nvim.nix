@@ -35,6 +35,8 @@
     ];
     full-dependencies = with pkgs; [
       gopls
+      pyright
+      nil
     ] ++ dependencies;
     neovim-with-deps = recursiveMerge [
       pkgs.neovim-unwrapped
