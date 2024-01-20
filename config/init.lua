@@ -1,3 +1,6 @@
 require("minimal-init")
 require("nvim-treesitter-conf")
 require("lsp-conf")
+require("colors")
+require("git-conf")
+require("oil-conf")

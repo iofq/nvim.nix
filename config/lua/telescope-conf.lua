@@ -3,12 +3,10 @@ vim.keymap.set("n", "<leader>fb", telescope.buffers, {noremap = true, silent = t
 vim.keymap.set("n", "<leader>ff", telescope.find_files, {noremap = true, silent = true})
 vim.keymap.set("n", "<leader>fg", telescope.git_files, {noremap = true, silent = true})
 vim.keymap.set("n", "<leader>fv", telescope.command_history, {noremap = true, silent = true})
-vim.keymap.set("n", "<leader><leader>", telescope.live_grep, {noremap = true, silent = true})
-vim.keymap.set("n", "<leader>8", telescope.grep_string, {noremap = true, silent = true})
-vim.keymap.set("n", "<leader><BS>", telescope.resume, {noremap = true, silent = true})
+vim.keymap.set("n", "<leader>fa", telescope.live_grep, {noremap = true, silent = true})
+vim.keymap.set("n", "<leader>f8", telescope.grep_string, {noremap = true, silent = true})
+vim.keymap.set("n", "<leader>f<BS>", telescope.resume, {noremap = true, silent = true})
 vim.keymap.set("n", "<leader>fs", telescope.git_status, {noremap = true, silent = true})
-vim.keymap.set("n", "<leader>fd", telescope.lsp_definitions, {noremap = true, silent = true})
-vim.keymap.set("n", "<leader>fr", telescope.lsp_references, {noremap = true, silent = true})
 
 local telescope = require("telescope")
 telescope.setup({

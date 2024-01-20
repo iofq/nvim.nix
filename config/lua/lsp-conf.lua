@@ -29,18 +29,15 @@ vim.api.nvim_create_autocmd('LspAttach', {
         -- See `:help vim.lsp.*` for documentation on any of the below functions
         local opts = { buffer = ev.buf }
         vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-        vim.keymap.set('n', '<leader>dD', vim.lsp.buf.declaration, opts)
         vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
-        vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, opts)
+        vim.keymap.set({ 'n', 'v' }, '<leader>ac', vim.lsp.buf.code_action, opts)
         vim.keymap.set("n", "<leader>dd", "<cmd>Telescope lsp_definitions<cr>", { buffer = bufnr })
         vim.keymap.set("n", "<leader>di", "<cmd>Telescope lsp_implementations<cr>", { buffer = bufnr })
         vim.keymap.set("n", "<leader>dr", "<cmd>Telescope lsp_references<cr>", { buffer = bufnr })
         vim.keymap.set("n", "<leader>dt", "<cmd>Telescope lsp_type_definitions<cr>", { buffer = bufnr })
         vim.keymap.set("n", "<leader>ds", "<cmd>Telescope lsp_document_symbols<cr>", { buffer = bufnr })
-        vim.keymap.set("n", "<leader>dS", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", { buffer = bufnr })
         vim.keymap.set('n', '<space>df', function()
             vim.lsp.buf.format { async = true }
         end, opts)
-
     end,
 })

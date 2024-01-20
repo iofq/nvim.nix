@@ -2,10 +2,8 @@
 require('mini.ai').setup()
 -- gc gcc
 require('mini.comment').setup()
--- alt hjkl
-require('mini.move').setup()
 
---    Add surrounding with sa 
+--    Add surrounding with sa
 --    Delete surrounding with sd.
 --    Replace surrounding with sr.
 --    Find surrounding with sf or sF (move cursor right or left).
@@ -49,7 +47,18 @@ require('mini.splitjoin').setup({
     }
 })
 
-require('mini.pairs').setup()
+require('mini.pairs').setup(
+{
+  modes = { insert = true, command = false, terminal = false },
+  mappings = {
+    ['['] = { action = 'open', pair = '[]', neigh_pattern = '[^\\].' },
+    ['{'] = { action = 'open', pair = '{}', neigh_pattern = '[^\\].' },
+
+    [']'] = { action = 'close', pair = '[]', neigh_pattern = '[^\\].' },
+    ['}'] = { action = 'close', pair = '{}', neigh_pattern = '[^\\].' },
+  },
+}
+)
 vim.cmd([[ hi MiniCursorwordCurrent ctermfg=240 ]])
 
 -- f F t T
@@ -71,6 +80,10 @@ require('mini.completion').setup({
     window = {
         info = { height = 25, width = 80, border = 'single' },
         signature = { height = 25, width = 80, border = 'single' },
+    },
+    lsp_completion = {
+        source_func = 'completefunc',
+        auto_setup = true,
     },
     fallback_action = "<C-x><C-n>"
 })

@@ -46,22 +46,21 @@
       pkgs.neovim-unwrapped
       { buildInputs = full-dependencies; }
     ];
+    baseRC = ''
+          lua << EOF
+          package.path = "${self}/config/?.lua;" .. "${self}/config/lua/?.lua;" .. package.path
+          vim.o.runtimepath = "${self}/config," .. vim.o.runtimepath
+          '';
   in rec {
     packages.full = pkgs.wrapNeovim neovim-with-full-deps (base // {
       withPython3 = true;
       extraMakeWrapperArgs = ''--prefix PATH : "${pkgs.lib.makeBinPath full-dependencies}"'';
       configure = {
         customRC =
-          ''
-          lua << EOF
-          package.path = "${self}/config/?.lua;" .. "${self}/config/lua/?.lua;" .. package.path
-          vim.o.runtimepath = "${self}/config," .. vim.o.runtimepath
-          ''
+          baseRC
           + pkgs.lib.readFile ./config/init.lua
-          + ''
-          EOF
-          '';
-          packages.plugins = with pkgs.vimPlugins; {
+          + ''EOF'';
+          packages.plugins = {
             start = plugins.base ++ plugins.extra;
           };
         };
@@ -70,16 +69,10 @@
         extraMakeWrapperArgs = ''--prefix PATH : "${pkgs.lib.makeBinPath dependencies}"'';
         configure = {
           customRC =
-            ''
-            lua << EOF
-            package.path = "${self}/config/?.lua;" .. "${self}/config/lua/?.lua;" .. package.path
-            vim.o.runtimepath = "${self}/config," .. vim.o.runtimepath
-            ''
+            baseRC
             + pkgs.lib.readFile ./config/minimal-init.lua
-            + ''
-            EOF
-            '';
-            packages.plugins = with pkgs.vimPlugins; {
+            + ''EOF'';
+            packages.plugins = {
               start = plugins.base;
             };
           };

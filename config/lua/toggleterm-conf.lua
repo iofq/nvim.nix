@@ -1,4 +1,5 @@
 require("toggleterm").setup{
     open_mapping = [[<C-\>]],
-    size = vim.o.lines * 0.4
+    direction = "float",
+    close_on_exit  = true,
 }
