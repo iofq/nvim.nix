@@ -13,5 +13,6 @@
     nvim-lspconfig
     nvim-treesitter.withAllGrammars
     nvim-treesitter-textobjects
+    vim-nix
   ];
 }
