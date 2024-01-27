@@ -32,10 +32,10 @@ require("nvim-treesitter.configs").setup {
         swap = {
             enable = true,
             swap_next = {
-                ["A]"] = "@parameter.inner",
+                ["P]"] = "@parameter.inner",
             },
             swap_previous = {
-                ["A["] = "@parameter.inner",
+                ["P["] = "@parameter.inner",
             },
         }, },
     incremental_selection = {
