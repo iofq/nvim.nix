@@ -27,6 +27,8 @@ jobs:
               --bundler github:ralismark/nix-appimage \
               --extra-experimental-features nix-command \
               --extra-experimental-features flakes .#${{ matrix.package_name }}
+          echo "Done building AppImage for nvim-${{ matrix.package_name }}"
+          echo ${{ github.ref }}
       - name: Upload bundle to release
         if: github.ref == 'master'
         uses: svenstaro/upload-release-action@v2
