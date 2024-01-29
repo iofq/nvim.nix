@@ -33,6 +33,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: "nvim-x86_64-linux-${{ matrix.package_name }}.AppImage"
+          file: "nvim-${{ matrix.package_name }}.AppImage"
+          asset_name: "nvim-x86_64-linux-${{ matrix.package_name }}.AppImage"
           tag: latest
           overwrite: true
