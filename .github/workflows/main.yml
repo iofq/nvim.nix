@@ -24,11 +24,10 @@ jobs:
               --bundler github:ralismark/nix-appimage \
               --extra-experimental-features nix-command \
               --extra-experimental-features flakes .#minimal
-          gzip *.AppImage
 
       - name: Upload bundle to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: *.AppImage.gz
+          file: *.AppImage
           overwrite: true
