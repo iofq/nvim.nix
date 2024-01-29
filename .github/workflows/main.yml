@@ -28,7 +28,7 @@ jobs:
               --extra-experimental-features nix-command \
               --extra-experimental-features flakes .#${{ matrix.package_name }}
       - name: Upload bundle to release
-        if: github.ref == 'master' && steps.build.outcome == 'success'
+        if: github.ref == 'master'
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
