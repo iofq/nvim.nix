@@ -1,6 +1,8 @@
 name: build
 
 on:
+  pull_request:
+    types: opened
   push:
     branches:
       - master
@@ -24,6 +26,7 @@ jobs:
               --bundler github:ralismark/nix-appimage \
               --extra-experimental-features nix-command \
               --extra-experimental-features flakes .#minimal
+          ls -lahrt && pwd
 
       - name: Upload bundle to release
         uses: svenstaro/upload-release-action@v2
