@@ -9,6 +9,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+        - package_name: full
+        - package_name: minimal
     steps:
       - uses: actions/checkout@v3
       - uses: DeterminateSystems/nix-installer-action@main
@@ -17,20 +22,15 @@ jobs:
         id: build
         run: |
           nix bundle \
-              -o nvim.AppImage \
+              -o nvim-${{ matrix.package_name }}.AppImage \
               --bundler github:ralismark/nix-appimage \
               --extra-experimental-features nix-command \
-              --extra-experimental-features flakes .#full
-          nix bundle \
-              -o nvim-minimal.AppImage \
-              --bundler github:ralismark/nix-appimage \
-              --extra-experimental-features nix-command \
-              --extra-experimental-features flakes .#minimal
-          ls -lahrt && pwd
-
+              --extra-experimental-features flakes .#${{ matrix.package_name }}
       - name: Upload bundle to release
+        if: github.ref == 'master' && ${{ success() }}
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: "./*.AppImage"
+          file: "nvim-${{ matrix.package_name }}.AppImage"
+          tag: latest
           overwrite: true
