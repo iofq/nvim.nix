@@ -28,9 +28,8 @@ jobs:
               --extra-experimental-features nix-command \
               --extra-experimental-features flakes .#${{ matrix.package_name }}
           echo "Done building AppImage for nvim-${{ matrix.package_name }}"
-          echo ${{ github.ref }}
       - name: Upload bundle to release
-        if: github.ref == 'master'
+        if: github.ref == 'refs/heads/master'
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
