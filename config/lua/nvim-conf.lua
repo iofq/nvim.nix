@@ -7,8 +7,8 @@ vim.opt.expandtab = true                    -- insert tabs as spaces
 vim.opt.inccommand = "split"                -- incremental live completion
 vim.opt.laststatus = 1
 vim.opt.list = true
-vim.opt.listchars:append("trail:·")
-vim.opt.listchars:append("leadmultispace:╎ ")
+-- vim.opt.listchars:append("trail:·")
+-- vim.opt.listchars:append("leadmultispace:╎ ")
 vim.opt.nrformats:append("alpha")           -- let Ctrl-a do letters as well
 vim.opt.path:append("**")                   -- enable fuzzy :find ing
 vim.opt.relativenumber = true
@@ -18,7 +18,7 @@ vim.opt.showmatch = true                    -- highlight matching brackets
 vim.opt.showmode = true
 vim.opt.softtabstop = -1                    -- backspace removes tabstop
 vim.opt.swapfile = false
-vim.opt.tabstop = 4                         -- 4 space tabs
+vim.opt.tabstop = 2                         -- 2 space tabs are based
 vim.opt.updatetime = 250                    -- decrease update time
 vim.opt.virtualedit = "onemore"
 
@@ -40,10 +40,12 @@ remap("v", "wq", "<esc>l")
 remap("n","gr", "gT")
 remap("n","n", "nzz")
 remap("n", "N", "Nzz")
-remap("n", "Y", "y$")
-remap("n","[<space>", ":<c-u>put!=repeat([''],v:count)<bar>']+1<cr>")
-remap("n","]<space>", ":<c-u>put =repeat([''],v:count)<bar>'[-1<cr><Esc>")
-remap("n","M", "m0i<cr><Esc>`0")
+remap("n","<CR>", "m0i<cr><Esc>`0")
+
+-- Switch tab length on the fly
+vim.keymap.set("n", "\\t", function()
+    vim.o.tabstop = vim.o.tabstop == 2 and 4 or 2
+end, { silent = true })
 
 -- autocmd
 ----------------------------------------

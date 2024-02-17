@@ -77,6 +77,7 @@
             };
           };
         });
+
         apps.full = flake-utils.lib.mkApp {
           drv = packages.full; name = "neovim"; exePath = "/bin/nvim";
         };
