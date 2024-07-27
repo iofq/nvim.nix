@@ -1,19 +1,20 @@
 {pkgs, ...}:
 {
   base = with pkgs.vimPlugins; [
-    telescope-nvim
-    telescope-fzf-native-nvim
-    toggleterm-nvim
-    mini-nvim
-  ];
-  extra = with pkgs.vimPlugins; [
-    rose-pine
+    diffview-nvim
     gitsigns-nvim
-    oil-nvim
-    nvim-lspconfig
-    nvim-treesitter.withAllGrammars
-    nvim-treesitter-textobjects
-    vim-nix
+    mini-nvim
     neogit
+    nvim-lspconfig
+    nvim-treesitter-textobjects
+    nvim-treesitter.withAllGrammars
+    oil-nvim
+    refactoring-nvim
+    rose-pine
+    telescope-fzf-native-nvim
+    telescope-nvim
+    toggleterm-nvim
+    undotree
+    vim-nix
   ];
 }

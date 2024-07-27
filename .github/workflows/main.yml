@@ -13,8 +13,7 @@ jobs:
     strategy:
       matrix:
         include:
-        - package_name: full
-        - package_name: minimal
+        - package_name: neovim
     steps:
       - uses: actions/checkout@v3
       - uses: DeterminateSystems/nix-installer-action@main
@@ -23,17 +22,17 @@ jobs:
         id: build
         run: |
           nix bundle \
-              -o nvim-${{ matrix.package_name }}.AppImage \
+              -o ${{ matrix.package_name }}.AppImage \
               --bundler github:ralismark/nix-appimage \
               --extra-experimental-features nix-command \
               --extra-experimental-features flakes .#${{ matrix.package_name }}
-          echo "Done building AppImage for nvim-${{ matrix.package_name }}"
+          echo "Done building AppImage for ${{ matrix.package_name }}"
       - name: Upload bundle to release
         if: github.ref == 'refs/heads/master'
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: "nvim-${{ matrix.package_name }}.AppImage"
-          asset_name: "nvim-x86_64-linux-${{ matrix.package_name }}.AppImage"
+          file: "${{ matrix.package_name }}.AppImage"
+          asset_name: "${{ matrix.package_name }}-x86_64-linux.AppImage"
           tag: latest
           overwrite: true
