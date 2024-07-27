@@ -7,7 +7,33 @@
     neogit
     nvim-lspconfig
     nvim-treesitter-textobjects
-    nvim-treesitter.withAllGrammars
+    (nvim-treesitter.withPlugins(p: with p; [
+      tree-sitter-bash
+      tree-sitter-c
+      tree-sitter-comment
+      tree-sitter-css
+      tree-sitter-dockerfile
+      tree-sitter-embedded-template
+      tree-sitter-go
+      tree-sitter-gomod
+      tree-sitter-hcl
+      tree-sitter-html
+      tree-sitter-javascript
+      tree-sitter-json
+      tree-sitter-lua
+      tree-sitter-make
+      tree-sitter-markdown
+      tree-sitter-markdown-inline
+      tree-sitter-nix
+      tree-sitter-php
+      tree-sitter-python
+      tree-sitter-regex
+      tree-sitter-ruby
+      tree-sitter-sql
+      tree-sitter-toml
+      tree-sitter-typescript
+      tree-sitter-yaml
+    ]))
     oil-nvim
     refactoring-nvim
     rose-pine

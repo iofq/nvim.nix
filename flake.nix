@@ -29,7 +29,6 @@
         gopls
         pyright
         nil
-        phpactor
       ];
       neovim-with-deps = recursiveMerge [
         pkgs.neovim-unwrapped
@@ -42,10 +41,10 @@
       '';
     in rec {
       packages.neovim = pkgs.wrapNeovim neovim-with-deps ({
-        viAlias = true;
+        viAlias = false;
         vimAlias = true;
         withRuby = false;
-        withPython3 = true;
+        withPython3 = false;
         extraMakeWrapperArgs = ''--prefix PATH : "${pkgs.lib.makeBinPath dependencies}"'';
         configure = {
           customRC =
@@ -57,7 +56,6 @@
           };
         };
       });
-
       apps.neovim = flake-utils.lib.mkApp {
         drv = packages.neovim; name = "neovim"; exePath = "/bin/nvim";
       };
