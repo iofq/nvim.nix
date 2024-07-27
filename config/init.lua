@@ -16,14 +16,13 @@ require("toggleterm").setup{
 -- Telescope
 --------------------
 local telescope = require("telescope.builtin")
-vim.keymap.set("n", "<leader>fb", telescope.buffers, {noremap = true, silent = true})
+vim.keymap.set("n", "<leader><leader>", telescope.buffers, {noremap = true, silent = true})
 vim.keymap.set("n", "<leader>ff", telescope.find_files, {noremap = true, silent = true})
 vim.keymap.set("n", "<leader>fg", telescope.git_files, {noremap = true, silent = true})
-vim.keymap.set("n", "<leader>fv", telescope.command_history, {noremap = true, silent = true})
+vim.keymap.set("n", "<leader>fc", telescope.command_history, {noremap = true, silent = true})
 vim.keymap.set("n", "<leader>fa", telescope.live_grep, {noremap = true, silent = true})
 vim.keymap.set("n", "<leader>f8", telescope.grep_string, {noremap = true, silent = true})
 vim.keymap.set("n", "<leader>f<BS>", telescope.resume, {noremap = true, silent = true})
-vim.keymap.set("n", "<leader>fs", telescope.git_status, {noremap = true, silent = true})
 
 local telescope = require("telescope")
 telescope.setup({
@@ -183,11 +182,13 @@ require('gitsigns').setup{
     end
 }
 
+require("diffview").setup({
+  use_icons = false,
+})
+
 local neogit = require('neogit')
 neogit.setup {integrations = {diffview = true}}
 vim.keymap.set('n', '<leader>ng', neogit.open)
-
-require("diffview")
 
 --------------------
 -- Oil & Undo

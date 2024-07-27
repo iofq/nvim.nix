@@ -2,7 +2,7 @@
 
 ## Usage
 ```bash
-nix run "github:iofq/nvim.nix" #full
+nix run "github:iofq/nvim.nix" #neovim
 ```
 
 Or, grab an AppImage from the Releases page.
