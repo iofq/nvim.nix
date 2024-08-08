@@ -1,6 +1,7 @@
 {pkgs, ...}:
 {
   base = with pkgs.vimPlugins; [
+    aerial-nvim
     cmp-buffer
     cmp-cmdline
     cmp-nvim-lsp

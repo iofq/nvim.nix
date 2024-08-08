@@ -202,6 +202,7 @@ vim.keymap.set('n', '<leader>ng', neogit.open)
 --------------------
 local oil = require('oil')
 oil.setup({
+    watch_for_changes = true,
     columns = {
         "permissions",
         "size"
@@ -214,9 +215,25 @@ oil.setup({
     }
 })
 vim.keymap.set("n", "<leader>c", oil.toggle_float, {noremap = true, silent = true});
-
 vim.keymap.set("n", "<leader>u", "<cmd>UndotreeToggle<cr>")
+vim.g.undotree_ShortIndicators = 1
+vim.g.undotree_SetFocusWhenToggle = 1
 
+--------------------
+-- Aerial
+--------------------
+require("aerial").setup({
+  default_direction = "prefer_left",
+  autojump = true,
+  on_attach = function(bufnr)
+    vim.keymap.set("n", "{", "<cmd>AerialPrev<CR>", { buffer = bufnr })
+    vim.keymap.set("n", "}", "<cmd>AerialNext<CR>", { buffer = bufnr })
+  end,
+})
+vim.keymap.set("n", "<leader>aa", "<cmd>AerialToggle!<CR>")
+
+
+---
 --------------------
 -- Refactoring
 --------------------
