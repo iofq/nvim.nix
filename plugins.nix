@@ -1,10 +1,20 @@
 {pkgs, ...}:
 {
   base = with pkgs.vimPlugins; [
+    cmp-buffer
+    cmp-cmdline
+    cmp-nvim-lsp
+    cmp-path
+    cmp-treesitter
+    cmp_luasnip
     diffview-nvim
+    friendly-snippets
     gitsigns-nvim
+    luasnip
     mini-nvim
+    neogen
     neogit
+    nvim-cmp
     nvim-lspconfig
     nvim-treesitter-textobjects
     (nvim-treesitter.withPlugins(p: with p; [

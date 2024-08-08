@@ -53,9 +53,10 @@ require('mini.pairs').setup(
   mappings = {
     ['['] = { action = 'open', pair = '[]', neigh_pattern = '[^\\].' },
     ['{'] = { action = 'open', pair = '{}', neigh_pattern = '[^\\].' },
-
     [']'] = { action = 'close', pair = '[]', neigh_pattern = '[^\\].' },
     ['}'] = { action = 'close', pair = '{}', neigh_pattern = '[^\\].' },
+    ['"'] = { },
+    ['\''] = { },
   },
 }
 )
@@ -75,15 +76,15 @@ indent.setup({
 indent.gen_animation.none()
 
 -- <C-Space>
-require('mini.completion').setup({
-    delay = {completion = 10^7},
-    window = {
-        info = { height = 25, width = 80, border = 'single' },
-        signature = { height = 25, width = 80, border = 'single' },
-    },
-    lsp_completion = {
-        source_func = 'completefunc',
-        auto_setup = true,
-    },
-    fallback_action = "<C-x><C-n>"
-})
+-- require('mini.completion').setup({
+--     delay = {completion = 10^7},
+--     window = {
+--         info = { height = 25, width = 80, border = 'single' },
+--         signature = { height = 25, width = 80, border = 'single' },
+--     },
+--     lsp_completion = {
+--         source_func = 'completefunc',
+--         auto_setup = true,
+--     },
+--     fallback_action = "<C-x><C-n>"
+-- })

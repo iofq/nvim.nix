@@ -22,6 +22,9 @@ vim.keymap.set("n", "<leader>fg", telescope.git_files, {noremap = true, silent =
 vim.keymap.set("n", "<leader>fc", telescope.command_history, {noremap = true, silent = true})
 vim.keymap.set("n", "<leader>fa", telescope.live_grep, {noremap = true, silent = true})
 vim.keymap.set("n", "<leader>f8", telescope.grep_string, {noremap = true, silent = true})
+vim.keymap.set("n", "<leader>fs", telescope.treesitter, {noremap = true, silent = true})
+vim.keymap.set("n", "<leader>fq", telescope.quickfix, {noremap = true, silent = true})
+vim.keymap.set("n", "<leader>fq", telescope.quickfix, {noremap = true, silent = true})
 vim.keymap.set("n", "<leader>f<BS>", telescope.resume, {noremap = true, silent = true})
 
 local telescope = require("telescope")
@@ -113,12 +116,14 @@ require("nvim-treesitter.configs").setup {
 
 -- Setup language servers.
 local lspconfig = require('lspconfig')
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 lspconfig.gopls.setup { on_attach = function(_, bufnr)
+    capabilities = capabilities
     vim.api.nvim_command("au BufWritePre <buffer> lua vim.lsp.buf.format { async = false }")
 end
 }
-lspconfig.pyright.setup {}
-lspconfig.nil_ls.setup {}
+lspconfig.pyright.setup { capabilities = capabilities }
+lspconfig.nil_ls.setup { capabilities = capabilities }
 
 -- Global mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
@@ -149,6 +154,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
         vim.keymap.set("n", "<leader>dr", "<cmd>Telescope lsp_references<cr>", { buffer = bufnr })
         vim.keymap.set("n", "<leader>dt", "<cmd>Telescope lsp_type_definitions<cr>", { buffer = bufnr })
         vim.keymap.set("n", "<leader>ds", "<cmd>Telescope lsp_document_symbols<cr>", { buffer = bufnr })
+        vim.keymap.set('n', '<leader>dl', vim.lsp.codelens.run)
+        vim.keymap.set('n', '<leader>dg', vim.diagnostic.setqflist)
         vim.keymap.set('n', '<space>df', function()
             vim.lsp.buf.format { async = true }
         end, opts)
@@ -239,6 +246,87 @@ require("rose-pine").setup({
 })
 vim.cmd.colorscheme "rose-pine-main"
 
+--------------------
+-- Neogen
+--------------------
+require("neogen").setup{}
+vim.keymap.set("n","<leader>nd", "<cmd>Neogen<CR>", {noremap = true, silent = true})
+
+--------------------
+---Completion
+--------------------
+local cmp = require'cmp'
+
+cmp.setup({
+  snippet = {
+    expand = function(args)
+      require('luasnip').lsp_expand(args.body)
+    end,
+  },
+  mapping = cmp.mapping.preset.insert({
+    ['<C-j>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-k>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['q'] = cmp.mapping.abort(),
+    ['<C-Space>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+  }),
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+    { name = 'luasnip' },
+  }, {
+    { name = 'buffer' },
+  })
+})
+
+cmp.setup.cmdline({ '/', '?' }, {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = {
+    { name = 'buffer' }
+  }
+})
+
+cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources({
+    { name = 'path' }
+  }, {
+    { name = 'cmdline' }
+  }),
+  matching = { disallow_symbol_nonprefix_matching = false }
+})
+
+--------------------
+-- Luasnip
+--------------------
+local ls = require("luasnip")
+ls.config.set_config {
+  history = true,
+  updateevents = "TextChanged, TextChangedI",
+}
+require("luasnip.loaders.from_vscode").lazy_load()
+
+vim.keymap.set({"i", "s"}, "<C-K>", function()
+  if ls.expand_or_jumpable() then
+    ls.expand_or_jump()
+    end
+end, {silent = true})
+
+vim.keymap.set({"i", "s"}, "<C-J>", function()
+  if ls.jumpable(-1) then
+    ls.jump(-1)
+    end
+end, {silent = true})
+
+vim.keymap.set({"i", "s"}, "<C-L>", function()
+	if ls.choice_active() then
+		ls.change_choice(1)
+	end
+end, {silent = true})
+
+--------------------
+-- Snippets
+--------------------
+require("snippets")
 --------------------
 -- include our config last to override
 --------------------

@@ -1,7 +1,6 @@
 -- vim settings ++ mini.nvim.basics
 ----------------------------------------
 vim.opt.backspace = "indent,eol,start"
-vim.opt.clipboard = "unnamedplus"           -- use system clipboard
 vim.opt.completeopt = "menuone"
 vim.opt.expandtab = true                    -- insert tabs as spaces
 vim.opt.inccommand = "split"                -- incremental live completion
@@ -27,20 +26,18 @@ vim.g.indent_blankline_use_treesitter = true
 
 -- no highlight floats
 vim.cmd([[ hi NormalFloat ctermbg=none ]])
-
 -- mappings
 ----------------------------------------
 
-local remap = function(type, key, value)
-    vim.api.nvim_set_keymap(type,key,value,{noremap = true, silent = true});
-end
-
-remap("i", "wq", "<esc>l")
-remap("v", "wq", "<esc>l")
-remap("n","gr", "gT")
-remap("n","n", "nzz")
-remap("n", "N", "Nzz")
-remap("n","<CR>", "m0i<cr><Esc>`0")
+vim.keymap.set("n","gr", "gT", {noremap = true, silent = true})
+vim.keymap.set("n","n", "nzz", {noremap = true, silent = true})
+vim.keymap.set("n", "N", "Nzz", {noremap = true, silent = true})
+vim.keymap.set("n","<CR>", "m0i<cr><Esc>`0", {noremap = true, silent = true})
+vim.keymap.set({'v', 'i'}, 'wq', '<esc>l', {noremap = true, silent = true})
+vim.keymap.set({'n', 'v', 'i'}, 'qwq', '<esc>l<cmd>wqa<CR>', {noremap = true, silent = true})
+vim.keymap.set({'n', 'v'}, '<leader>yy', '"+y', {noremap = true, silent = true})
+vim.keymap.set({'n', 'v'}, '<leader>yp', '"+p', {noremap = true, silent = true})
+vim.keymap.set({'n', 'v'}, '<leader>yd', '"+d', {noremap = true, silent = true})
 
 -- Switch tab length on the fly
 vim.keymap.set("n", "\\t", function()
