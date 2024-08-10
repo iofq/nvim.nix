@@ -14,3 +14,6 @@ This is a flake to build a Neovim package that includes my custom Lua config and
 ## Why the hell though?
 
 I use these AppImages because I develop in a number of airgapped environments that make traditional dotfile management a nightmare. Downloading a single AppImage and copying it around is a more suckless way of managing this.
+
+## kickstart-nix-nvim
+This repo is based off https://github.com/nix-community/kickstart-nix.nvim

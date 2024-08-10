@@ -1,65 +1,64 @@
 {
-  description = "...";
+  description = "Neovim derivation";
+
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+    gen-luarc.url = "github:mrcjkb/nix-gen-luarc-json";
+
+    # Add bleeding-edge plugins here.
+    # They can be updated with `nix flake update` (make sure to commit the generated flake.lock)
+    # wf-nvim = {
+    #   url = "github:Cassin01/wf.nvim";
+    #   flake = false;
+    # };
   };
-  outputs = {self, nixpkgs, flake-utils, ...}:
-    flake-utils.lib.eachDefaultSystem (system: let
-      recursiveMerge = attrList: let
-        f = attrPath:
-          builtins.zipAttrsWith (n: values:
-            if pkgs.lib.tail values == []
-              then pkgs.lib.head values
-            else if pkgs.lib.all pkgs.lib.isList values
-              then pkgs.lib.unique (pkgs.lib.concatLists values)
-            else if pkgs.lib.all pkgs.lib.isAttrs values
-              then f (attrPath ++ [n]) values
-            else pkgs.lib.last values);
-      in
-        f [] attrList;
+
+  outputs = inputs @ {
+    self,
+    nixpkgs,
+    flake-utils,
+    gen-luarc,
+    ...
+  }: let
+    supportedSystems = [
+      "x86_64-linux"
+      "aarch64-linux"
+      "x86_64-darwin"
+      "aarch64-darwin"
+    ];
+    neovim-overlay = import ./nix/neovim-overlay.nix {inherit inputs;};
+  in
+    flake-utils.lib.eachSystem supportedSystems (system: let
       pkgs = import nixpkgs {
         inherit system;
+        overlays = [
+          neovim-overlay
+          gen-luarc.overlays.default
+        ];
       };
-      plugins = import ./plugins.nix {
-        inherit pkgs;
+      shell = pkgs.mkShell {
+        name = "nvim-devShell";
+        buildInputs = with pkgs; [
+          lua-language-server
+          nil
+          stylua
+          luajitPackages.luacheck
+        ];
+        shellHook = ''
+          ln -fs ${pkgs.nvim-luarc-json} .luarc.json
+        '';
       };
-      dependencies = with pkgs; [
-        ripgrep
-        gopls
-        pyright
-        nil
-      ];
-      neovim-with-deps = recursiveMerge [
-        pkgs.neovim-unwrapped
-        { buildInputs = dependencies; }
-      ];
-      baseRC = ''
-          lua << EOF
-          package.path = "${self}/config/?.lua;" .. "${self}/config/lua/?.lua;" .. package.path
-          vim.o.runtimepath = "${self}/config," .. vim.o.runtimepath
-      '';
-    in rec {
-      packages.neovim = pkgs.wrapNeovim neovim-with-deps ({
-        viAlias = false;
-        vimAlias = true;
-        withRuby = false;
-        withPython3 = false;
-        extraMakeWrapperArgs = ''--prefix PATH : "${pkgs.lib.makeBinPath dependencies}"'';
-        configure = {
-          customRC =
-            baseRC
-            + pkgs.lib.readFile ./config/init.lua
-            + ''EOF'';
-          packages.plugins = {
-            start = plugins.base;
-          };
-        };
-      });
-      apps.neovim = flake-utils.lib.mkApp {
-        drv = packages.neovim; name = "neovim"; exePath = "/bin/nvim";
+    in {
+      packages = rec {
+        default = nvim;
+        nvim = pkgs.nvim-pkg;
       };
-      apps.default = apps.neovim;
-      packages.default = packages.neovim;
-    });
+      devShells = {
+        default = shell;
+      };
+    })
+    // {
+      overlays.default = neovim-overlay;
+    };
 }

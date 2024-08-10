@@ -1,3 +1,8 @@
+if vim.g.did_load_mini_plugin then
+  return
+end
+vim.g.did_load_mini_plugin = true
+
 -- din( dina
 require('mini.ai').setup()
 -- gc gcc
@@ -47,19 +52,7 @@ require('mini.splitjoin').setup({
     }
 })
 
-require('mini.pairs').setup(
-{
-  modes = {insert = true, command = false, terminal = false},
-  mappings = {
-    ['['] = { action = 'open', pair = '[]', neigh_pattern = '[^\\].' },
-    ['{'] = { action = 'open', pair = '{}', neigh_pattern = '[^\\].' },
-    [']'] = { action = 'close', pair = '[]', neigh_pattern = '[^\\].' },
-    ['}'] = { action = 'close', pair = '{}', neigh_pattern = '[^\\].' },
-    ['"'] = { },
-    ['\''] = { },
-  },
-}
-)
+require('mini.pairs').setup()
 vim.cmd([[ hi MiniCursorwordCurrent ctermfg=240 ]])
 
 -- f F t T
@@ -74,17 +67,3 @@ indent.setup({
     draw =  { delay = 0 }
 })
 indent.gen_animation.none()
-
--- <C-Space>
--- require('mini.completion').setup({
---     delay = {completion = 10^7},
---     window = {
---         info = { height = 25, width = 80, border = 'single' },
---         signature = { height = 25, width = 80, border = 'single' },
---     },
---     lsp_completion = {
---         source_func = 'completefunc',
---         auto_setup = true,
---     },
---     fallback_action = "<C-x><C-n>"
--- })

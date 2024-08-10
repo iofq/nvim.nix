@@ -1,3 +1,4 @@
-*.AppImage
-squashfs-root
 result
+*.AppImage
+.direnv
+.luarc.json
