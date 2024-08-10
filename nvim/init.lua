@@ -73,12 +73,3 @@ vim.diagnostic.config {
     prefix = '',
   },
 }
-
-vim.keymap.set('n', '<space>ee', function()
-  local _, winid = vim.diagnostic.open_float(nil, { scope = 'line' })
-  if not winid then
-    vim.notify('no diagnostics found', vim.log.levels.INFO)
-    return
-  end
-  vim.api.nvim_win_set_config(winid or 0, { focusable = true })
-end, { noremap = true, silent = true, desc = 'diagnostics floating window' })

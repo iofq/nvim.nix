@@ -23,6 +23,7 @@ with final.pkgs.lib; let
     cmp-treesitter
     cmp_luasnip
     diffview-nvim
+    eyeliner-nvim
     friendly-snippets
     gitsigns-nvim
     lualine-nvim
@@ -68,6 +69,7 @@ with final.pkgs.lib; let
     telescope-fzf-native-nvim
     telescope-nvim
     toggleterm-nvim
+    trouble-nvim
     undotree
     which-key-nvim
   ];

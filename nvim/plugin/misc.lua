@@ -18,3 +18,5 @@ require('toggleterm').setup {
 require('which-key').setup {
   preset = 'helix',
 }
+require('trouble').setup {}
+require('eyeliner').setup {}

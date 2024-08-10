@@ -16,9 +16,9 @@ lspconfig.gopls.setup {
 lspconfig.pyright.setup { capabilities = capabilities }
 lspconfig.nil_ls.setup { capabilities = capabilities }
 
-vim.keymap.set('n', '<leader>de', vim.diagnostic.open_float, { desc = 'Toggle diagnostic' })
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Prev diagnostic' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Next diagnostic' })
+vim.keymap.set('n', '<leader>de', vim.diagnostic.open_float, { desc = 'Toggle diagnostic' })
 
 vim.diagnostic.config {
   virtual_text = true,
