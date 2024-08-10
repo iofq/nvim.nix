@@ -81,6 +81,7 @@ with final.pkgs.lib; let
 in {
   nvim-pkg = mkNeovim {
     plugins = all-plugins;
+    appName = "nvim";
     inherit extraPackages;
   };
 
