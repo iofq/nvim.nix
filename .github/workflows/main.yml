@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         include:
-        - package_name: neovim
+        - package_name: nvim
     steps:
       - uses: actions/checkout@v3
       - uses: DeterminateSystems/nix-installer-action@main
