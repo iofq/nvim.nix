@@ -12,4 +12,4 @@ neogit.setup {
     fzf_lua = true,
   },
 }
-vim.keymap.set('n', '<leader>ng', neogit.open, { noremap = true, silent = true, desc = "Neogit"})
+vim.keymap.set('n', '<leader>ng', neogit.open, { noremap = true, silent = true, desc = 'Neogit' })

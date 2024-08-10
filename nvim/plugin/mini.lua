@@ -21,11 +21,9 @@ require('mini.surround').setup()
 
 -- :Trim
 require('mini.trailspace').setup()
-vim.api.nvim_create_user_command('Trim',
-    function()
-        require("mini.trailspace").trim()
-    end, {}
-)
+vim.api.nvim_create_user_command('Trim', function()
+  require('mini.trailspace').trim()
+end, {})
 
 -- prefix \
 -- `b` - |'background'|.
@@ -39,31 +37,31 @@ vim.api.nvim_create_user_command('Trim',
 -- `r` - |'relativenumber'|.
 -- `s` - |'spell'|.
 -- `w` - |'wrap'|.
-require('mini.basics').setup({
-    mappings = {
-        windows = true
-    }
-})
+require('mini.basics').setup {
+  mappings = {
+    windows = true,
+  },
+}
 
 -- gS
-require('mini.splitjoin').setup({
-    detect =  {
-        separator = '[,;\n]'
-    }
-})
+require('mini.splitjoin').setup {
+  detect = {
+    separator = '[,;\n]',
+  },
+}
 
 require('mini.pairs').setup()
 vim.cmd([[ hi MiniCursorwordCurrent ctermfg=240 ]])
 
 -- f F t T
 require('mini.jump').setup()
-require('mini.jump2d').setup({
-    mappings = { start_jumping = '<leader>s' }
-})
+require('mini.jump2d').setup {
+  mappings = { start_jumping = '<leader>s' },
+}
 
 indent = require('mini.indentscope')
-indent.setup({
-    options = { try_as_border = false },
-    draw =  { delay = 0 }
-})
+indent.setup {
+  options = { try_as_border = false },
+  draw = { delay = 0 },
+}
 indent.gen_animation.none()
