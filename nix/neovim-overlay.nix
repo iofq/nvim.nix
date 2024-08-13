@@ -3,13 +3,6 @@
 with final.pkgs.lib; let
   pkgs = final;
 
-  # Use this to create a plugin from a flake input
-  # mkNvimPlugin = src: pname:
-  #   pkgs.vimUtils.buildVimPlugin {
-  #     inherit pname src;
-  #     version = src.lastModifiedDate;
-  #   };
-
   pkgs-wrapNeovim = inputs.nixpkgs.legacyPackages.${pkgs.system};
 
   mkNeovim = pkgs.callPackage ./mkNeovim.nix { inherit pkgs-wrapNeovim; };
@@ -23,17 +16,21 @@ with final.pkgs.lib; let
     cmp-treesitter
     cmp_luasnip
     diffview-nvim
+    dressing-nvim
+    everforest
     eyeliner-nvim
     friendly-snippets
     gitsigns-nvim
     lualine-nvim
     luasnip
+    markview-nvim
     mini-nvim
     neogen
     neogit
     nightfox-nvim
     nvim-cmp
     nvim-lspconfig
+    nvim-neoclip-lua
     nvim-treesitter-context
     nvim-treesitter-textobjects
     (nvim-treesitter.withPlugins(p: with p; [
@@ -66,6 +63,7 @@ with final.pkgs.lib; let
     nvim-web-devicons
     oil-nvim
     rose-pine
+    scope-nvim
     telescope-fzf-native-nvim
     telescope-nvim
     toggleterm-nvim

@@ -16,7 +16,7 @@ end
 
 vim.keymap.set(
   'n',
-  '<leader><leader>',
+  '<leader>fb',
   telescope.buffers,
   { noremap = true, silent = true, desc = 'Fuzzy find buffers' }
 )
@@ -34,12 +34,6 @@ vim.keymap.set(
   '<leader>f8',
   telescope.grep_string,
   { noremap = true, silent = true, desc = 'Fuzzy find grep current word' }
-)
-vim.keymap.set(
-  'n',
-  '<leader>fs',
-  telescope.treesitter,
-  { noremap = true, silent = true, desc = 'Fuzzy find treesitter objects' }
 )
 vim.keymap.set('n', '<leader>fq', telescope.quickfix, { noremap = true, silent = true, desc = 'Fuzzy find quickfix' })
 vim.keymap.set('n', '<leader>f<BS>', telescope.resume, { noremap = true, silent = true, desc = 'Fuzzy find resume' })

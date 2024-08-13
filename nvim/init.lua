@@ -1,6 +1,7 @@
 -- vim settings ++ mini.nvim.basics
 ----------------------------------------
 vim.opt.backspace = 'indent,eol,start'
+vim.opt.clipboard = 'unnamedplus'
 vim.opt.completeopt = 'menuone'
 vim.opt.expandtab = true -- insert tabs as spaces
 vim.opt.inccommand = 'split' -- incremental live completion
@@ -18,7 +19,6 @@ vim.opt.swapfile = false
 vim.opt.tabstop = 2 -- 2 space tabs are based
 vim.opt.updatetime = 250 -- decrease update time
 vim.opt.virtualedit = 'onemore'
-
 vim.g.fzf_layout = { window = { width = 0.9, height = 0.6 } }
 
 -- no highlight floats

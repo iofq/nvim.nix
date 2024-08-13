@@ -54,7 +54,7 @@ require('mini.pairs').setup()
 vim.cmd([[ hi MiniCursorwordCurrent ctermfg=240 ]])
 
 require('mini.jump2d').setup {
-  mappings = { start_jumping = '<leader>s' },
+  mappings = { start_jumping = '<leader>S' },
 }
 
 indent = require('mini.indentscope')
@@ -63,3 +63,5 @@ indent.setup {
   draw = { delay = 0 },
 }
 indent.gen_animation.none()
+
+require('mini.icons').setup()
