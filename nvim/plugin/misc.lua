@@ -23,6 +23,11 @@ require('trouble').setup {}
 require('eyeliner').setup {}
 require('dressing').setup {}
 require('markview').setup()
-require('scope').setup({})
-require('neoclip').setup({default_register='+'})
-vim.keymap.set('n', '<leader>fp', '<cmd>Telescope neoclip<CR>', { noremap = true, silent = true, desc = 'Pick clipboard history' })
+require('scope').setup {}
+require('neoclip').setup { default_register = '+' }
+vim.keymap.set(
+  'n',
+  '<leader>fp',
+  '<cmd>Telescope neoclip<CR>',
+  { noremap = true, silent = true, desc = 'Pick clipboard history' }
+)

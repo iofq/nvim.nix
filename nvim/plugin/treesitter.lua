@@ -61,5 +61,5 @@ require('nvim-treesitter.configs').setup {
 
 require('treesitter-context').setup {
   max_lines = 2,
-  min_window_height = 50
+  min_window_height = 50,
 }

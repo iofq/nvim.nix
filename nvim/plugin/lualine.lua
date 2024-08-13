@@ -8,11 +8,11 @@ vim.schedule(function()
     globalstatus = true,
     extensions = { 'oil', 'trouble', 'aerial', 'fzf', 'toggleterm', 'quickfix' },
     sections = {
-      lualine_x = {'filetype'}
+      lualine_x = { 'filetype' },
     },
     tabline = {
-      lualine_a = {'buffers'},
-      lualine_z = {'tabs'},
-    }
+      lualine_a = { 'buffers' },
+      lualine_z = { 'tabs' },
+    },
   }
 end)
