@@ -99,28 +99,11 @@
         "type": "github"
       }
     },
-    "render-markdown-nvim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1723453943,
-        "narHash": "sha256-fpmR6cqjnRcyJO2rP/8WXbu+mSSH+yblI5yyt/5yL6w=",
-        "owner": "MeanderingProgrammer",
-        "repo": "render-markdown.nvim",
-        "rev": "72688baea4ef0ed605033bf654b54d801b6a5f01",
-        "type": "github"
-      },
-      "original": {
-        "owner": "MeanderingProgrammer",
-        "repo": "render-markdown.nvim",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "flake-utils": "flake-utils",
         "gen-luarc": "gen-luarc",
-        "nixpkgs": "nixpkgs_2",
-        "render-markdown-nvim": "render-markdown-nvim"
+        "nixpkgs": "nixpkgs_2"
       }
     },
     "systems": {
