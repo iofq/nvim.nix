@@ -14,7 +14,6 @@ local project_files = function()
   end
 end
 
-vim.keymap.set('n', '<leader>fb', telescope.buffers, { noremap = true, silent = true, desc = 'Fuzzy find buffers' })
 vim.keymap.set('n', '<leader>ff', project_files, { noremap = true, silent = true, desc = 'Fuzzy find git files' })
 vim.keymap.set('n', '<leader>fg', telescope.find_files, { noremap = true, silent = true, desc = 'Fuzzy find files' })
 vim.keymap.set(

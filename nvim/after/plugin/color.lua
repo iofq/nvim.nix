@@ -23,3 +23,5 @@ vim.keymap.set(
   ts.extensions.aerial.aerial,
   { noremap = true, silent = true, desc = 'Fuzzy find treesitter objects' }
 )
+require("telescope").load_extension("scope")
+vim.keymap.set('n', '<leader><leader>', '<cmd>Telescope scope buffers<cr>', { noremap = true, silent = true, desc = 'Pick buffers (scope.nvim)' })
