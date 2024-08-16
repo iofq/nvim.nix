@@ -83,16 +83,21 @@ with final.pkgs.lib; let
     yamllint
     puppet-lint
     gopls
-    pyright
+    python312Packages.jedi-language-server
     nil
     phpactor
-    golangci-lint
   ];
 in {
   nvim-pkg = mkNeovim {
     plugins = all-plugins;
     appName = "nvim";
     inherit extraPackages;
+  };
+
+  nvim-min-pkg = mkNeovim {
+    plugins = all-plugins;
+    appName = "nvim";
+    extraPackages = [];
   };
 
   nvim-luarc-json = final.mk-luarc-json {

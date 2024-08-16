@@ -1,7 +1,7 @@
 vim.cmd('colorscheme terafox')
-vim.api.nvim_set_hl(0, 'GitSignsAdd', { fg = "green", bold = true })
-vim.api.nvim_set_hl(0, 'GitSignsDelete', { fg = "red", bold = true})
-vim.api.nvim_set_hl(0, 'GitSignsChange', { fg = "green", bold = true})
+vim.api.nvim_set_hl(0, 'GitSignsAdd', { fg = 'green', bold = true })
+vim.api.nvim_set_hl(0, 'GitSignsDelete', { fg = 'red', bold = true })
+vim.api.nvim_set_hl(0, 'GitSignsChange', { fg = 'green', bold = true })
 vim.api.nvim_set_hl(0, 'EyelinerPrimary', { underline = true })
 vim.api.nvim_set_hl(0, 'EyelinerSecondary', { underline = true })
 
@@ -22,7 +22,7 @@ vim.keymap.set(
   ts.extensions.aerial.aerial,
   { noremap = true, silent = true, desc = 'Fuzzy find treesitter objects' }
 )
-ts.load_extension("scope")
+ts.load_extension('scope')
 vim.keymap.set(
   'n',
   '<leader>fb',

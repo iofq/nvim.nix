@@ -35,7 +35,7 @@ lspconfig.gopls.setup {
     vim.api.nvim_command('au BufWritePre <buffer> lua vim.lsp.buf.format { async = false }')
   end,
 }
-lspconfig.pyright.setup { capabilities = capabilities }
+lspconfig.jedi_language_server.setup { capabilities = capabilities }
 lspconfig.nil_ls.setup { capabilities = capabilities }
 lspconfig.phpactor.setup { capabilities = capabilities }
 
@@ -105,14 +105,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
       vim.lsp.codelens.run,
       { buffer = ev.buf, noremap = true, silent = true, desc = 'LSP codelens' }
     )
-    vim.keymap.set(
-      'n',
-      '<leader>dh',
-      function()
-        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-      end,
-      { buffer = ev.buf, noremap = true, silent = true, desc = 'LSP hints toggle' }
-    )
+    vim.keymap.set('n', '<leader>dh', function()
+      vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+    end, { buffer = ev.buf, noremap = true, silent = true, desc = 'LSP hints toggle' })
     vim.keymap.set('n', '<space>df', function()
       vim.lsp.buf.format { async = true }
     end, { buffer = ev.buf, noremap = true, silent = true, desc = 'LSP format' })
@@ -135,10 +130,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 
 local none = require('null-ls')
-none.setup({
-    sources = {
-        none.builtins.diagnostics.golangci_lint,
-        none.builtins.diagnostics.puppet_lint,
-        none.builtins.diagnostics.yamllint,
-    },
-})
+none.setup {
+  sources = {
+    none.builtins.diagnostics.puppet_lint,
+    none.builtins.diagnostics.yamllint,
+  },
+}
