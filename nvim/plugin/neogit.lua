@@ -2,7 +2,12 @@ if vim.g.did_load_neogit_plugin then
   return
 end
 vim.g.did_load_neogit_plugin = true
-
+require("diffview").setup({
+  enhanced_diff_hl = true,
+  default_args = {
+    DiffviewOpen = {"--imply-local"},
+  },
+})
 local neogit = require('neogit')
 neogit.setup {
   disable_builtin_notifications = true,

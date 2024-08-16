@@ -21,7 +21,6 @@ require('which-key').setup {
 }
 require('trouble').setup {}
 require('eyeliner').setup {}
-require('dressing').setup {}
 require('markview').setup()
 require('scope').setup {}
 require('neoclip').setup { default_register = '+' }
@@ -31,3 +30,11 @@ vim.keymap.set(
   '<cmd>Telescope neoclip<CR>',
   { noremap = true, silent = true, desc = 'Pick clipboard history' }
 )
+local snipe = require("snipe")
+snipe.setup({
+  ui = {
+    position = "center",
+  },
+  sort = "last",
+})
+vim.keymap.set('n', '<leader><leader>', snipe.open_buffer_menu, { noremap = true, silent = true, desc = 'Pick buffers (snipe.nvim)' })

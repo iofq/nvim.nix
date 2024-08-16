@@ -5,6 +5,13 @@ with final.pkgs.lib; let
 
   pkgs-wrapNeovim = inputs.nixpkgs.legacyPackages.${pkgs.system};
 
+  mkNvimPlugin = src: pname:
+    pkgs.vimUtils.buildVimPlugin {
+      inherit pname src;
+      version = src.lastModifiedDate;
+    };
+  snipe-nvim = mkNvimPlugin inputs.snipe-nvim "snipe-nvim";
+
   mkNeovim = pkgs.callPackage ./mkNeovim.nix { inherit pkgs-wrapNeovim; };
 
   all-plugins = with pkgs.vimPlugins; [
@@ -16,8 +23,6 @@ with final.pkgs.lib; let
     cmp-treesitter
     cmp_luasnip
     diffview-nvim
-    dressing-nvim
-    everforest
     eyeliner-nvim
     friendly-snippets
     gitsigns-nvim
@@ -27,6 +32,7 @@ with final.pkgs.lib; let
     mini-nvim
     neogen
     neogit
+    none-ls-nvim
     nightfox-nvim
     nvim-cmp
     nvim-lspconfig
@@ -62,8 +68,8 @@ with final.pkgs.lib; let
     ]))
     nvim-web-devicons
     oil-nvim
-    rose-pine
     scope-nvim
+    snipe-nvim
     telescope-fzf-native-nvim
     telescope-nvim
     toggleterm-nvim
@@ -74,9 +80,13 @@ with final.pkgs.lib; let
 
   extraPackages = with pkgs; [
     ripgrep
+    yamllint
+    puppet-lint
     gopls
     pyright
     nil
+    phpactor
+    golangci-lint
   ];
 in {
   nvim-pkg = mkNeovim {

@@ -8,6 +8,28 @@ local lspconfig = require('lspconfig')
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 lspconfig.gopls.setup {
+  settings = {
+    gopls = {
+      gofumpt = true,
+      codelenses = {
+        gc_details = true,
+        test = true,
+      },
+      analyses = {
+        unusedvariable = true,
+        shadow = true,
+      },
+      hints = {
+        assignVariableTypes = true,
+        constantValues = true,
+        functionTypeParameters = true,
+        rangeVariableTypes = true,
+      },
+      usePlaceholders = true,
+      staticcheck = true,
+    },
+  },
+  capabilities = capabilities,
   on_attach = function(_, bufnr)
     capabilities = capabilities
     vim.api.nvim_command('au BufWritePre <buffer> lua vim.lsp.buf.format { async = false }')
@@ -15,6 +37,7 @@ lspconfig.gopls.setup {
 }
 lspconfig.pyright.setup { capabilities = capabilities }
 lspconfig.nil_ls.setup { capabilities = capabilities }
+lspconfig.phpactor.setup { capabilities = capabilities }
 
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Prev diagnostic' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Next diagnostic' })
@@ -82,6 +105,14 @@ vim.api.nvim_create_autocmd('LspAttach', {
       vim.lsp.codelens.run,
       { buffer = ev.buf, noremap = true, silent = true, desc = 'LSP codelens' }
     )
+    vim.keymap.set(
+      'n',
+      '<leader>dh',
+      function()
+        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+      end,
+      { buffer = ev.buf, noremap = true, silent = true, desc = 'LSP hints toggle' }
+    )
     vim.keymap.set('n', '<space>df', function()
       vim.lsp.buf.format { async = true }
     end, { buffer = ev.buf, noremap = true, silent = true, desc = 'LSP format' })
@@ -101,4 +132,13 @@ vim.api.nvim_create_autocmd('LspAttach', {
       vim.lsp.codelens.refresh { bufnr = bufnr }
     end
   end,
+})
+
+local none = require('null-ls')
+none.setup({
+    sources = {
+        none.builtins.diagnostics.golangci_lint,
+        none.builtins.diagnostics.puppet_lint,
+        none.builtins.diagnostics.yamllint,
+    },
 })
