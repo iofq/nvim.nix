@@ -11,6 +11,8 @@ with final.pkgs.lib; let
       version = src.lastModifiedDate;
     };
   snipe-nvim = mkNvimPlugin inputs.snipe-nvim "snipe-nvim";
+  nvim-early-retirement = mkNvimPlugin inputs.nvim-early-retirement "nvim-early-retirement";
+  workspace-diagnostics-nvim = mkNvimPlugin inputs.workspace-diagnostics-nvim "workspace-diagnostics-nvim";
 
   mkNeovim = pkgs.callPackage ./mkNeovim.nix { inherit pkgs-wrapNeovim; };
 
@@ -26,7 +28,7 @@ with final.pkgs.lib; let
     eyeliner-nvim
     friendly-snippets
     gitsigns-nvim
-    lualine-nvim
+    lazy-nvim
     luasnip
     markview-nvim
     mini-nvim
@@ -35,8 +37,13 @@ with final.pkgs.lib; let
     none-ls-nvim
     nightfox-nvim
     nvim-cmp
+    nvim-dap
+    nvim-dap-go
+    nvim-dap-ui
+    nvim-early-retirement
     nvim-lspconfig
     nvim-neoclip-lua
+    nvim-nio
     nvim-treesitter-context
     nvim-treesitter-textobjects
     (nvim-treesitter.withPlugins(p: with p; [
@@ -68,6 +75,7 @@ with final.pkgs.lib; let
     ]))
     nvim-web-devicons
     oil-nvim
+    outline-nvim
     scope-nvim
     snipe-nvim
     telescope-fzf-native-nvim
@@ -75,29 +83,38 @@ with final.pkgs.lib; let
     toggleterm-nvim
     trouble-nvim
     undotree
-    which-key-nvim
+    workspace-diagnostics-nvim
   ];
 
-  extraPackages = with pkgs; [
+  basePackages = with pkgs; [
     ripgrep
-    yamllint
+  ];
+  extraPackages = with pkgs; [
+    # linters
     puppet-lint
+    yamllint
+
+    # LSPs
     gopls
-    python312Packages.jedi-language-server
+    lua-language-server
     nil
     phpactor
+    python312Packages.jedi-language-server
+
+    # debuggers
+    delve
   ];
 in {
   nvim-pkg = mkNeovim {
     plugins = all-plugins;
     appName = "nvim";
-    inherit extraPackages;
+    extraPackages = basePackages ++ extraPackages;
   };
 
   nvim-min-pkg = mkNeovim {
     plugins = all-plugins;
     appName = "nvim";
-    extraPackages = [];
+    extraPackages = basePackages;
   };
 
   nvim-luarc-json = final.mk-luarc-json {

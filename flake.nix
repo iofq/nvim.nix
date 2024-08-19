@@ -9,6 +9,14 @@
       url = "github:leath-dub/snipe.nvim";
       flake = false;
     };
+    nvim-early-retirement = {
+      url = "github:chrisgrieser/nvim-early-retirement";
+      flake = false;
+    };
+    workspace-diagnostics-nvim = {
+      url = "github:artemave/workspace-diagnostics.nvim";
+      flake = false;
+    };
   };
 
   outputs = inputs @ {

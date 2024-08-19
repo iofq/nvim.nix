@@ -99,12 +99,30 @@
         "type": "github"
       }
     },
+    "nvim-early-retirement": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1723897376,
+        "narHash": "sha256-+W3AG99nzgr36t9Sg192hb/MH8s0uGAPD0cLBnil+og=",
+        "owner": "chrisgrieser",
+        "repo": "nvim-early-retirement",
+        "rev": "2c36a5671b9d8f0d9e11b77c5a55de802bc45e34",
+        "type": "github"
+      },
+      "original": {
+        "owner": "chrisgrieser",
+        "repo": "nvim-early-retirement",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "flake-utils": "flake-utils",
         "gen-luarc": "gen-luarc",
         "nixpkgs": "nixpkgs_2",
-        "snipe-nvim": "snipe-nvim"
+        "nvim-early-retirement": "nvim-early-retirement",
+        "snipe-nvim": "snipe-nvim",
+        "workspace-diagnostics-nvim": "workspace-diagnostics-nvim"
       }
     },
     "snipe-nvim": {
@@ -135,6 +153,22 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "workspace-diagnostics-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1723294887,
+        "narHash": "sha256-lBj4KUPmmhtpffYky/HpaTwY++d/Q9socp/Ys+4VeX0=",
+        "owner": "artemave",
+        "repo": "workspace-diagnostics.nvim",
+        "rev": "573ff93c47898967efdfbc6587a1a39e3c2d365e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "artemave",
+        "repo": "workspace-diagnostics.nvim",
         "type": "github"
       }
     }
