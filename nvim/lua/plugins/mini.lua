@@ -1,7 +1,7 @@
 return {
   {
     'echasnovski/mini.nvim',
-    lazy = false,
+    event = "VeryLazy",
     config = function()
       require('mini.ai').setup()
       require('mini.comment').setup()
