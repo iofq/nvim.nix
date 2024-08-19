@@ -128,10 +128,6 @@ return {
       require('mini.splitjoin').setup {
         detect = { separator = '[,;\n]' },
       }
-
-      -- Replace text with register 'gr',
-      -- Sort text 'gs',
-      require('mini.operators').setup()
       require('mini.jump2d').setup { mappings = { start_jumping = '<leader>S' } }
 
       local indent = require('mini.indentscope')

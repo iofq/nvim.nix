@@ -1,9 +1,8 @@
 return {
   {
     'danymat/neogen',
-    keys = {
-      { '<leader>nd', '<cmd>Neogen<CR>', { noremap = true, silent = true, desc = 'Neogen - gen comments' } },
-    },
+    event = 'VeryLazy',
+    config = true,
   },
   {
     'akinsho/toggleterm.nvim',
@@ -23,8 +22,15 @@ return {
       vim.api.nvim_set_hl(0, 'EyelinerSecondary', { underline = true })
     end,
   },
-  { 'OXY2DEV/markview.nvim', event = 'VeryLazy' },
-  { 'tiagovla/scope.nvim', event = 'VeryLazy' },
+  {
+    'OXY2DEV/markview.nvim',
+    lazy = false,
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons"
+    }
+  },
+  { 'tiagovla/scope.nvim', event = 'VeryLazy', config = true },
   {
     'chrisgrieser/nvim-early-retirement',
     event = 'VeryLazy',

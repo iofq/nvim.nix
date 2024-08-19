@@ -77,7 +77,7 @@ return {
       )
       vim.keymap.set('n', '<leader>fq', b.quickfix, { noremap = true, silent = true, desc = 'Fuzzy find quickfix' })
       vim.keymap.set('n', '<leader>f?', b.builtin, { noremap = true, silent = true, desc = 'See all pickers' })
-      vim.keymap.set('n', '<leader>f<BS>', b.resume, { noremap = true, silent = true, desc = 'Fuzzy find resume' })
+      vim.keymap.set('n', '<leader>f.', b.resume, { noremap = true, silent = true, desc = 'Fuzzy find resume' })
       vim.keymap.set(
         'n',
         '<leader>fs',
