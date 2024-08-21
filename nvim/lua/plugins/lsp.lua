@@ -28,7 +28,7 @@ return {
   },
   {
     'neovim/nvim-lspconfig',
-    event = 'VeryLazy',
+    lazy = false,
     dependencies = {
       'hrsh7th/cmp-nvim-lsp',
     },
@@ -39,7 +39,7 @@ return {
         lspconfig.util.default_config.capabilities,
         require('cmp_nvim_lsp').default_capabilities()
       )
-
+      vim.lsp.inlay_hint.enable(true)
       lspconfig.gopls.setup {
         settings = {
           gopls = {
@@ -91,15 +91,12 @@ return {
           Lua = {},
         },
       }
-      vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Prev diagnostic' })
-      vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Next diagnostic' })
 
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('UserLspConfig', {}),
         callback = function(ev)
           local bufnr = ev.buf
           local client = vim.lsp.get_client_by_id(ev.data.client_id)
-          require('workspace-diagnostics').populate_workspace_diagnostics(client, bufnr)
           vim.keymap.set(
             'n',
             'K',
@@ -175,6 +172,7 @@ return {
             })
             vim.lsp.codelens.refresh { bufnr = bufnr }
           end
+          require('workspace-diagnostics').populate_workspace_diagnostics(client, bufnr)
         end,
       })
       vim.api.nvim_exec_autocmds('FileType', {})

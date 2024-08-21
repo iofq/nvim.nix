@@ -43,6 +43,7 @@ with final.pkgs.lib; let
     nvim-lspconfig
     nvim-neoclip-lua
     nvim-nio
+    nvim-autopairs
     nvim-treesitter-context
     nvim-treesitter-textobjects
     (nvim-treesitter.withPlugins(p: with p; [
@@ -72,8 +73,6 @@ with final.pkgs.lib; let
       tree-sitter-typescript
       tree-sitter-yaml
     ]))
-    nvim-web-devicons
-    oil-nvim
     outline-nvim
     scope-nvim
     snipe-nvim

@@ -1,5 +1,10 @@
 return {
   {
+    'windwp/nvim-autopairs',
+    event = "InsertEnter",
+    config = true
+  },
+  {
     'danymat/neogen',
     event = 'VeryLazy',
     config = true,
@@ -27,7 +32,6 @@ return {
     event = 'VeryLazy',
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
-      "nvim-tree/nvim-web-devicons"
     }
   },
   { 'tiagovla/scope.nvim', event = 'VeryLazy', config = true },
@@ -59,9 +63,6 @@ return {
     'leath-dub/snipe.nvim',
     event = 'VeryLazy',
     opts = {
-      ui = {
-        position = 'center',
-      },
       sort = 'last',
     },
     config = function(_, opts)
@@ -109,31 +110,6 @@ return {
     },
   },
   {
-    'stevearc/oil.nvim',
-    opts = {
-      watch_for_changes = true,
-      columns = {
-        'permissions',
-        'size',
-      },
-      view_options = {
-        show_hidden = true,
-      },
-      keymaps = {
-        ['wq'] = 'actions.close',
-      },
-    },
-    keys = {
-      {
-        '<leader>nc',
-        function()
-          require('oil').toggle_float()
-        end,
-        { noremap = true, silent = true },
-      },
-    },
-  },
-  {
     'mbbill/undotree',
     event = 'VeryLazy',
     keys = {
@@ -157,16 +133,18 @@ return {
     config = function(_, opts)
       require('nightfox').setup(opts)
       vim.cmd('colorscheme terafox')
-      vim.api.nvim_set_hl(0, 'MiniNotifyNormal', { bg = 'none' })
-      vim.api.nvim_set_hl(0, 'MiniNotifyTitle', { bg = 'none' })
-      vim.api.nvim_set_hl(0, 'MiniNotifyBorder', { bg = 'none' })
-      vim.api.nvim_set_hl(0, 'MiniMapNormal', { bg = 'none' })
-      vim.api.nvim_set_hl(0, 'MiniClueNormal', { bg = 'none' })
-      vim.api.nvim_set_hl(0, 'StatusLine', { bg = 'none' })
-      vim.api.nvim_set_hl(0, 'StatusLineNC', { bg = 'none' })
-      vim.api.nvim_set_hl(0, 'GitSignsAdd', { fg = 'green', bold = true })
-      vim.api.nvim_set_hl(0, 'GitSignsDelete', { fg = 'red', bold = true })
-      vim.api.nvim_set_hl(0, 'GitSignsChange', { fg = 'green', bold = true })
+      vim.schedule(function()
+        vim.api.nvim_set_hl(0, 'MiniNotifyNormal', { bg = 'none' })
+        vim.api.nvim_set_hl(0, 'MiniNotifyTitle', { bg = 'none' })
+        vim.api.nvim_set_hl(0, 'MiniNotifyBorder', { bg = 'none' })
+        vim.api.nvim_set_hl(0, 'MiniMapNormal', { bg = 'none' })
+        vim.api.nvim_set_hl(0, 'MiniClueNormal', { bg = 'none' })
+        vim.api.nvim_set_hl(0, 'StatusLine', { bg = 'none' })
+        vim.api.nvim_set_hl(0, 'StatusLineNC', { bg = 'none' })
+        vim.api.nvim_set_hl(0, 'GitSignsAdd', { fg = 'green', bold = true })
+        vim.api.nvim_set_hl(0, 'GitSignsDelete', { fg = 'red', bold = true })
+        vim.api.nvim_set_hl(0, 'GitSignsChange', { fg = 'green', bold = true })
+      end)
     end,
   },
   {

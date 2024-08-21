@@ -1,6 +1,6 @@
 vim.g.mapleader = ' '
 -- If lazy_opts is set, we're running in wrapped neovim via nix
-if not lazy_opts then
+if not LAZY_OPTS then
   -- Bootstrapping lazy.nvim
   local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
   if not vim.loop.fs_stat(lazypath) then
@@ -14,14 +14,19 @@ if not lazy_opts then
     }
   end
   vim.opt.rtp:prepend(lazypath)
-  lazy_opts = {
+  LAZY_OPTS = {
     spec = { { import = 'plugins' } },
-    disabled_plugins = {
-      'netrwPlugin',
-      'tutor',
-      'zipPlugin',
+    performance = {
+      reset_packpath = false,
+      rtp = {
+        reset = false,
+        disabled_plugins = {
+          "netrwPlugin",
+          "tutor",
+        },
+      },
     },
   }
 end
-require('lazy').setup(lazy_opts)
+require('lazy').setup(LAZY_OPTS)
 require('config')

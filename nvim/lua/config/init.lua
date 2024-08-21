@@ -10,7 +10,7 @@ vim.opt.relativenumber = true
 vim.opt.shadafile = 'NONE' -- disable shada
 vim.opt.shiftwidth = 0 -- >> shifts by tabstop
 vim.opt.showmatch = true -- highlight matching brackets
-vim.opt.showmode = true
+vim.opt.showmode = false
 vim.opt.signcolumn = 'no'
 vim.opt.spell = false
 vim.opt.softtabstop = -1 -- backspace removes tabstop
@@ -84,7 +84,10 @@ vim.diagnostic.config {
 
 -- random keymaps
 vim.keymap.set('n', 'gq', vim.cmd.bdelete, { silent = true })
-vim.keymap.set('n', 'gr', 'gT', { noremap = true, silent = true })
+vim.keymap.set('n', 'gt', vim.cmd.bnext, { silent = true })
+vim.keymap.set('n', 'gr', vim.cmd.bprev, { silent = true })
+vim.keymap.set('n', 'tr', 'gT', { noremap = true, silent = true })
+vim.keymap.set('n', 'tt', 'gt', { noremap = true, silent = true })
 vim.keymap.set('n', 'n', 'nzz', { noremap = true, silent = true })
 vim.keymap.set('n', 'N', 'Nzz', { noremap = true, silent = true })
 vim.keymap.set({ 'v', 'i' }, 'wq', '<esc>l', { noremap = true, silent = true })

@@ -3,9 +3,10 @@ return {
     'echasnovski/mini.nvim',
     lazy = false,
     config = function()
-      require('mini.ai').setup()
-      require('mini.comment').setup()
-      require('mini.pairs').setup()
+      require('mini.tabline').setup({
+        tabpage_section = 'right',
+        show_icons = false,
+      })
       require('mini.statusline').setup {
         content = {
           active = function()
@@ -50,103 +51,103 @@ return {
           end,
         },
       }
-      vim.opt.showmode = false
+      vim.schedule(function()
+        require('mini.ai').setup()
+        require('mini.align').setup()
+        require('mini.bracketed').setup()
+        require('mini.comment').setup()
+        require('mini.icons').setup()
+        require('mini.surround').setup()
+        require('mini.jump2d').setup { mappings = { start_jumping = '<leader>S' } }
+        require('mini.splitjoin').setup { detect = { separator = '[,;\n]' }, }
+        require('mini.basics').setup { mappings = { windows = true, }, }
+        require('mini.trailspace').setup()
+        vim.api.nvim_create_user_command('Trim', function()
+          require('mini.trailspace').trim()
+        end, {})
+        local indent = require('mini.indentscope')
+        indent.setup {
+          draw = { delay = 0 },
+        }
+        indent.gen_animation.none()
 
-      local miniclue = require('mini.clue')
-      miniclue.setup {
-        triggers = {
-          { mode = 'n', keys = '<Leader>' },
-          { mode = 'n', keys = 'g' },
-          { mode = 'n', keys = "'" },
-          { mode = 'n', keys = '`' },
-          { mode = 'n', keys = '"' },
-          { mode = 'n', keys = '<C-w>' },
-          { mode = 'n', keys = 'z' },
-        },
-
-        clues = {
-          miniclue.gen_clues.g(),
-          miniclue.gen_clues.marks(),
-          miniclue.gen_clues.registers(),
-          miniclue.gen_clues.windows(),
-          miniclue.gen_clues.z(),
-        },
-      }
-      --    Add surrounding with sa
-      --    Delete surrounding with sd.
-      --    Replace surrounding with sr.
-      --    Find surrounding with sf or sF (move cursor right or left).
-      --    Highlight surrounding with sh<char>.
-      --    'f' - function call (string of alphanumeric symbols or '_' or '.' followed by balanced '()'). In "input" finds function call, in "output" prompts user to enter function name.
-      --    't' - tag. In "input" finds tag with same identifier, in "output" prompts user to enter tag name.
-      --    All symbols in brackets '()', '[]', '{}', '<>".
-      --    '?' - interactive. Prompts user to enter left and right parts.
-      require('mini.surround').setup()
-
-      require('mini.trailspace').setup()
-      vim.api.nvim_create_user_command('Trim', function()
-        require('mini.trailspace').trim()
-      end, {})
-
-      -- prefix \
-      -- `b` - |'background'|.
-      -- `c` - |'cursorline'|.
-      -- `C` - |'cursorcolumn'|.
-      -- `d` - diagnostic (via |vim.diagnostic.enable()| and |vim.diagnostic.disable()|).
-      -- `h` - |'hlsearch'| (or |v:hlsearch| to be precise).
-      -- `i` - |'ignorecase'|.
-      -- `l` - |'list'|.
-      -- `n` - |'number'|.
-      -- `r` - |'relativenumber'|.
-      -- `s` - |'spell'|.
-      -- `w` - |'wrap'|.
-      require('mini.basics').setup {
-        mappings = {
-          windows = true,
-        },
-      }
-
-      local map = require('mini.map')
-      map.setup {
-        symbols = {
-          scroll_line = '┃',
-          scroll_view = '',
-        },
-        integrations = {
-          map.gen_integration.builtin_search(),
-          map.gen_integration.diagnostic(),
-          map.gen_integration.gitsigns(),
-        },
-        window = {
-          show_integration_count = false,
-          winblend = 0,
-          width = 5,
-        },
-      }
-      vim.keymap.set('n', '<leader>nm', map.toggle, { noremap = true, desc = 'minimap open' })
-
-      -- gS
-      require('mini.splitjoin').setup {
-        detect = { separator = '[,;\n]' },
-      }
-      require('mini.jump2d').setup { mappings = { start_jumping = '<leader>S' } }
-
-      local indent = require('mini.indentscope')
-      indent.setup {
-        draw = { delay = 0 },
-      }
-      indent.gen_animation.none()
-
-      require('mini.notify').setup {
-        window = {
-          winblend = 0,
-          config = {
-            anchor = 'SE',
-            border = 'double',
-            row = vim.o.lines,
+        local miniclue = require('mini.clue')
+        miniclue.setup {
+          triggers = {
+            { mode = 'n', keys = '<Leader>' },
+            { mode = 'n', keys = 'g' },
+            { mode = 'n', keys = "'" },
+            { mode = 'n', keys = '`' },
+            { mode = 'n', keys = '"' },
+            { mode = 'n', keys = '<C-w>' },
+            { mode = 'n', keys = 'z' },
           },
-        },
-      }
+
+          clues = {
+            miniclue.gen_clues.g(),
+            miniclue.gen_clues.marks(),
+            miniclue.gen_clues.registers(),
+            miniclue.gen_clues.windows(),
+            miniclue.gen_clues.z(),
+          },
+        }
+
+
+        local map = require('mini.map')
+        map.setup {
+          symbols = {
+            scroll_line = '┃',
+            scroll_view = '',
+          },
+          integrations = {
+            map.gen_integration.builtin_search(),
+            map.gen_integration.diagnostic(),
+            map.gen_integration.gitsigns(),
+          },
+          window = {
+            show_integration_count = false,
+            winblend = 0,
+            width = 5,
+          },
+        }
+        vim.keymap.set('n', '<leader>nm', map.toggle, { noremap = true, desc = 'minimap open' })
+
+        require('mini.notify').setup {
+          window = {
+            winblend = 0,
+            config = {
+              border = 'double',
+            },
+          },
+        }
+        local files = require("mini.files")
+        files.setup {
+          mappings = {
+            synchronize = "w",
+            go_in_plus="<CR>"
+          },
+          windows = {
+            preview = true,
+            width_preview = 50,
+          }
+        }
+        vim.keymap.set('n', '<leader>c', files.open, { noremap = true, desc = 'minifiles open' })
+        vim.api.nvim_create_autocmd("User", {
+          pattern = "MiniFilesBufferCreate",
+          callback = function(args)
+            local buf_id = args.data.buf_id
+            vim.keymap.set(
+              "n",
+              "<leader>c",
+              function()
+                files.synchronize()
+                files.close()
+              end,
+              { buffer = buf_id }
+            )
+          end,
+        })
+      end)
     end,
   },
 }

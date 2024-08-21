@@ -105,22 +105,26 @@ with lib;
     # and prepends the nvim and after directory to the RTP
     initLua = ''
         vim.opt.rtp:prepend('${nvimRtp}/lua')
-        lazy_opts = {
+        LAZY_OPTS = {
           performance = {
             reset_packpath = false,
-            rtp = { reset = false, },
+            rtp = {
+              reset = false,
+              disabled_plugins = {
+                "netrwPlugin",
+                "tutor",
+              },
+            },
           },
           dev = {
             path = "${pkgs.neovimUtils.packDir neovimConfig.packpathDirs}/pack/myNeovimPackages/start",
             patterns = {""},
           },
+          checker = {
+            enabled = false,
+          },
           install = { missing = false, },
           spec = {{ import = "plugins" }},
-          disabled_plugins = {
-            "netrwPlugin",
-            "tutor",
-            "zipPlugin",
-          },
         }
       '' + (builtins.readFile ../nvim/init.lua);
 
