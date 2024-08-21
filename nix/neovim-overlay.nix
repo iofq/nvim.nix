@@ -17,7 +17,6 @@ with final.pkgs.lib; let
   mkNeovim = pkgs.callPackage ./mkNeovim.nix { inherit pkgs-wrapNeovim; };
 
   all-plugins = with pkgs.vimPlugins; [
-    aerial-nvim
     cmp-buffer
     cmp-cmdline
     cmp-nvim-lsp
@@ -98,7 +97,6 @@ with final.pkgs.lib; let
     gopls
     lua-language-server
     nil
-    phpactor
     python312Packages.jedi-language-server
 
     # debuggers
@@ -115,6 +113,10 @@ in {
     plugins = all-plugins;
     appName = "nvim";
     extraPackages = basePackages;
+    ignoreConfigRegexes = [
+      "*/lsp.lua"
+      "*/debug.lua"
+    ];
   };
 
   nvim-luarc-json = final.mk-luarc-json {

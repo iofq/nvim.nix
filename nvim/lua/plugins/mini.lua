@@ -1,7 +1,7 @@
 return {
   {
     'echasnovski/mini.nvim',
-    event = "VeryLazy",
+    lazy = false,
     config = function()
       require('mini.ai').setup()
       require('mini.comment').setup()
@@ -28,6 +28,7 @@ return {
               return summary
             end
             local diagnostics = MiniStatusline.section_diagnostics { trunc_width = 75 }
+            local lsp = MiniStatusline.section_lsp { trunc_width = 75 }
             local filename = MiniStatusline.section_filename { trunc_width = 140 }
             local search = MiniStatusline.section_searchcount { trunc_width = 75 }
 
@@ -36,7 +37,7 @@ return {
               '%<', -- Mark general truncate point
               { hl = 'MiniStatuslineFilename', strings = { filename } },
               '%=', -- End left alignment
-              { hl = 'MiniStatusDevinfo', strings = { git(), diff(), diagnostics } },
+              { hl = 'MiniStatusDevinfo', strings = { git(), diff(), diagnostics, lsp} },
               { hl = mode_hl, strings = { search } },
             }
           end,

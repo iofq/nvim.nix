@@ -1,9 +1,8 @@
 vim.opt.backspace = 'indent,eol,start'
 vim.opt.clipboard = 'unnamedplus'
-vim.opt.completeopt = 'menuone'
+vim.opt.completeopt = {'menu', 'menuone', 'noselect'}
 vim.opt.expandtab = true -- insert tabs as spaces
 vim.opt.inccommand = 'split' -- incremental live completion
-vim.opt.laststatus = 1
 vim.opt.list = true
 vim.opt.nrformats:append('alpha') -- let Ctrl-a do letters as well
 vim.opt.path:append('**') -- enable fuzzy :find ing

@@ -19,22 +19,21 @@ return {
             require('luasnip').lsp_expand(args.body)
           end,
         },
-        experimental = {
-          native_menu = false,
-          ghost_text = true,
-        },
         mapping = cmp.mapping.preset.insert {
-          ['<C-j>'] = cmp.mapping.scroll_docs(-4),
-          ['<C-k>'] = cmp.mapping.scroll_docs(4),
-          ['<C-Space>'] = cmp.mapping.complete(),
-          ['<esc>'] = cmp.mapping.abort(),
-          ['<CR>'] = cmp.mapping.confirm { select = true }, -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+          ['<C-u>'] = cmp.mapping.scroll_docs(-4),
+          ['<C-d>'] = cmp.mapping.scroll_docs(4),
+          ['<C-n>'] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert },
+          ['<C-p>'] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert },
+          ['<C-Space>'] = cmp.mapping.confirm {
+            select = true,
+            behavior = cmp.SelectBehavior.Insert
+          },
         },
         sources = cmp.config.sources({
-          { name = 'nvim_lsp' },
+          { name = 'nvim_lsp', keyword_length = 1 },
           { name = 'luasnip' },
-        }, {
           { name = 'buffer' },
+          { name = 'path' },
         }),
       }
 
@@ -68,13 +67,13 @@ return {
       }
       require('luasnip.loaders.from_vscode').lazy_load()
 
-      vim.keymap.set({ 'i', 's' }, '<C-K>', function()
+      vim.keymap.set({ 'i', 's' }, '<C-J>', function()
         if ls.expand_or_jumpable() then
           ls.expand_or_jump()
         end
       end, { silent = true })
 
-      vim.keymap.set({ 'i', 's' }, '<C-J>', function()
+      vim.keymap.set({ 'i', 's' }, '<C-K>', function()
         if ls.jumpable(-1) then
           ls.jump(-1)
         end
@@ -85,14 +84,6 @@ return {
           ls.change_choice(1)
         end
       end, { silent = true })
-
-      --------------------
-      -- Snippets --
-      --------------------
-      local fmta = require('luasnip.extras.fmt').fmta
-      ls.add_snippets('go', {
-        ls.snippet('ie', fmta('if err != nil {\n\treturn <err>\n}', { err = ls.insert_node(1, 'err') })),
-      })
     end,
   },
 }
