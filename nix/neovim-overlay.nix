@@ -113,8 +113,8 @@ in {
     appName = "nvim";
     extraPackages = basePackages;
     ignoreConfigRegexes = [
-      "*/lsp.lua"
-      "*/debug.lua"
+      ".*lsp.lua"
+      ".*debug.lua"
     ];
   };
 
