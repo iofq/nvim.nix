@@ -38,26 +38,7 @@ return {
   {
     'chrisgrieser/nvim-early-retirement',
     event = 'VeryLazy',
-    opts = { minimumBufferNum = 6 },
-  },
-  {
-    'AckslD/nvim-neoclip.lua',
-    event = 'VeryLazy',
-    dependencies = {
-      'nvim-telescope/telescope.nvim',
-    },
-    opts = {
-      default_register = '+',
-    },
-    config = function(_, opts)
-      require('neoclip').setup(opts)
-      vim.keymap.set(
-        'n',
-        '<leader>fp',
-        '<cmd>Telescope neoclip<CR>',
-        { noremap = true, silent = true, desc = 'Pick clipboard history' }
-      )
-    end,
+    opts = { minimumBufferNum = 10 },
   },
   {
     'leath-dub/snipe.nvim',
@@ -84,10 +65,21 @@ return {
       default_args = {
         DiffviewOpen = { '--imply-local' },
       },
+      keymaps = {
+        view = {
+          { { "n" }, "q", vim.cmd.DiffviewClose, { desc = "Close Diffview" } },
+        },
+        file_panel = {
+          { { "n" }, "q", vim.cmd.DiffviewClose, { desc = "Close Diffview" } },
+        },
+        file_history_panel = {
+          { { "n" }, "q", vim.cmd.DiffviewClose, { desc = "Close Diffview" } },
+        }
+      }
     },
-    config = function()
-      vim.keymap.set('n', '<leader>nb', vim.cmd.DiffviewOpen, { noremap = true, desc = 'diffview open' })
-    end,
+    keys = {
+      { '<leader>nb', vim.cmd.DiffviewOpen, noremap = true, desc = 'diffview open' }
+    },
   },
   {
     'NeogitOrg/neogit',
@@ -123,7 +115,7 @@ return {
   {
     'EdenEast/nightfox.nvim',
     lazy = false,
-    priority = 10000,
+    priority = 1000,
     opts = {
       options = {
         transparent = true,
@@ -133,18 +125,18 @@ return {
     config = function(_, opts)
       require('nightfox').setup(opts)
       vim.cmd('colorscheme terafox')
-      vim.schedule(function()
-        vim.api.nvim_set_hl(0, 'MiniNotifyNormal', { bg = 'none' })
-        vim.api.nvim_set_hl(0, 'MiniNotifyTitle', { bg = 'none' })
-        vim.api.nvim_set_hl(0, 'MiniNotifyBorder', { bg = 'none' })
-        vim.api.nvim_set_hl(0, 'MiniMapNormal', { bg = 'none' })
-        vim.api.nvim_set_hl(0, 'MiniClueNormal', { bg = 'none' })
-        vim.api.nvim_set_hl(0, 'StatusLine', { bg = 'none' })
-        vim.api.nvim_set_hl(0, 'StatusLineNC', { bg = 'none' })
-        vim.api.nvim_set_hl(0, 'GitSignsAdd', { fg = 'green', bold = true })
-        vim.api.nvim_set_hl(0, 'GitSignsDelete', { fg = 'red', bold = true })
-        vim.api.nvim_set_hl(0, 'GitSignsChange', { fg = 'green', bold = true })
-      end)
+      vim.api.nvim_set_hl(0, 'MiniNotifyNormal', { bg = 'none' })
+      vim.api.nvim_set_hl(0, 'MiniNotifyTitle', { bg = 'none' })
+      vim.api.nvim_set_hl(0, 'MiniNotifyBorder', { bg = 'none' })
+      vim.api.nvim_set_hl(0, 'MiniMapNormal', { bg = 'none' })
+      vim.api.nvim_set_hl(0, 'MiniClueNormal', { bg = 'none' })
+      vim.api.nvim_set_hl(0, 'MiniTablineFill', { bg = 'none' })
+      vim.api.nvim_set_hl(0, 'StatusLine', { bg = 'none' })
+      vim.api.nvim_set_hl(0, 'StatusLineNC', { bg = 'none' })
+      vim.api.nvim_set_hl(0, 'GitSignsAdd', { fg = 'green', bold = true })
+      vim.api.nvim_set_hl(0, 'GitSignsDelete', { fg = 'red', bold = true })
+      vim.api.nvim_set_hl(0, 'GitSignsChange', { fg = 'green', bold = true })
+      vim.api.nvim_set_hl(0, 'GitSignsCurrentLineBlame', { link = 'Comment' })
     end,
   },
   {
@@ -157,9 +149,11 @@ return {
         local gs = package.loaded.gitsigns
         vim.keymap.set('n', '<leader>gg', gs.preview_hunk, { desc = 'git preview hunk' })
         vim.keymap.set('n', '<leader>gr', gs.reset_hunk, { desc = 'git reset hunk' })
+        vim.keymap.set('n', '<leader>gd', gs.diffthis, { desc = 'git diff hunk' })
         vim.keymap.set('n', '<leader>gb', function()
           gs.blame_line { full = true }
-        end, { desc = 'git blame_line' })
+        end, { desc = 'git blame_line current' })
+        vim.keymap.set('n', '<leader>gB', gs.toggle_current_line_blame, { desc = 'git blame_line toggle' })
         vim.keymap.set('v', '<leader>gr', function()
           gs.reset_hunk { vim.fn.line('.'), vim.fn.line('v') }
         end, { desc = 'git reset hunk' })

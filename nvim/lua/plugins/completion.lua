@@ -34,6 +34,7 @@ return {
           { name = 'luasnip' },
           { name = 'buffer' },
           { name = 'path' },
+          { name = 'treesitter', keyword_length = 3 },
         }),
       }
 
@@ -48,7 +49,7 @@ return {
         mapping = cmp.mapping.preset.cmdline(),
         sources = cmp.config.sources({
           { name = 'path' },
-        }, {
+          { name = 'buffer' },
           { name = 'cmdline' },
         }),
         matching = { disallow_symbol_nonprefix_matching = false },

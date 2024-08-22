@@ -28,7 +28,7 @@ return {
   },
   {
     'neovim/nvim-lspconfig',
-    lazy = false,
+    event = 'VeryLazy',
     dependencies = {
       'hrsh7th/cmp-nvim-lsp',
     },
@@ -39,7 +39,6 @@ return {
         lspconfig.util.default_config.capabilities,
         require('cmp_nvim_lsp').default_capabilities()
       )
-      vim.lsp.inlay_hint.enable(true)
       lspconfig.gopls.setup {
         settings = {
           gopls = {
@@ -54,17 +53,17 @@ return {
             },
             hints = {
               assignVariableTypes = true,
+              compositeLiteralFields = true,
+              compositeLiteralTypes = true,
               constantValues = true,
               functionTypeParameters = true,
               rangeVariableTypes = true,
+              parameterNames = true,
             },
             usePlaceholders = true,
             staticcheck = true,
           },
         },
-        on_attach = function()
-          vim.api.nvim_command('au BufWritePre <buffer> lua vim.lsp.buf.format { async = false }')
-        end,
       }
       lspconfig.jedi_language_server.setup {}
       lspconfig.nil_ls.setup {}
@@ -97,6 +96,7 @@ return {
         callback = function(ev)
           local bufnr = ev.buf
           local client = vim.lsp.get_client_by_id(ev.data.client_id)
+          vim.api.nvim_command('au BufWritePre <buffer> lua vim.lsp.buf.format { async = false }')
           vim.keymap.set(
             'n',
             'K',

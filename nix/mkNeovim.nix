@@ -92,11 +92,14 @@ with lib;
 
       buildPhase = ''
         mkdir -p $out/lua
+        mkdir -p $out/ftplugin
       '';
 
       installPhase = ''
-        cp -r lua $out/lua
+        cp -r lua $out/
         rm -r lua
+        cp -r ftplugin $out/
+        rm -r ftplugin
       '';
     };
 
@@ -104,7 +107,7 @@ with lib;
     # It wraps the user init.lua, prepends the lua lib directory to the RTP
     # and prepends the nvim and after directory to the RTP
     initLua = ''
-        vim.opt.rtp:prepend('${nvimRtp}/lua')
+        vim.opt.rtp:prepend('${nvimRtp}')
         LAZY_OPTS = {
           performance = {
             reset_packpath = false,

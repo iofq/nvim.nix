@@ -3,6 +3,7 @@ return {
     'echasnovski/mini.nvim',
     lazy = false,
     config = function()
+      require('mini.basics').setup { mappings = { windows = true, }, }
       require('mini.tabline').setup({
         tabpage_section = 'right',
         show_icons = false,
@@ -12,21 +13,12 @@ return {
           active = function()
             local mode, mode_hl = MiniStatusline.section_mode {}
             local git = function()
-              local summary = vim.b.gitsigns_head
-              if summary == nil then
-                return ''
-              end
-              summary = '~' .. summary
-
-              return summary == '' and '' or summary
+              local g = vim.b.gitsigns_head
+              return (g == nil) and '' or g
             end
             local diff = function()
-              local summary = vim.b.gitsigns_status
-              if summary == nil then
-                return ''
-              end
-
-              return summary
+              local g = vim.b.gitsigns_status
+              return (g == nil) and '' or g
             end
             local diagnostics = MiniStatusline.section_diagnostics { trunc_width = 75 }
             local lsp = MiniStatusline.section_lsp { trunc_width = 75 }
@@ -34,17 +26,16 @@ return {
             local search = MiniStatusline.section_searchcount { trunc_width = 75 }
 
             return MiniStatusline.combine_groups {
-              { hl = mode_hl, strings = { mode } },
+              { hl = mode_hl,                  strings = { mode } },
               '%<', -- Mark general truncate point
               { hl = 'MiniStatuslineFilename', strings = { filename } },
               '%=', -- End left alignment
-              { hl = 'MiniStatusDevinfo', strings = { git(), diff(), diagnostics, lsp} },
-              { hl = mode_hl, strings = { search } },
+              { hl = 'MiniStatusDevinfo', strings = { git(), diff(), diagnostics, lsp } },
+              { hl = mode_hl,             strings = { search } },
             }
           end,
           inactive = function()
             local filename = MiniStatusline.section_filename { trunc_width = 140 }
-
             return MiniStatusline.combine_groups {
               { hl = 'MiniStatuslineFilename', strings = { filename } },
             }
@@ -60,16 +51,13 @@ return {
         require('mini.surround').setup()
         require('mini.jump2d').setup { mappings = { start_jumping = '<leader>S' } }
         require('mini.splitjoin').setup { detect = { separator = '[,;\n]' }, }
-        require('mini.basics').setup { mappings = { windows = true, }, }
         require('mini.trailspace').setup()
-        vim.api.nvim_create_user_command('Trim', function()
-          require('mini.trailspace').trim()
-        end, {})
+        vim.api.nvim_create_user_command('Trim', require('mini.trailspace').trim, {})
         local indent = require('mini.indentscope')
         indent.setup {
+          symbol = '│',
           draw = { delay = 0 },
         }
-        indent.gen_animation.none()
 
         local miniclue = require('mini.clue')
         miniclue.setup {
@@ -91,7 +79,6 @@ return {
             miniclue.gen_clues.z(),
           },
         }
-
 
         local map = require('mini.map')
         map.setup {
@@ -124,7 +111,7 @@ return {
         files.setup {
           mappings = {
             synchronize = "w",
-            go_in_plus="<CR>"
+            go_in_plus = "<CR>"
           },
           windows = {
             preview = true,
@@ -135,7 +122,6 @@ return {
         vim.api.nvim_create_autocmd("User", {
           pattern = "MiniFilesBufferCreate",
           callback = function(args)
-            local buf_id = args.data.buf_id
             vim.keymap.set(
               "n",
               "<leader>c",
@@ -143,7 +129,7 @@ return {
                 files.synchronize()
                 files.close()
               end,
-              { buffer = buf_id }
+              { buffer = args.data.buf_id }
             )
           end,
         })

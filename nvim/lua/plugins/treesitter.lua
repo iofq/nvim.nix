@@ -26,6 +26,9 @@ return {
         autopairs = {
           enable = true,
         },
+        matchup = {
+          enable = true,
+        },
         textobjects = {
           select = {
             enable = true,
@@ -35,6 +38,10 @@ return {
               ['if'] = '@function.inner',
               ['aa'] = '@statement.outer',
               ['ia'] = '@parameter.inner',
+              ["ik"] = "@assignment.lhs",
+              ["ak"] = "@assignment.inner",
+              ["iv"] = "@assignment.rhs",
+              ["av"] = "@assignment.outer",
             },
           },
           move = {
@@ -42,10 +49,12 @@ return {
             goto_next_start = {
               [']a'] = '@parameter.inner',
               [']f'] = '@function.outer',
+              [']]'] = '@block.inner',
             },
             goto_previous_start = {
               ['[a'] = '@parameter.inner',
               ['[f'] = '@function.outer',
+              ['[['] = '@block.inner',
             },
           },
           swap = {

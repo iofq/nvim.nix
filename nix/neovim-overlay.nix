@@ -35,15 +35,14 @@ with final.pkgs.lib; let
     neogit
     none-ls-nvim
     nightfox-nvim
+    nvim-autopairs
     nvim-cmp
     nvim-dap
     nvim-dap-go
     nvim-dap-ui
     nvim-early-retirement
     nvim-lspconfig
-    nvim-neoclip-lua
     nvim-nio
-    nvim-autopairs
     nvim-treesitter-context
     nvim-treesitter-textobjects
     (nvim-treesitter.withPlugins(p: with p; [
@@ -81,11 +80,13 @@ with final.pkgs.lib; let
     toggleterm-nvim
     trouble-nvim
     undotree
+    yanky-nvim
     workspace-diagnostics-nvim
   ];
 
   basePackages = with pkgs; [
     ripgrep
+    fd
   ];
   extraPackages = with pkgs; [
     # linters
@@ -121,19 +122,4 @@ in {
   nvim-luarc-json = final.mk-luarc-json {
     plugins = all-plugins;
   };
-
-  # You can add as many derivations as you like.
-  # Use `ignoreConfigRegexes` to filter out config
-  # files you would not like to include.
-  #
-  # For example:
-  #
-  # nvim-pkg-no-telescope = mkNeovim {
-  #   plugins = [];
-  #   ignoreConfigRegexes = [
-  #     "^plugin/telescope.lua"
-  #     "^ftplugin/.*.lua"
-  #   ];
-  #   inherit extraPackages;
-  # };
 }
