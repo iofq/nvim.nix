@@ -181,46 +181,12 @@
         "type": "github"
       }
     },
-    "nvim-early-retirement": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1723897376,
-        "narHash": "sha256-+W3AG99nzgr36t9Sg192hb/MH8s0uGAPD0cLBnil+og=",
-        "owner": "chrisgrieser",
-        "repo": "nvim-early-retirement",
-        "rev": "2c36a5671b9d8f0d9e11b77c5a55de802bc45e34",
-        "type": "github"
-      },
-      "original": {
-        "owner": "chrisgrieser",
-        "repo": "nvim-early-retirement",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "flake-utils": "flake-utils",
         "gen-luarc": "gen-luarc",
         "nixpkgs": "nixpkgs",
-        "nvim-early-retirement": "nvim-early-retirement",
-        "snipe-nvim": "snipe-nvim",
         "workspace-diagnostics-nvim": "workspace-diagnostics-nvim"
-      }
-    },
-    "snipe-nvim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1722790509,
-        "narHash": "sha256-DhJ2ss0p64mpaVo9rri72pEoaWbOOL05klM9AydnqJk=",
-        "owner": "leath-dub",
-        "repo": "snipe.nvim",
-        "rev": "854a47c970413405361487c13e2b1e9aa9a3696e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "leath-dub",
-        "repo": "snipe.nvim",
-        "type": "github"
       }
     },
     "systems": {

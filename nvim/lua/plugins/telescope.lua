@@ -30,7 +30,7 @@ return {
               storage = "memory",
             },
           })
-          vim.keymap.set({"n","x"}, "y", "<Plug>(YankyYank)")
+          vim.keymap.set({ "n", "x" }, "y", "<Plug>(YankyYank)")
         end,
       },
     },
@@ -92,12 +92,6 @@ return {
         '<leader>fg',
         b.find_files,
         { noremap = true, silent = true, desc = 'Fuzzy find files' }
-      )
-      vim.keymap.set(
-        'n',
-        '<leader>fc',
-        b.command_history,
-        { noremap = true, silent = true, desc = 'Fuzzy find command_history' }
       )
       vim.keymap.set(
         'n',

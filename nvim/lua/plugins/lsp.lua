@@ -31,6 +31,7 @@ return {
     event = 'VeryLazy',
     dependencies = {
       'hrsh7th/cmp-nvim-lsp',
+      'artemave/workspace-diagnostics.nvim',
     },
     config = function()
       local lspconfig = require('lspconfig')
@@ -132,12 +133,6 @@ return {
             '<leader>dr',
             '<cmd>Telescope lsp_references<cr>',
             { buffer = ev.buf, noremap = true, silent = true, desc = 'LSP references' }
-          )
-          vim.keymap.set(
-            'n',
-            '<leader>dt',
-            '<cmd>Telescope lsp_type_definitions<cr>',
-            { buffer = ev.buf, noremap = true, silent = true, desc = 'LSP type defs' }
           )
           vim.keymap.set(
             'n',

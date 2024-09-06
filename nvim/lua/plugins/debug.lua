@@ -25,7 +25,6 @@ return {
         ui.toggle()
       end, { desc = 'toggle dapui' })
       vim.keymap.set('n', '<leader>zz', function()
-        scopes = w.sidebar(w.scopes, {}, 'split')
         d.continue()
       end, { desc = 'start debugger' })
       vim.keymap.set('n', '<leader>zn', function()
@@ -53,9 +52,6 @@ return {
         local widgets = require('dap.ui.widgets')
         widgets.centered_float(widgets.frames)
       end, { desc = 'view frames' })
-      vim.keymap.set('n', '<leader>zs', function()
-        scopes.toggle()
-      end, { desc = 'toggle scope view' })
     end,
   },
 }

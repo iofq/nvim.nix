@@ -10,13 +10,12 @@ with final.pkgs.lib; let
       inherit pname src;
       version = src.lastModifiedDate;
     };
-  snipe-nvim = mkNvimPlugin inputs.snipe-nvim "snipe-nvim";
-  nvim-early-retirement = mkNvimPlugin inputs.nvim-early-retirement "nvim-early-retirement";
   workspace-diagnostics-nvim = mkNvimPlugin inputs.workspace-diagnostics-nvim "workspace-diagnostics-nvim";
 
   mkNeovim = pkgs.callPackage ./mkNeovim.nix { inherit pkgs-wrapNeovim; };
 
   all-plugins = with pkgs.vimPlugins; [
+    aerial-nvim
     cmp-buffer
     cmp-cmdline
     cmp-nvim-lsp
@@ -40,7 +39,6 @@ with final.pkgs.lib; let
     nvim-dap
     nvim-dap-go
     nvim-dap-ui
-    nvim-early-retirement
     nvim-lspconfig
     nvim-nio
     nvim-treesitter-context
@@ -72,9 +70,7 @@ with final.pkgs.lib; let
       tree-sitter-typescript
       tree-sitter-yaml
     ]))
-    outline-nvim
     scope-nvim
-    snipe-nvim
     telescope-fzf-native-nvim
     telescope-nvim
     toggleterm-nvim

@@ -70,7 +70,9 @@ return {
             { mode = 'n', keys = '<C-w>' },
             { mode = 'n', keys = 'z' },
           },
-
+          window = {
+            config = { width = 'auto', },
+          },
           clues = {
             miniclue.gen_clues.g(),
             miniclue.gen_clues.marks(),
@@ -110,11 +112,11 @@ return {
         local files = require("mini.files")
         files.setup {
           mappings = {
-            synchronize = "w",
             go_in_plus = "<CR>"
           },
           windows = {
             preview = true,
+            width_focus = 30,
             width_preview = 50,
           }
         }
@@ -128,6 +130,21 @@ return {
               function()
                 files.synchronize()
                 files.close()
+              end,
+              { buffer = args.data.buf_id }
+            )
+          end,
+        })
+        vim.api.nvim_create_autocmd("User", {
+          pattern = "MiniFilesBufferCreate",
+          callback = function(args)
+            vim.keymap.set(
+              "n",
+              "`",
+              function()
+                local cur_entry_path = MiniFiles.get_fs_entry().path
+                local cur_directory = vim.fs.dirname(cur_entry_path)
+                vim.fn.chdir(cur_directory)
               end,
               { buffer = args.data.buf_id }
             )

@@ -13,7 +13,6 @@ return {
     'akinsho/toggleterm.nvim',
     event = 'VeryLazy',
     opts = {
-      open_mapping = [[<C-\>]],
       direction = 'float',
       close_on_exit = true,
       autochdir = true,
@@ -35,28 +34,6 @@ return {
     }
   },
   { 'tiagovla/scope.nvim', event = 'VeryLazy', config = true },
-  {
-    'chrisgrieser/nvim-early-retirement',
-    event = 'VeryLazy',
-    opts = { minimumBufferNum = 10 },
-  },
-  {
-    'leath-dub/snipe.nvim',
-    event = 'VeryLazy',
-    opts = {
-      sort = 'last',
-    },
-    config = function(_, opts)
-      local snipe = require('snipe')
-      snipe.setup(opts)
-      vim.keymap.set(
-        'n',
-        '<leader>fb',
-        snipe.open_buffer_menu,
-        { noremap = true, silent = true, desc = 'Pick buffers (snipe.nvim)' }
-      )
-    end,
-  },
   {
     'sindrets/diffview.nvim',
     event = 'VeryLazy',
@@ -149,6 +126,7 @@ return {
         local gs = package.loaded.gitsigns
         vim.keymap.set('n', '<leader>gg', gs.preview_hunk, { desc = 'git preview hunk' })
         vim.keymap.set('n', '<leader>gr', gs.reset_hunk, { desc = 'git reset hunk' })
+        vim.keymap.set('n', '<leader>gs', gs.stage_hunk, { desc = 'git stage hunk' })
         vim.keymap.set('n', '<leader>gd', gs.diffthis, { desc = 'git diff hunk' })
         vim.keymap.set('n', '<leader>gb', function()
           gs.blame_line { full = true }
@@ -164,7 +142,7 @@ return {
             return ']c'
           end
           vim.schedule(function()
-            gs.next_hunk()
+            gs.next_hunk({ target = 'all' })
           end)
           return '<Ignore>'
         end, { expr = true })
@@ -174,7 +152,7 @@ return {
             return '[c'
           end
           vim.schedule(function()
-            gs.prev_hunk()
+            gs.prev_hunk({ target = 'all' })
           end)
           return '<Ignore>'
         end, { expr = true })
@@ -182,17 +160,22 @@ return {
     },
   },
   {
-    'hedyhli/outline.nvim',
-    cmd = { 'Outline', 'OutlineOpen' },
+    'stevearc/aerial.nvim',
+    cmd = { 'AerialToggle' },
     keys = {
-      { '<leader>no', '<cmd>Outline<CR>', desc = 'Toggle outline' },
+      { '<leader>na', '<cmd>AerialToggle<CR>', desc = 'Toggle aerial' },
     },
     opts = {
-      outline_window = {
-        position = 'left',
-        width = 30,
-        auto_close = true,
+      backends = {
+        "lsp",
+        "treesitter",
+        "markdown"
       },
+      filter_kind = false,
+      layout = {
+        default_direction = "left",
+      },
+      autojump = true,
     },
   },
 }
