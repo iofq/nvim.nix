@@ -13,6 +13,7 @@ return {
     'akinsho/toggleterm.nvim',
     event = 'VeryLazy',
     opts = {
+      open_mapping = [[<C-\>]],
       direction = 'float',
       close_on_exit = true,
       autochdir = true,
