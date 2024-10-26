@@ -68,6 +68,7 @@ return {
       }
       lspconfig.jedi_language_server.setup {}
       lspconfig.nil_ls.setup {}
+      lspconfig.phpactor.setup {}
       lspconfig.lua_ls.setup {
         on_init = function(client)
           local path = client.workspace_folders[1].name

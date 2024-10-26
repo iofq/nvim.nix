@@ -94,6 +94,7 @@ with final.pkgs.lib; let
     lua-language-server
     nil
     python312Packages.jedi-language-server
+    phpactor
 
     # debuggers
     delve
