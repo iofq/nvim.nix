@@ -66,6 +66,10 @@ with lib;
       plugins = normalizedPlugins;
     };
 
+    packDir = pkgs.neovimUtils.packDir({
+      myNeovimPackages = pkgs.neovimUtils.normalizedPluginsToVimPackage normalizedPlugins;
+    });
+
     # This uses the ignoreConfigRegexes list to filter
     # the nvim directory
     nvimRtpSrc = let
@@ -120,7 +124,7 @@ with lib;
             },
           },
           dev = {
-            path = "${pkgs.neovimUtils.packDir neovimConfig.packpathDirs}/pack/myNeovimPackages/start",
+            path = "${packDir}/pack/myNeovimPackages/start",
             patterns = {""},
           },
           checker = {
