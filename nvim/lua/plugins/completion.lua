@@ -8,7 +8,7 @@ return {
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-nvim-lsp',
       'ray-x/cmp-treesitter',
-      'L3MON4D3/LuaSnip',
+      'L3MON4D3/luasnip',
       'saadparwaiz1/cmp_luasnip',
     },
     config = function()
@@ -57,7 +57,7 @@ return {
     end,
   },
   {
-    'L3MON4D3/LuaSnip',
+    'L3MON4D3/luasnip',
     event = 'VeryLazy',
     dependencies = { 'rafamadriz/friendly-snippets' },
     config = function()

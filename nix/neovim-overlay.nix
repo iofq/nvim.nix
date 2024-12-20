@@ -10,7 +10,7 @@ with final.pkgs.lib; let
       inherit pname src;
       version = src.lastModifiedDate;
     };
-  workspace-diagnostics-nvim = mkNvimPlugin inputs.workspace-diagnostics-nvim "workspace-diagnostics-nvim";
+  workspace-diagnostics-nvim = mkNvimPlugin inputs.workspace-diagnostics-nvim "workspace-diagnostics.nvim";
 
   mkNeovim = pkgs.callPackage ./mkNeovim.nix { inherit pkgs-wrapNeovim; };
 
