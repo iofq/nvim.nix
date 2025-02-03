@@ -32,11 +32,11 @@ with final.pkgs.lib; let
     none-ls-nvim
     nightfox-nvim
     nvim-autopairs
-    nvim-dap
-    nvim-dap-go
-    nvim-dap-ui
+    # nvim-dap
+    # nvim-dap-go
+    # nvim-dap-ui
     nvim-lspconfig
-    nvim-nio
+    # nvim-nio
     nvim-treesitter-context
     nvim-treesitter-textobjects
     nvim-treesitter.withAllGrammars
@@ -67,12 +67,16 @@ with final.pkgs.lib; let
 
     # debuggers
     delve
+
+    #other
+    jujutsu
   ];
 in {
   nvim-pkg = mkNeovim {
     plugins = all-plugins;
     appName = "nvim";
     extraPackages = basePackages ++ extraPackages;
+    withNodeJs = true;
   };
 
   nvim-min-pkg = mkNeovim {
@@ -82,6 +86,7 @@ in {
     ignoreConfigRegexes = [
       ".*lsp.lua"
       ".*debug.lua"
+      ".*ai.lua"
     ];
   };
 

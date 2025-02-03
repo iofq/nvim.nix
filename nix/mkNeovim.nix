@@ -28,7 +28,7 @@ with lib;
     extraPython3Packages ? p: [], # Additional python 3 packages
     withPython3 ? false, # Build Neovim with Python 3 support?
     withRuby ? false, # Build Neovim with Ruby support?
-    withNodeJs ? true, # Build Neovim with NodeJS support?
+    withNodeJs ? false, # Build Neovim with NodeJS support?
     withSqlite ? true, # Add sqlite? This is a dependency for some plugins
     # You probably don't want to create vi or vim aliases
     # if the appName is something different than "nvim"
