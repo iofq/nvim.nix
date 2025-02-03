@@ -46,18 +46,11 @@ return {
         require('mini.ai').setup()
         require('mini.align').setup()
         require('mini.bracketed').setup()
-        require('mini.comment').setup()
         require('mini.icons').setup()
         require('mini.surround').setup()
-        require('mini.jump2d').setup { mappings = { start_jumping = '<leader>S' } }
         require('mini.splitjoin').setup { detect = { separator = '[,;\n]' }, }
         require('mini.trailspace').setup()
         vim.api.nvim_create_user_command('Trim', require('mini.trailspace').trim, {})
-        local indent = require('mini.indentscope')
-        indent.setup {
-          symbol = '│',
-          draw = { delay = 0 },
-        }
 
         local miniclue = require('mini.clue')
         miniclue.setup {
@@ -101,14 +94,6 @@ return {
         }
         vim.keymap.set('n', '<leader>nm', map.toggle, { noremap = true, desc = 'minimap open' })
 
-        require('mini.notify').setup {
-          window = {
-            winblend = 0,
-            config = {
-              border = 'double',
-            },
-          },
-        }
         local files = require("mini.files")
         files.setup {
           mappings = {

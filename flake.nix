@@ -3,14 +3,11 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-master.url = "github:NixOS/nixpkgs/master";
     flake-utils.url = "github:numtide/flake-utils";
     gen-luarc = {
       url = "github:mrcjkb/nix-gen-luarc-json";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-    workspace-diagnostics-nvim = {
-      url = "github:artemave/workspace-diagnostics.nvim";
-      flake = false;
     };
   };
 

@@ -10,29 +10,12 @@ return {
     config = true,
   },
   {
-    'akinsho/toggleterm.nvim',
-    event = 'VeryLazy',
-    opts = {
-      open_mapping = [[<C-\>]],
-      direction = 'float',
-      close_on_exit = true,
-      autochdir = true,
-    },
-  },
-  {
     'jinh0/eyeliner.nvim',
     event = 'VeryLazy',
     config = function()
       vim.api.nvim_set_hl(0, 'EyelinerPrimary', { underline = true })
       vim.api.nvim_set_hl(0, 'EyelinerSecondary', { underline = true })
     end,
-  },
-  {
-    'OXY2DEV/markview.nvim',
-    event = 'VeryLazy',
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-    }
   },
   { 'tiagovla/scope.nvim', event = 'VeryLazy', config = true },
   {
@@ -65,16 +48,12 @@ return {
       disable_builtin_notifications = true,
       integrations = {
         diffview = true,
-        telescope = true,
-        fzf_lua = true,
       },
     },
     keys = {
       {
         '<leader>ng',
-        function()
-          require('neogit').open()
-        end,
+        function() require('neogit').open() end,
         { noremap = true, silent = true, desc = 'Neogit' },
       },
     },
@@ -98,17 +77,17 @@ return {
       options = {
         transparent = true,
         terminal_colors = false,
+        modules = {
+          "mini",
+          "treesitter",
+          "neogit",
+          "aerial"
+        }
       },
     },
     config = function(_, opts)
       require('nightfox').setup(opts)
       vim.cmd('colorscheme terafox')
-      vim.api.nvim_set_hl(0, 'MiniNotifyNormal', { bg = 'none' })
-      vim.api.nvim_set_hl(0, 'MiniNotifyTitle', { bg = 'none' })
-      vim.api.nvim_set_hl(0, 'MiniNotifyBorder', { bg = 'none' })
-      vim.api.nvim_set_hl(0, 'MiniMapNormal', { bg = 'none' })
-      vim.api.nvim_set_hl(0, 'MiniClueNormal', { bg = 'none' })
-      vim.api.nvim_set_hl(0, 'MiniTablineFill', { bg = 'none' })
       vim.api.nvim_set_hl(0, 'StatusLine', { bg = 'none' })
       vim.api.nvim_set_hl(0, 'StatusLineNC', { bg = 'none' })
       vim.api.nvim_set_hl(0, 'GitSignsAdd', { fg = 'green', bold = true })
@@ -177,6 +156,18 @@ return {
         default_direction = "left",
       },
       autojump = true,
+    },
+  },
+  {
+    'gbprod/yanky.nvim',
+    opts = {
+      ring = {
+        storage = "memory",
+      },
+    },
+    keys = {
+      { "y",          "<Plug>(YankyYank)",         mode = { "n", "x" } },
+      { "<leader>fp", "<cmd>YankyRingHistory<cr>", { mode = { "n", "x" }, noremap = true, silent = true, desc = 'Pick history (yanky.nvim)' } }
     },
   },
 }

@@ -1,60 +1,105 @@
 return {
   {
-    'hrsh7th/nvim-cmp',
-    event = 'VeryLazy',
+    'saghen/blink.cmp',
     dependencies = {
-      'hrsh7th/cmp-buffer',
-      'hrsh7th/cmp-cmdline',
-      'hrsh7th/cmp-path',
-      'hrsh7th/cmp-nvim-lsp',
-      'ray-x/cmp-treesitter',
-      'L3MON4D3/luasnip',
-      'saadparwaiz1/cmp_luasnip',
+      "yetone/avante.nvim",
+      'saghen/blink.compat',
+      'rafamadriz/friendly-snippets',
+      'giuxtaposition/blink-cmp-copilot',
+      'mikavilpas/blink-ripgrep.nvim'
     },
-    config = function()
-      local cmp = require('cmp')
-      cmp.setup {
-        snippet = {
-          expand = function(args)
-            require('luasnip').lsp_expand(args.body)
-          end,
-        },
-        mapping = cmp.mapping.preset.insert {
-          ['<C-u>'] = cmp.mapping.scroll_docs(-4),
-          ['<C-d>'] = cmp.mapping.scroll_docs(4),
-          ['<C-n>'] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert },
-          ['<C-p>'] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert },
-          ['<C-Space>'] = cmp.mapping.confirm {
-            select = true,
-            behavior = cmp.SelectBehavior.Insert
-          },
-        },
-        sources = cmp.config.sources({
-          { name = 'nvim_lsp',   keyword_length = 1 },
-          { name = 'luasnip' },
-          { name = 'buffer' },
-          { name = 'path' },
-          { name = 'treesitter', keyword_length = 3 },
-        }),
-      }
-
-      cmp.setup.cmdline({ '/', '?' }, {
-        mapping = cmp.mapping.preset.cmdline(),
-        sources = {
-          { name = 'buffer' },
-        },
+    config = function(_, opts)
+      require('blink.cmp').setup(opts)
+      vim.api.nvim_create_autocmd('User', {
+        pattern = 'BlinkCmpMenuOpen',
+        callback = function()
+          require("copilot.suggestion").dismiss()
+          vim.b.copilot_suggestion_hidden = true
+        end,
       })
 
-      cmp.setup.cmdline(':', {
-        mapping = cmp.mapping.preset.cmdline(),
-        sources = cmp.config.sources({
-          { name = 'path' },
-          { name = 'buffer' },
-          { name = 'cmdline' },
-        }),
-        matching = { disallow_symbol_nonprefix_matching = false },
+      vim.api.nvim_create_autocmd('User', {
+        pattern = 'BlinkCmpMenuClose',
+        callback = function()
+          vim.b.copilot_suggestion_hidden = false
+        end,
       })
     end,
+    opts = {
+      sources = {
+        default = {
+          "lsp",
+          "path",
+          "snippets",
+          "buffer",
+          "ripgrep",
+          "avante_commands",
+          "avante_mentions",
+          "avante_files"
+        },
+        providers = {
+          ripgrep = {
+            module = "blink-ripgrep",
+            name = "rg",
+            score_offset = -10,
+          },
+          avante_commands = {
+            name = "avante_commands",
+            module = "blink.compat.source",
+            score_offset = 90,
+            opts = {},
+          },
+          avante_files = {
+            name = "avante_files",
+            module = "blink.compat.source",
+            score_offset = 100,
+            opts = {},
+          },
+          avante_mentions = {
+            name = "avante_mentions",
+            module = "blink.compat.source",
+            score_offset = 1000,
+            opts = {},
+          }
+        }
+      },
+      keymap = {
+        ["<C-space>"] = { "show", "select_and_accept" }
+      },
+      completion = {
+        documentation = {
+          auto_show = true,
+          auto_show_delay_ms = 100
+        },
+        list = {
+          selection = {
+            preselect = false,
+            auto_insert = true,
+          }
+        },
+        accept = {
+          auto_brackets = {
+            enabled = true
+          }
+        },
+        menu = {
+          draw = {
+            treesitter = { "lsp" },
+            columns = {
+              { "label",       "label_description", gap = 1 },
+              { "source_name", "kind",              gap = 1 }
+            },
+          }
+        },
+        trigger = {
+          show_on_keyword = false,
+        }
+      },
+      appearance = {
+        use_nvim_cmp_as_default = true,
+      },
+      signature = { enabled = true }
+    }
   },
   {
     'L3MON4D3/luasnip',

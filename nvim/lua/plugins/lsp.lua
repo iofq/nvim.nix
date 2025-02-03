@@ -2,45 +2,27 @@ return {
   {
     'folke/trouble.nvim',
     event = 'VeryLazy',
-    dependencies = {
-      'artemave/workspace-diagnostics.nvim',
-    },
-    config = function()
-      require('trouble').setup()
-      vim.keymap.set(
-        'n',
+    config = true,
+    keys = {
+      {
         '<leader>de',
         '<cmd>Trouble diagnostics toggle focus=true<CR>',
         { noremap = true, desc = 'Trouble diagnostics' }
-      )
-      vim.keymap.set(
-        'n',
-        '<leader>dE',
-        '<cmd>Trouble diagnostics toggle focus=true filter.buf=0<CR>',
-        { noremap = true, desc = 'Trouble diagnostics (currrent buffer)' }
-      )
-      vim.keymap.set('n', '<leader>dw', function()
-        for _, client in ipairs(vim.lsp.get_clients { bufnr = 0 }) do
-          require('workspace-diagnostics').populate_workspace_diagnostics(client, 0)
-        end
-      end, { noremap = true, desc = 'Populate Trouble workspace diagnostics' })
-    end,
+      }
+    }
   },
   {
     'neovim/nvim-lspconfig',
     event = 'VeryLazy',
     dependencies = {
-      'hrsh7th/cmp-nvim-lsp',
-      'artemave/workspace-diagnostics.nvim',
+      'folke/snacks.nvim',
+      'saghen/blink.cmp',
     },
     config = function()
       local lspconfig = require('lspconfig')
-      lspconfig.util.default_config.capabilities = vim.tbl_deep_extend(
-        'force',
-        lspconfig.util.default_config.capabilities,
-        require('cmp_nvim_lsp').default_capabilities()
-      )
+      local capabilities = require("blink.cmp").get_lsp_capabilities()
       lspconfig.gopls.setup {
+        capabilities = capabilities,
         settings = {
           gopls = {
             gofumpt = true,
@@ -66,10 +48,12 @@ return {
           },
         },
       }
-      lspconfig.jedi_language_server.setup {}
-      lspconfig.nil_ls.setup {}
-      lspconfig.phpactor.setup {}
+      lspconfig.jedi_language_server.setup { capabilities = capabilities }
+      lspconfig.nil_ls.setup { capabilities = capabilities }
+      lspconfig.phpactor.setup { capabilities = capabilities }
+      lspconfig.ruby_ls.setup { capabilities = capabilities }
       lspconfig.lua_ls.setup {
+        capabilities = capabilities,
         on_init = function(client)
           local path = client.workspace_folders[1].name
           if vim.loop.fs_stat(path .. '/.luarc.json') or vim.loop.fs_stat(path .. '/.luarc.jsonc') then
@@ -120,26 +104,26 @@ return {
           vim.keymap.set(
             'n',
             '<leader>dd',
-            '<cmd>Telescope lsp_definitions<cr>',
+            function() Snacks.picker.diagnostics() end,
+            { buffer = ev.buf, noremap = true, silent = true, desc = 'LSP diagnostics' }
+          )
+          vim.keymap.set(
+            'n',
+            '<leader>df',
+            function() Snacks.picker.lsp_definitions() end,
             { buffer = ev.buf, noremap = true, silent = true, desc = 'LSP definitions' }
           )
           vim.keymap.set(
             'n',
             '<leader>di',
-            '<cmd>Telescope lsp_implementations<cr>',
+            function() Snacks.picker.lsp_implementations() end,
             { buffer = ev.buf, noremap = true, silent = true, desc = 'LSP implementations' }
           )
           vim.keymap.set(
             'n',
             '<leader>dr',
-            '<cmd>Telescope lsp_references<cr>',
+            function() Snacks.picker.lsp_references() end,
             { buffer = ev.buf, noremap = true, silent = true, desc = 'LSP references' }
-          )
-          vim.keymap.set(
-            'n',
-            '<leader>ds',
-            '<cmd>Telescope lsp_document_symbols<cr>',
-            { buffer = ev.buf, noremap = true, silent = true, desc = 'LSP symbols' }
           )
           vim.keymap.set(
             'n',
@@ -168,7 +152,6 @@ return {
             })
             vim.lsp.codelens.refresh { bufnr = bufnr }
           end
-          require('workspace-diagnostics').populate_workspace_diagnostics(client, bufnr)
         end,
       })
       vim.api.nvim_exec_autocmds('FileType', {})
