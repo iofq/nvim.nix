@@ -47,6 +47,7 @@ return {
         require('mini.align').setup()
         require('mini.bracketed').setup()
         require('mini.icons').setup()
+        require('mini.jump2d').setup({ mappings = { start_jumping = '<leader>S' } });
         require('mini.surround').setup()
         require('mini.splitjoin').setup { detect = { separator = '[,;\n]' }, }
         require('mini.trailspace').setup()

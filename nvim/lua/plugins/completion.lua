@@ -1,6 +1,7 @@
 return {
   {
     'saghen/blink.cmp',
+    event = "VeryLazy",
     dependencies = {
       "yetone/avante.nvim",
       'saghen/blink.compat',
@@ -35,7 +36,6 @@ return {
           "ripgrep",
           "avante_commands",
           "avante_mentions",
-          "avante_files"
         },
         providers = {
           ripgrep = {
@@ -47,12 +47,6 @@ return {
             name = "avante_commands",
             module = "blink.compat.source",
             score_offset = 90,
-            opts = {},
-          },
-          avante_files = {
-            name = "avante_files",
-            module = "blink.compat.source",
-            score_offset = 100,
             opts = {},
           },
           avante_mentions = {

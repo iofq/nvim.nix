@@ -46,7 +46,6 @@ return {
   {
     "yetone/avante.nvim",
     event = "VeryLazy",
-    lazy = false,
     dependencies = {
       "stevearc/dressing.nvim",
       "nvim-lua/plenary.nvim",

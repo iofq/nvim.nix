@@ -51,7 +51,7 @@ return {
       lspconfig.jedi_language_server.setup { capabilities = capabilities }
       lspconfig.nil_ls.setup { capabilities = capabilities }
       lspconfig.phpactor.setup { capabilities = capabilities }
-      lspconfig.ruby_ls.setup { capabilities = capabilities }
+      lspconfig.ruby_lsp.setup { capabilities = capabilities }
       lspconfig.lua_ls.setup {
         capabilities = capabilities,
         on_init = function(client)
@@ -100,12 +100,6 @@ return {
             '<leader>da',
             vim.lsp.buf.code_action,
             { buffer = ev.buf, noremap = true, silent = true, desc = 'LSP code action' }
-          )
-          vim.keymap.set(
-            'n',
-            '<leader>dd',
-            function() Snacks.picker.diagnostics() end,
-            { buffer = ev.buf, noremap = true, silent = true, desc = 'LSP diagnostics' }
           )
           vim.keymap.set(
             'n',

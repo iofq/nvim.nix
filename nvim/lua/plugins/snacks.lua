@@ -1,8 +1,9 @@
 return {
   {
     "folke/snacks.nvim",
-    priority = 1000,
+    dependencies = { "folke/trouble.nvim" },
     lazy = false,
+    priority = 1000,
     opts = {
       bigfile = { enabled = true },
       notifier = { enabled = true },
@@ -19,10 +20,17 @@ return {
             return vim.o.columns >= 120 and "telescope" or "vertical"
           end
         },
+        actions = {
+          trouble_open = function(...)
+            return require("trouble.sources.snacks").actions.trouble_open.action(...)
+          end,
+        },
         win = {
           input = {
             keys = {
               ["wq"] = { "close", mode = "i" },
+              ["<c-t>"] = { "trouble_open", mode = { "n", "i" },
+              },
             }
           },
           list = {
@@ -44,7 +52,7 @@ return {
       {
         '<leader>ff',
         function() Snacks.picker.smart() end,
-        { noremap = true, silent = true, desc = 'Fuzzy find git files' }
+        { noremap = true, silent = true, desc = 'Fuzzy find files' }
       },
       {
         '<leader>fa',
