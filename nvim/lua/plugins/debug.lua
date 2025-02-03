@@ -1,4 +1,4 @@
--- return {
+return {}
 --   {
 --     'rcarriga/nvim-dap-ui',
 --     event = 'VeryLazy',
@@ -54,4 +54,3 @@
 --       end, { desc = 'view frames' })
 --     end,
 --   },
--- }
