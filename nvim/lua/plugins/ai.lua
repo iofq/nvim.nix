@@ -60,7 +60,7 @@ return {
     },
     opts = {
       provider = "copilot",
-      auto_suggestions_provider = "copilot",
+      -- auto_suggestions_provider = "copilot",
       behavior = {
         auto_suggestions = false, -- TODO
       },

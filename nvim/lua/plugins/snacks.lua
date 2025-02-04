@@ -62,6 +62,11 @@ return {
         { noremap = true, silent = true, desc = 'Fuzzy find files' }
       },
       {
+        '<leader>fg',
+        function() Snacks.picker.files() end,
+        { noremap = true, silent = true, desc = 'Fuzzy find files' }
+      },
+      {
         '<leader>fa',
         function() Snacks.picker.grep() end,
         { noremap = true, silent = true, desc = 'Fuzzy find grep' }
