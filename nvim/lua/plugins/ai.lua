@@ -2,7 +2,6 @@ return {
   {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
-    event = "InsertEnter",
     opts = {
       panel = { enabled = false },
       suggestion = {
@@ -45,12 +44,11 @@ return {
   },
   {
     "yetone/avante.nvim",
-    event = "VeryLazy",
+    cmd = "Copilot",
     dependencies = {
       "stevearc/dressing.nvim",
       "nvim-lua/plenary.nvim",
       "MunifTanjim/nui.nvim",
-      "folke/snacks.nvim",
       "zbirenbaum/copilot.lua",
       {
         'MeanderingProgrammer/render-markdown.nvim',
@@ -68,6 +66,12 @@ return {
       },
       file_selector = {
         provider = "native", -- TODO snacks once it's ready
+      },
+      windows = {
+        width = 50,
+        ask = {
+          floating = true
+        }
       }
     }
   }

@@ -12,7 +12,7 @@ return {
   {
     'jinh0/eyeliner.nvim',
     event = 'VeryLazy',
-    config = function()
+    init = function()
       vim.api.nvim_set_hl(0, 'EyelinerPrimary', { underline = true })
       vim.api.nvim_set_hl(0, 'EyelinerSecondary', { underline = true })
     end,
@@ -76,7 +76,7 @@ return {
     opts = {
       options = {
         transparent = true,
-        terminal_colors = false,
+        terminal_colors = true,
         modules = {
           "mini",
           "treesitter",

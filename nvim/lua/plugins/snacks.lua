@@ -20,6 +20,13 @@ return {
             return vim.o.columns >= 120 and "telescope" or "vertical"
           end
         },
+        picker = {
+          sources = {
+            files = { hidden = true },
+            grep = { hidden = true },
+            explorer = { hidden = true },
+          },
+        },
         actions = {
           trouble_open = function(...)
             return require("trouble.sources.snacks").actions.trouble_open.action(...)

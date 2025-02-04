@@ -3,7 +3,7 @@ return {
     'saghen/blink.cmp',
     event = "VeryLazy",
     dependencies = {
-      "yetone/avante.nvim",
+      { "yetone/avante.nvim", lazy = true },
       'saghen/blink.compat',
       'rafamadriz/friendly-snippets',
       'giuxtaposition/blink-cmp-copilot',
