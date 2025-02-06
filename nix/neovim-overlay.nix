@@ -14,11 +14,11 @@ with final.pkgs.lib; let
 
   all-plugins = with pkgs.vimPlugins; [
     aerial-nvim
-    avante-nvim
     inputs.nixpkgs-master.legacyPackages.${pkgs.system}.vimPlugins.blink-cmp
     blink-cmp-copilot
     blink-compat
     blink-ripgrep-nvim
+    codecompanion-nvim
     copilot-lua
     diffview-nvim
     eyeliner-nvim

@@ -164,10 +164,15 @@ return {
       ring = {
         storage = "memory",
       },
+      picker = {
+        select = {
+          action = require('yanky.picker').actions.set_register("+")
+        }
+      }
     },
     keys = {
       { "y",          "<Plug>(YankyYank)",         mode = { "n", "x" } },
-      { "<leader>fp", "<cmd>YankyRingHistory<cr>", { mode = { "n", "x" }, noremap = true, silent = true, desc = 'Pick history (yanky.nvim)' } }
+      { "<leader>fp", "<cmd>YankyRingHistory<cr>", mode = { "n", "x" }, noremap = true, silent = true, desc = 'Pick history (yanky.nvim)' }
     },
   },
 }

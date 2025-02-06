@@ -3,7 +3,6 @@ return {
     'saghen/blink.cmp',
     event = "VeryLazy",
     dependencies = {
-      { "yetone/avante.nvim", lazy = true },
       'saghen/blink.compat',
       'rafamadriz/friendly-snippets',
       'giuxtaposition/blink-cmp-copilot',
@@ -34,8 +33,7 @@ return {
           "snippets",
           "buffer",
           "ripgrep",
-          "avante_commands",
-          "avante_mentions",
+          "copilot"
         },
         providers = {
           ripgrep = {
@@ -43,18 +41,12 @@ return {
             name = "rg",
             score_offset = -10,
           },
-          avante_commands = {
-            name = "avante_commands",
-            module = "blink.compat.source",
-            score_offset = 90,
-            opts = {},
+          copilot = {
+            name = "copilot",
+            module = "blink-cmp-copilot",
+            score_offset = 100,
+            async = true,
           },
-          avante_mentions = {
-            name = "avante_mentions",
-            module = "blink.compat.source",
-            score_offset = 1000,
-            opts = {},
-          }
         }
       },
       keymap = {
@@ -77,6 +69,8 @@ return {
           }
         },
         menu = {
+          -- auto show in cmdline
+          auto_show = true,
           draw = {
             treesitter = { "lsp" },
             columns = {

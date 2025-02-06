@@ -7,7 +7,8 @@ return {
       {
         '<leader>de',
         '<cmd>Trouble diagnostics toggle focus=true<CR>',
-        { noremap = true, desc = 'Trouble diagnostics' }
+        noremap = true,
+        desc = 'Trouble diagnostics'
       }
     }
   },

@@ -2,10 +2,19 @@ return {
   {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
+    keys = {
+      {
+        'M-\\',
+        '<cmd>Copilot panel<CR>',
+        noremap = true,
+        desc = 'Copilot panel'
+      }
+    },
     opts = {
-      panel = { enabled = false },
+      panel = { enabled = true, keymap = { accept = "ga" } },
       suggestion = {
         enabled = true,
+        auto_trigger = true,
         keymap = {
           accept = "<M-]>",
           next = "<M-[>",
@@ -43,36 +52,50 @@ return {
     }
   },
   {
-    "yetone/avante.nvim",
+    "olimorris/codecompanion.nvim",
     cmd = "Copilot",
     dependencies = {
-      "stevearc/dressing.nvim",
       "nvim-lua/plenary.nvim",
-      "MunifTanjim/nui.nvim",
+      "nvim-treesitter/nvim-treesitter",
       "zbirenbaum/copilot.lua",
-      {
-        'MeanderingProgrammer/render-markdown.nvim',
-        opts = {
-          file_types = { "markdown", "Avante" },
-        },
-        ft = { "markdown", "Avante" },
-      },
     },
     opts = {
-      provider = "copilot",
-      -- auto_suggestions_provider = "copilot",
-      behavior = {
-        auto_suggestions = false, -- TODO
+      adapters = {
+        copilot = function()
+          return require("codecompanion.adapters").extend("copilot", {
+            name = "copilot-claude-3.5-sonnet",
+            schema = { model = "claude-3.5-sonnet", },
+          })
+        end
       },
-      file_selector = {
-        provider = "native", -- TODO snacks once it's ready
+      strategies = {
+        chat = { adapter = "copilot-claude-3.5-sonnet", },
+        inline = { adapter = "copilot-claude-3.5-sonnet", },
       },
-      windows = {
-        width = 50,
-        ask = {
-          floating = true
-        }
+    },
+    init = function()
+      vim.api.nvim_create_user_command('CC', ':CodeCompanion', {})
+    end,
+    keys = {
+      {
+        '<leader>ac',
+        '<cmd>CodeCompanionChat Toggle<CR>',
+        noremap = true,
+        desc = 'Copilot chat toggle'
+      },
+      {
+        '<leader>as',
+        '<cmd>CodeCompanionChat Add<CR>',
+        noremap = true,
+        desc = 'Copilot chat add selection'
+      },
+      {
+        '<leader>aa',
+        '<cmd>CodeCompanionActions<CR>',
+        noremap = true,
+        desc = 'Copilot inline'
       }
     }
-  }
+
+  },
 }
