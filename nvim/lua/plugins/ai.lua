@@ -60,17 +60,20 @@ return {
       "zbirenbaum/copilot.lua",
     },
     opts = {
-      adapters = {
-        copilot = function()
-          return require("codecompanion.adapters").extend("copilot", {
-            name = "copilot-claude-3.5-sonnet",
-            schema = { model = "claude-3.5-sonnet", },
-          })
-        end
-      },
+      -- adapters = {
+      --   copilot = function()
+      --     return require("codecompanion.adapters").extend("copilot", {
+      --       schema = {
+      --         model = {
+      --           default = "claude-3.5-sonnet"
+      --         },
+      --       },
+      --     })
+      --   end
+      -- },
       strategies = {
-        chat = { adapter = "copilot-claude-3.5-sonnet", },
-        inline = { adapter = "copilot-claude-3.5-sonnet", },
+        chat = { adapter = "copilot", },
+        inline = { adapter = "copilot", },
       },
     },
     init = function()
