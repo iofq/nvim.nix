@@ -11,14 +11,22 @@ return {
       }
     },
     opts = {
-      panel = { enabled = true, keymap = { accept = "ga" } },
+      panel = {
+        enabled = true,
+        auto_refresh = true,
+        keymap = {
+          jump_prev = "<C-p>",
+          jump_next = "<C-n>",
+          accept = "<C-y>",
+        }
+      },
       suggestion = {
         enabled = true,
         auto_trigger = true,
+        hide_during_completion = true,
         keymap = {
           accept = "<M-]>",
           next = "<M-[>",
-          dismiss = "<C-]>",
         },
       },
       completion = {
@@ -60,25 +68,11 @@ return {
       "zbirenbaum/copilot.lua",
     },
     opts = {
-      -- adapters = {
-      --   copilot = function()
-      --     return require("codecompanion.adapters").extend("copilot", {
-      --       schema = {
-      --         model = {
-      --           default = "claude-3.5-sonnet"
-      --         },
-      --       },
-      --     })
-      --   end
-      -- },
       strategies = {
         chat = { adapter = "copilot", },
         inline = { adapter = "copilot", },
       },
     },
-    init = function()
-      vim.api.nvim_create_user_command('CC', ':CodeCompanion', {})
-    end,
     keys = {
       {
         '<leader>ac',
@@ -90,12 +84,14 @@ return {
         '<leader>as',
         '<cmd>CodeCompanionChat Add<CR>',
         noremap = true,
+        mode = { "n", "v" },
         desc = 'Copilot chat add selection'
       },
       {
         '<leader>aa',
         '<cmd>CodeCompanionActions<CR>',
         noremap = true,
+        mode = { "n", "v" },
         desc = 'Copilot inline'
       }
     }

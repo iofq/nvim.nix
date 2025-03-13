@@ -2,8 +2,7 @@
 {inputs}: final: prev:
 with final.pkgs.lib; let
   pkgs = final;
-
-  pkgs-wrapNeovim = inputs.nixpkgs.legacyPackages.${pkgs.system};
+  pkgs-wrapNeovim = prev;
 
   mkNvimPlugin = src: pname:
     pkgs.vimUtils.buildVimPlugin {
@@ -14,9 +13,7 @@ with final.pkgs.lib; let
 
   all-plugins = with pkgs.vimPlugins; [
     aerial-nvim
-    inputs.nixpkgs-master.legacyPackages.${pkgs.system}.vimPlugins.blink-cmp
-    blink-cmp-copilot
-    blink-compat
+    blink-cmp
     blink-ripgrep-nvim
     codecompanion-nvim
     copilot-lua
@@ -27,7 +24,6 @@ with final.pkgs.lib; let
     lazy-nvim
     luasnip
     mini-nvim
-    neogen
     neogit
     none-ls-nvim
     nightfox-nvim
@@ -64,9 +60,6 @@ with final.pkgs.lib; let
     phpactor
     python312Packages.jedi-language-server
     ruby-lsp
-
-    # debuggers
-    delve
 
     #other
     jujutsu

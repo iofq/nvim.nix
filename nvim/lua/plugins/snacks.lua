@@ -25,6 +25,10 @@ return {
             files = { hidden = true },
             grep = { hidden = true },
             explorer = { hidden = true },
+            git_files = { untracked = true },
+            smart = {
+              multi = { "buffers", "recent", "files", "git_files" }
+            }
           },
         },
         actions = {
@@ -53,13 +57,19 @@ return {
       vim.api.nvim_set_hl(0, 'SnacksPickerDir', { fg = '#cccccc' })
     end,
     keys = {
-      { '<C-\\>', function() Snacks.terminal.toggle() end,    mode = { "n", "t" }, noremap = true,         desc = 'terminal open' },
-      { 'm',      function() Snacks.words.jump(1, true) end,  noremap = true,      desc = 'next reference' },
-      { 'M',      function() Snacks.words.jump(-1, true) end, noremap = true,      desc = 'next reference' },
+      { '<C-\\>',    function() Snacks.terminal.toggle() end,         mode = { "n", "t" }, noremap = true,         desc = 'terminal open' },
+      { '<leader>t', function() Snacks.terminal.toggle('$SHELL') end, mode = { "n", "t" }, noremap = true,         desc = 'terminal open' },
+      { 'm',         function() Snacks.words.jump(1, true) end,       noremap = true,      desc = 'next reference' },
+      { 'M',         function() Snacks.words.jump(-1, true) end,      noremap = true,      desc = 'next reference' },
       {
         '<leader>ff',
         function() Snacks.picker.smart() end,
         { noremap = true, silent = true, desc = 'Fuzzy find files' }
+      },
+      {
+        '<leader>fe',
+        function() Snacks.picker.explorer() end,
+        { noremap = true, silent = true, desc = 'snacks explorer' }
       },
       {
         '<leader>fg',
@@ -82,6 +92,16 @@ return {
         { noremap = true, silent = true, desc = 'See all pickers' }
       },
       {
+        '<leader>fd',
+        function() Snacks.picker.diagnostics() end,
+        { noremap = true, silent = true, desc = 'Pick diagnostics' }
+      },
+      {
+        '<leader>fj',
+        function() Snacks.picker.jumps() end,
+        { noremap = true, silent = true, desc = 'Pick jumps' }
+      },
+      {
         '<leader>f.',
         function() Snacks.picker.resume() end,
         { noremap = true, silent = true, desc = 'Fuzzy find resume' }
@@ -90,6 +110,11 @@ return {
         '<leader><leader>',
         function() Snacks.picker.buffers() end,
         { noremap = true, silent = true, desc = 'Fuzzy find buffers' }
+      },
+      {
+        '<leader>fn',
+        function() Snacks.picker.notifications() end,
+        { noremap = true, silent = true, desc = 'pick notifications' }
       },
     }
   }

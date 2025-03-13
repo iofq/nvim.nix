@@ -5,11 +5,6 @@ return {
     config = true
   },
   {
-    'danymat/neogen',
-    event = 'VeryLazy',
-    config = true,
-  },
-  {
     'jinh0/eyeliner.nvim',
     event = 'VeryLazy',
     init = function()

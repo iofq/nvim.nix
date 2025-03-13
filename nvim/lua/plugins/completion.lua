@@ -3,28 +3,9 @@ return {
     'saghen/blink.cmp',
     event = "VeryLazy",
     dependencies = {
-      'saghen/blink.compat',
       'rafamadriz/friendly-snippets',
-      'giuxtaposition/blink-cmp-copilot',
       'mikavilpas/blink-ripgrep.nvim'
     },
-    config = function(_, opts)
-      require('blink.cmp').setup(opts)
-      vim.api.nvim_create_autocmd('User', {
-        pattern = 'BlinkCmpMenuOpen',
-        callback = function()
-          require("copilot.suggestion").dismiss()
-          vim.b.copilot_suggestion_hidden = true
-        end,
-      })
-
-      vim.api.nvim_create_autocmd('User', {
-        pattern = 'BlinkCmpMenuClose',
-        callback = function()
-          vim.b.copilot_suggestion_hidden = false
-        end,
-      })
-    end,
     opts = {
       sources = {
         default = {
@@ -33,24 +14,22 @@ return {
           "snippets",
           "buffer",
           "ripgrep",
-          "copilot"
         },
         providers = {
           ripgrep = {
             module = "blink-ripgrep",
             name = "rg",
             score_offset = -10,
-          },
-          copilot = {
-            name = "copilot",
-            module = "blink-cmp-copilot",
-            score_offset = 100,
             async = true,
           },
         }
       },
-      keymap = {
-        ["<C-space>"] = { "show", "select_and_accept" }
+      cmdline = {
+        completion = {
+          menu = {
+            auto_show = true,
+          },
+        },
       },
       completion = {
         documentation = {
@@ -63,14 +42,10 @@ return {
             auto_insert = true,
           }
         },
-        accept = {
-          auto_brackets = {
-            enabled = true
-          }
+        ghost_text = {
+          enabled = true,
         },
         menu = {
-          -- auto show in cmdline
-          auto_show = true,
           draw = {
             treesitter = { "lsp" },
             columns = {
@@ -80,11 +55,8 @@ return {
           }
         },
         trigger = {
-          show_on_keyword = false,
+          show_on_keyword = true,
         }
-      },
-      appearance = {
-        use_nvim_cmp_as_default = true,
       },
       signature = { enabled = true }
     }

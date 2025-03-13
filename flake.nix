@@ -5,6 +5,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";
     flake-utils.url = "github:numtide/flake-utils";
+    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     gen-luarc = {
       url = "github:mrcjkb/nix-gen-luarc-json";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -31,6 +32,7 @@
         inherit system;
         overlays = [
           neovim-overlay
+          inputs.neovim-nightly-overlay.overlays.default
           gen-luarc.overlays.default
         ];
       };

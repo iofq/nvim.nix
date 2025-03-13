@@ -80,6 +80,7 @@ vim.diagnostic.config {
 
 -- random keymaps
 vim.keymap.set('n', 'gq', vim.cmd.bdelete, { silent = true })
+vim.keymap.set('n', 'gQ', '<cmd>%bd|e#', { silent = true })
 vim.keymap.set('n', 'gt', vim.cmd.bnext, { silent = true })
 vim.keymap.set('n', 'gr', vim.cmd.bprev, { silent = true })
 vim.keymap.set('n', 'tr', 'gT', { noremap = true, silent = true })
