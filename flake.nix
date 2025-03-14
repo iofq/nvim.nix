@@ -31,9 +31,9 @@
       pkgs = import nixpkgs {
         inherit system;
         overlays = [
-          neovim-overlay
           inputs.neovim-nightly-overlay.overlays.default
           gen-luarc.overlays.default
+          neovim-overlay
         ];
       };
       shell = pkgs.mkShell {

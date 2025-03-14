@@ -16,6 +16,7 @@ with final.pkgs.lib; let
     blink-cmp
     blink-ripgrep-nvim
     codecompanion-nvim
+    conform-nvim
     copilot-lua
     diffview-nvim
     eyeliner-nvim
@@ -25,12 +26,12 @@ with final.pkgs.lib; let
     luasnip
     mini-nvim
     neogit
-    none-ls-nvim
     nightfox-nvim
     nvim-autopairs
     # nvim-dap
     # nvim-dap-go
     # nvim-dap-ui
+    nvim-lint
     nvim-lspconfig
     # nvim-nio
     nvim-treesitter-context
@@ -52,6 +53,7 @@ with final.pkgs.lib; let
     # linters
     puppet-lint
     yamllint
+    jq
 
     # LSPs
     gopls

@@ -1,5 +1,6 @@
+vim.opt.autowrite = true
 vim.opt.backspace = 'indent,eol,start'
-vim.opt.clipboard = 'unnamedplus'
+vim.opt.confirm = true
 vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
 vim.opt.expandtab = true          -- insert tabs as spaces
 vim.opt.inccommand = 'split'      -- incremental live completion
@@ -80,7 +81,7 @@ vim.diagnostic.config {
 
 -- random keymaps
 vim.keymap.set('n', 'gq', vim.cmd.bdelete, { silent = true })
-vim.keymap.set('n', 'gQ', '<cmd>%bd|e#', { silent = true })
+vim.keymap.set('n', 'gQ', '<cmd>%bd|e#<CR>', { silent = true })
 vim.keymap.set('n', 'gt', vim.cmd.bnext, { silent = true })
 vim.keymap.set('n', 'gr', vim.cmd.bprev, { silent = true })
 vim.keymap.set('n', 'tr', 'gT', { noremap = true, silent = true })
@@ -88,4 +89,30 @@ vim.keymap.set('n', 'tt', 'gt', { noremap = true, silent = true })
 vim.keymap.set('n', 'n', 'nzz', { noremap = true, silent = true })
 vim.keymap.set('n', 'N', 'Nzz', { noremap = true, silent = true })
 vim.keymap.set({ 'v', 'i' }, 'wq', '<esc>l', { noremap = true, silent = true })
-vim.keymap.set('n', '<leader>x', '"rd', { remap = true, silent = true })
+vim.keymap.set('v', "<", "<gv")
+vim.keymap.set('v', ">", ">gv")
+
+-- clipboard
+vim.keymap.set({ 'n', 'v', 'x' }, '<leader>y', '"+y', { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>yy', '"+yy', { noremap = true, silent = true })
+vim.keymap.set({ 'n', 'v', 'x' }, '<leader>p', '"+p', { noremap = true, silent = true })
+
+-- resize splits if window got resized
+vim.api.nvim_create_autocmd({ "VimResized" }, {
+  group = vim.api.nvim_create_augroup("resize_splits", { clear = true }),
+  callback = function()
+    local current_tab = vim.fn.tabpagenr()
+    vim.cmd("tabdo wincmd =")
+    vim.cmd("tabnext " .. current_tab)
+  end,
+})
+
+-- Check if we need to reload the file when it changed
+vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
+  group = vim.api.nvim_create_augroup("check_reload", { clear = true }),
+  callback = function()
+    if vim.o.buftype ~= "nofile" then
+      vim.cmd("checktime")
+    end
+  end,
+})

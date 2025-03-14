@@ -6,6 +6,8 @@ return {
     priority = 1000,
     opts = {
       bigfile = { enabled = true },
+      dim = { enabled = true },
+      quickfile = { enabled = true },
       notifier = { enabled = true },
       scope = { enabled = true },
       terminal = { enabled = true },
@@ -57,10 +59,11 @@ return {
       vim.api.nvim_set_hl(0, 'SnacksPickerDir', { fg = '#cccccc' })
     end,
     keys = {
-      { '<C-\\>',    function() Snacks.terminal.toggle() end,         mode = { "n", "t" }, noremap = true,         desc = 'terminal open' },
-      { '<leader>t', function() Snacks.terminal.toggle('$SHELL') end, mode = { "n", "t" }, noremap = true,         desc = 'terminal open' },
-      { 'm',         function() Snacks.words.jump(1, true) end,       noremap = true,      desc = 'next reference' },
-      { 'M',         function() Snacks.words.jump(-1, true) end,      noremap = true,      desc = 'next reference' },
+      { '<C-\\>', function() Snacks.terminal.toggle() end,         mode = { "n", "t" }, noremap = true,         desc = 'terminal open' },
+      { '\\\\',   function() Snacks.terminal.toggle('$SHELL') end, mode = { "n", "t" }, noremap = true,         desc = 'terminal open' },
+      { 'm',      function() Snacks.words.jump(1, true) end,       noremap = true,      desc = 'next reference' },
+      { 'M',      function() Snacks.words.jump(-1, true) end,      noremap = true,      desc = 'next reference' },
+      { '\\z',    function() Snacks.dim() end,                     noremap = true,      desc = 'dim' },
       {
         '<leader>ff',
         function() Snacks.picker.smart() end,
@@ -68,8 +71,13 @@ return {
       },
       {
         '<leader>fe',
-        function() Snacks.picker.explorer() end,
+        function() Snacks.explorer() end,
         { noremap = true, silent = true, desc = 'snacks explorer' }
+      },
+      {
+        '<leader>fE',
+        function() Snacks.explorer.reveal() end,
+        { noremap = true, silent = true, desc = 'snacks explorer open current file' }
       },
       {
         '<leader>fg',

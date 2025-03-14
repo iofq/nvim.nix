@@ -129,9 +129,6 @@ return {
           vim.keymap.set('n', '<leader>dh', function()
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
           end, { buffer = ev.buf, noremap = true, silent = true, desc = 'LSP hints toggle' })
-          vim.keymap.set('n', '<space>df', function()
-            vim.lsp.buf.format { async = true }
-          end, { buffer = ev.buf, noremap = true, silent = true, desc = 'LSP format' })
           -- Auto-refresh code lenses
           if not client then
             return
@@ -153,16 +150,34 @@ return {
     end,
   },
   {
-    'nvimtools/none-ls.nvim',
+    'stevearc/conform.nvim',
+    event = 'VeryLazy',
+    opts = {
+      notify_no_formatters = false,
+      formatters_by_ft = {
+        json = { "jq" },
+        puppet = { "puppet-lint" },
+        ['*'] = { 'trim_whitespace' }
+      },
+      format_on_save = {
+        timeout_ms = 500,
+        lsp_format = "last",
+      },
+    },
+  },
+  {
+    'mfussenegger/nvim-lint',
     event = 'VeryLazy',
     config = function()
-      local null = require('null-ls')
-      null.setup {
-        sources = {
-          null.builtins.diagnostics.puppet_lint,
-          null.builtins.diagnostics.yamllint,
-        },
+      require("lint").linters_by_ft = {
+        docker = { "hadolint" },
+        yaml = { "yamllint" },
+        puppet = { "puppet-lint" },
+        sh = { "shellcheck" },
+        go = { "golangcilint" },
+        ruby = { "rubocop" },
       }
-    end,
+      vim.api.nvim_command('au BufWritePost * lua require("lint").try_lint()')
+    end
   },
 }

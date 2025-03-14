@@ -2,6 +2,7 @@ return {
   {
     'echasnovski/mini.nvim',
     lazy = false,
+    dependencies = { "folke/snacks.nvim" },
     config = function()
       require('mini.basics').setup { mappings = { windows = true, }, }
       require('mini.tabline').setup({
@@ -50,8 +51,6 @@ return {
         require('mini.jump2d').setup({ mappings = { start_jumping = '<leader>S' } });
         require('mini.surround').setup()
         require('mini.splitjoin').setup { detect = { separator = '[,;\n]' }, }
-        require('mini.trailspace').setup()
-        vim.api.nvim_create_user_command('Trim', require('mini.trailspace').trim, {})
 
         local miniclue = require('mini.clue')
         miniclue.setup {
@@ -134,6 +133,12 @@ return {
               end,
               { buffer = args.data.buf_id }
             )
+          end,
+        })
+        vim.api.nvim_create_autocmd("User", {
+          pattern = "MiniFilesActionRename",
+          callback = function(event)
+            Snacks.rename.on_rename_file(event.data.from, event.data.to)
           end,
         })
       end)
