@@ -2,11 +2,18 @@ return {
   {
     'folke/trouble.nvim',
     event = 'VeryLazy',
-    config = true,
+    opts = {
+      pinned = true,
+      win = {
+        size = 0.25,
+        position = 'right',
+        type = 'split'
+      },
+    },
     keys = {
       {
-        '<leader>de',
-        '<cmd>Trouble diagnostics toggle focus=true<CR>',
+        'gre',
+        '<cmd>Trouble diagnostics toggle<CR>',
         noremap = true,
         desc = 'Trouble diagnostics'
       }
@@ -17,6 +24,7 @@ return {
     event = 'VeryLazy',
     dependencies = {
       'folke/snacks.nvim',
+      'folke/trouble.nvim',
       'saghen/blink.cmp',
     },
     config = function()
@@ -83,66 +91,44 @@ return {
         callback = function(ev)
           local bufnr = ev.buf
           local client = vim.lsp.get_client_by_id(ev.data.client_id)
-          vim.api.nvim_command('au BufWritePre <buffer> lua vim.lsp.buf.format { async = false }')
+          if not client then
+            return
+          end
           vim.keymap.set(
             'n',
             'K',
             vim.lsp.buf.hover,
-            { buffer = ev.buf, noremap = true, silent = true, desc = 'LSP hover' }
+            { buffer = ev.buf, noremap = true, silent = true, desc = 'vim.lsp.buf.hover()' }
           )
           vim.keymap.set(
             'n',
-            '<leader>rn',
-            vim.lsp.buf.rename,
-            { buffer = ev.buf, noremap = true, silent = true, desc = 'LSP Rename' }
-          )
-          vim.keymap.set(
-            { 'n', 'v' },
-            '<leader>da',
-            vim.lsp.buf.code_action,
-            { buffer = ev.buf, noremap = true, silent = true, desc = 'LSP code action' }
+            'grt',
+            '<cmd>Trouble lsp toggle focus=true <CR>',
+            { buffer = ev.buf, noremap = true, silent = true, desc = 'Trouble LSP ' }
           )
           vim.keymap.set(
             'n',
-            '<leader>df',
-            function() Snacks.picker.lsp_definitions() end,
-            { buffer = ev.buf, noremap = true, silent = true, desc = 'LSP definitions' }
+            'grs',
+            '<cmd>Trouble lsp_document_symbols toggle win.position=left <CR>',
+            { buffer = ev.buf, noremap = true, silent = true, desc = 'Trouble LSP symbols' }
           )
           vim.keymap.set(
             'n',
-            '<leader>di',
-            function() Snacks.picker.lsp_implementations() end,
-            { buffer = ev.buf, noremap = true, silent = true, desc = 'LSP implementations' }
-          )
-          vim.keymap.set(
-            'n',
-            '<leader>dr',
-            function() Snacks.picker.lsp_references() end,
-            { buffer = ev.buf, noremap = true, silent = true, desc = 'LSP references' }
-          )
-          vim.keymap.set(
-            'n',
-            '<leader>dl',
+            'grl',
             vim.lsp.codelens.run,
-            { buffer = ev.buf, noremap = true, silent = true, desc = 'LSP codelens' }
+            { buffer = ev.buf, noremap = true, silent = true, desc = 'vim.lsp.codelens.run()' }
           )
-          vim.keymap.set('n', '<leader>dh', function()
+          vim.keymap.set('n', 'grh', function()
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
           end, { buffer = ev.buf, noremap = true, silent = true, desc = 'LSP hints toggle' })
           -- Auto-refresh code lenses
-          if not client then
-            return
-          end
-          local group = vim.api.nvim_create_augroup(string.format('lsp-%s-%s', bufnr, client.id), {})
           if client.server_capabilities.codeLensProvider then
             vim.api.nvim_create_autocmd({ 'InsertLeave', 'BufWritePost', 'TextChanged' }, {
-              group = group,
-              callback = function()
-                vim.lsp.codelens.refresh { bufnr = bufnr }
-              end,
+              group = vim.api.nvim_create_augroup(string.format('lsp-%s-%s', bufnr, client.id), {}),
+              callback = function() vim.lsp.codelens.refresh { bufnr = bufnr } end,
               buffer = bufnr,
             })
-            vim.lsp.codelens.refresh { bufnr = bufnr }
+            vim.lsp.codelens.refresh()
           end
         end,
       })

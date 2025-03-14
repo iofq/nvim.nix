@@ -76,7 +76,6 @@ return {
           "mini",
           "treesitter",
           "neogit",
-          "aerial"
         }
       },
     },
@@ -100,14 +99,14 @@ return {
       on_attach = function()
         local gs = package.loaded.gitsigns
         vim.keymap.set('n', '<leader>gg', gs.preview_hunk, { desc = 'git preview hunk' })
-        vim.keymap.set('n', '<leader>gr', gs.reset_hunk, { desc = 'git reset hunk' })
+        vim.keymap.set('n', '<leader>gR', gs.reset_hunk, { desc = 'git reset hunk' })
         vim.keymap.set('n', '<leader>gs', gs.stage_hunk, { desc = 'git stage hunk' })
         vim.keymap.set('n', '<leader>gd', gs.diffthis, { desc = 'git diff hunk' })
         vim.keymap.set('n', '<leader>gb', function()
           gs.blame_line { full = true }
         end, { desc = 'git blame_line current' })
         vim.keymap.set('n', '<leader>gB', gs.toggle_current_line_blame, { desc = 'git blame_line toggle' })
-        vim.keymap.set('v', '<leader>gr', function()
+        vim.keymap.set('v', '<leader>gR', function()
           gs.reset_hunk { vim.fn.line('.'), vim.fn.line('v') }
         end, { desc = 'git reset hunk' })
 
@@ -132,25 +131,6 @@ return {
           return '<Ignore>'
         end, { expr = true })
       end,
-    },
-  },
-  {
-    'stevearc/aerial.nvim',
-    cmd = { 'AerialToggle' },
-    keys = {
-      { '<leader>na', '<cmd>AerialToggle<CR>', desc = 'Toggle aerial' },
-    },
-    opts = {
-      backends = {
-        "lsp",
-        "treesitter",
-        "markdown"
-      },
-      filter_kind = false,
-      layout = {
-        default_direction = "left",
-      },
-      autojump = true,
     },
   },
   {
