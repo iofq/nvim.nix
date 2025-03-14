@@ -22,16 +22,14 @@ return {
             return vim.o.columns >= 120 and "telescope" or "vertical"
           end
         },
-        picker = {
-          sources = {
-            files = { hidden = true },
-            grep = { hidden = true },
-            explorer = { hidden = true },
-            git_files = { untracked = true },
-            smart = {
-              multi = { "buffers", "recent", "files", "git_files" }
-            }
-          },
+        sources = {
+          files = { hidden = true },
+          grep = { hidden = true },
+          explorer = { hidden = true },
+          git_files = { untracked = true },
+          smart = {
+            multi = { "buffers", "recent", "files", "git_files" }
+          }
         },
         actions = {
           trouble_open = function(...)
@@ -42,8 +40,7 @@ return {
           input = {
             keys = {
               ["wq"] = { "close", mode = "i" },
-              ["<c-t>"] = { "trouble_open", mode = { "n", "i" },
-              },
+              ["<c-t>"] = { "trouble_open", mode = { "n", "i" } },
             }
           },
           list = {
@@ -63,7 +60,6 @@ return {
       { '\\\\',   function() Snacks.terminal.toggle('$SHELL') end, mode = { "n", "t" }, noremap = true,         desc = 'terminal open' },
       { 'm',      function() Snacks.words.jump(1, true) end,       noremap = true,      desc = 'next reference' },
       { 'M',      function() Snacks.words.jump(-1, true) end,      noremap = true,      desc = 'next reference' },
-      { '\\z',    function() Snacks.dim() end,                     noremap = true,      desc = 'dim' },
       {
         '<leader>ff',
         function() Snacks.picker.smart() end,
@@ -81,7 +77,7 @@ return {
       },
       {
         '<leader>fg',
-        function() Snacks.picker.files() end,
+        function() Snacks.picker.git_files() end,
         { noremap = true, silent = true, desc = 'Fuzzy find files' }
       },
       {
@@ -100,9 +96,14 @@ return {
         { noremap = true, silent = true, desc = 'See all pickers' }
       },
       {
-        '<leader>fd',
-        function() Snacks.picker.diagnostics() end,
-        { noremap = true, silent = true, desc = 'Pick diagnostics' }
+        '<leader>f\'',
+        function() Snacks.picker.marks() end,
+        { noremap = true, silent = true, desc = 'Pick marks' }
+      },
+      {
+        '<leader>fu',
+        function() Snacks.picker.undo() end,
+        { noremap = true, silent = true, desc = 'Pick undotree' }
       },
       {
         '<leader>fj',

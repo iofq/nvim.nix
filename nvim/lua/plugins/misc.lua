@@ -54,17 +54,6 @@ return {
     },
   },
   {
-    'mbbill/undotree',
-    event = 'VeryLazy',
-    keys = {
-      { '<leader>nu', '<cmd>UndotreeToggle<cr>' },
-    },
-    config = function()
-      vim.g.undotree_ShortIndicators = 1
-      vim.g.undotree_SetFocusWhenToggle = 1
-    end,
-  },
-  {
     'EdenEast/nightfox.nvim',
     lazy = false,
     priority = 1000,

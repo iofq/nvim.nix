@@ -40,7 +40,6 @@ with final.pkgs.lib; let
     scope-nvim
     snacks-nvim
     trouble-nvim
-    undotree
     yanky-nvim
   ];
 
