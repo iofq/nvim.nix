@@ -12,7 +12,8 @@ return {
       vim.api.nvim_set_hl(0, 'EyelinerSecondary', { underline = true })
     end,
   },
-  { 'tiagovla/scope.nvim', event = 'VeryLazy', config = true },
+  { 'tiagovla/scope.nvim',                       event = 'VeryLazy', config = true },
+  { 'MeanderingProgrammer/render-markdown.nvim', event = 'VeryLazy', config = true },
   {
     'sindrets/diffview.nvim',
     event = 'VeryLazy',
