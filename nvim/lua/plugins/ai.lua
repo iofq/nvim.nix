@@ -2,32 +2,19 @@ return {
   {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
-    keys = {
-      {
-        'M-\\',
-        '<cmd>Copilot panel<CR>',
-        noremap = true,
-        desc = 'Copilot panel'
-      }
-    },
     opts = {
       panel = {
         enabled = true,
-        auto_refresh = true,
+        auto_refresh = false,
         keymap = {
           jump_prev = "<C-p>",
           jump_next = "<C-n>",
           accept = "<C-y>",
+          toggle = "<M-CR>"
         }
       },
       suggestion = {
-        enabled = true,
-        auto_trigger = true,
-        hide_during_completion = true,
-        keymap = {
-          accept = "<M-]>",
-          next = "<M-[>",
-        },
+        enabled = false,
       },
       completion = {
         documentation = {
@@ -52,10 +39,12 @@ return {
         python = true,
         ruby = true,
         sh = true,
+        bash = true,
+        javascript = true,
         puppet = true,
         yaml = true,
         markdown = true,
-        ["."] = false,
+        ["*"] = false,
       }
     }
   },

@@ -29,7 +29,12 @@ return {
     },
     config = function()
       local lspconfig = require('lspconfig')
-      local capabilities = require("blink.cmp").get_lsp_capabilities()
+      local capabilities = vim.tbl_deep_extend(
+        'force',
+        {},
+        require("blink.cmp").get_lsp_capabilities(),
+        vim.lsp.protocol.make_client_capabilities()
+      )
       lspconfig.gopls.setup {
         capabilities = capabilities,
         settings = {
@@ -96,12 +101,6 @@ return {
           end
           vim.keymap.set(
             'n',
-            'K',
-            vim.lsp.buf.hover,
-            { buffer = ev.buf, noremap = true, silent = true, desc = 'vim.lsp.buf.hover()' }
-          )
-          vim.keymap.set(
-            'n',
             'grt',
             '<cmd>Trouble lsp toggle focus=true <CR>',
             { buffer = ev.buf, noremap = true, silent = true, desc = 'Trouble LSP ' }
@@ -111,6 +110,12 @@ return {
             'grs',
             '<cmd>Trouble lsp_document_symbols toggle win.position=left <CR>',
             { buffer = ev.buf, noremap = true, silent = true, desc = 'Trouble LSP symbols' }
+          )
+          vim.keymap.set(
+            'n',
+            'grd',
+            '<cmd>Trouble lsp_definitions toggle win.position=left <CR>',
+            { buffer = ev.buf, noremap = true, silent = true, desc = 'Trouble LSP definition' }
           )
           vim.keymap.set(
             'n',
@@ -138,6 +143,9 @@ return {
   {
     'stevearc/conform.nvim',
     event = 'VeryLazy',
+    keys = {
+      { "\\f", function() require("conform").format({}) end, mode = { "n", "x" } },
+    },
     opts = {
       notify_no_formatters = false,
       formatters_by_ft = {
@@ -145,7 +153,7 @@ return {
         puppet = { "puppet-lint" },
         ['*'] = { 'trim_whitespace' }
       },
-      format_on_save = {
+      default_format_opts = {
         timeout_ms = 500,
         lsp_format = "last",
       },
