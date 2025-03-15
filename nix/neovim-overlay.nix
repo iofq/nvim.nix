@@ -13,15 +13,16 @@ with final.pkgs.lib; let
 
   all-plugins = with pkgs.vimPlugins; [
     blink-cmp
+    blink-copilot
     blink-ripgrep-nvim
     codecompanion-nvim
     conform-nvim
     copilot-lua
+    copilot-vim
     diffview-nvim
     eyeliner-nvim
     friendly-snippets
     gitsigns-nvim
-    hunk-nvim
     lazy-nvim
     luasnip
     mini-nvim
@@ -60,7 +61,6 @@ with final.pkgs.lib; let
     nil
     phpactor
     python312Packages.jedi-language-server
-    ruby-lsp
 
     #other
     jujutsu

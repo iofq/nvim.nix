@@ -57,7 +57,7 @@ return {
     end,
     keys = {
       { '<C-\\>', function() Snacks.terminal.toggle() end,         mode = { "n", "t" }, noremap = true,         desc = 'terminal open' },
-      { '\\\\',   function() Snacks.terminal.toggle('$SHELL') end, mode = { "n", "t" }, noremap = true,         desc = 'terminal open' },
+      { '<C-/>',   function() Snacks.terminal.toggle('$SHELL') end, mode = { "n", "t" }, noremap = true,         desc = 'terminal open' },
       { 'm',      function() Snacks.words.jump(1, true) end,       noremap = true,      desc = 'next reference' },
       { 'M',      function() Snacks.words.jump(-1, true) end,      noremap = true,      desc = 'next reference' },
       {

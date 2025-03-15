@@ -2,49 +2,9 @@ return {
   {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
-    keys = {
-      {
-        'M-\\',
-        '<cmd>Copilot panel<CR>',
-        noremap = true,
-        desc = 'Copilot panel'
-      }
-    },
     opts = {
-      panel = {
-        enabled = true,
-        auto_refresh = true,
-        keymap = {
-          jump_prev = "<C-p>",
-          jump_next = "<C-n>",
-          accept = "<C-y>",
-        }
-      },
-      suggestion = {
-        enabled = true,
-        auto_trigger = true,
-        hide_during_completion = true,
-        keymap = {
-          accept = "<M-]>",
-          next = "<M-[>",
-        },
-      },
-      completion = {
-        documentation = {
-          auto_show = true,
-        },
-        list = {
-          selection = {
-            preselect = false,
-            auto_insert = true,
-          }
-        },
-        accept = {
-          auto_brackets = {
-            enabled = true
-          }
-        },
-      },
+      panel = { enabled = false, },
+      suggestion = { enabled = false, },
       filetypes = {
         go = true,
         lua = true,
@@ -52,12 +12,33 @@ return {
         python = true,
         ruby = true,
         sh = true,
+        bash = true,
+        javascript = true,
         puppet = true,
         yaml = true,
         markdown = true,
-        ["."] = false,
+        ["*"] = false,
       }
     }
+  },
+  {
+    "github/copilot.vim",
+    cmd = "Copilot",
+    event = "BufWinEnter",
+    init = function()
+      vim.g.copilot_no_maps = true
+    end,
+    config = function()
+      -- Block the normal Copilot suggestions
+      vim.api.nvim_create_augroup("github_copilot", { clear = true })
+      vim.api.nvim_create_autocmd({ "FileType", "BufUnload" }, {
+        group = "github_copilot",
+        callback = function(args)
+          vim.fn["copilot#On" .. args.event]()
+        end,
+      })
+      vim.fn["copilot#OnFileType"]()
+    end,
   },
   {
     "olimorris/codecompanion.nvim",

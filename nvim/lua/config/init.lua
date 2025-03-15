@@ -1,6 +1,7 @@
 vim.opt.autowrite = true
 vim.opt.backspace = 'indent,eol,start'
 vim.opt.confirm = true
+vim.opt.clipboard = "unnamedplus"
 vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
 vim.opt.expandtab = true          -- insert tabs as spaces
 vim.opt.inccommand = 'split'      -- incremental live completion
@@ -84,14 +85,10 @@ vim.keymap.set('n', 'gq', vim.cmd.bdelete, { noremap = true, silent = true })
 vim.keymap.set('n', 'gQ', '<cmd>%bd|e#<CR>', { noremap = true, silent = true })
 vim.keymap.set('n', '<S-l>', vim.cmd.bnext, { noremap = true, silent = true })
 vim.keymap.set('n', '<S-h>', vim.cmd.bprev, { noremap = true, silent = true })
-vim.keymap.set({ 'v', 'i' }, 'wq', '<esc>l', { noremap = true, silent = true })
+vim.keymap.set({ 'v', 'i', }, 'wq', '<esc>l', { noremap = true, silent = true })
 vim.keymap.set('v', "<", "<gv")
 vim.keymap.set('v', ">", ">gv")
-
--- clipboard
-vim.keymap.set({ 'n', 'v', 'x' }, '<leader>y', '"+y', { noremap = true, silent = true })
-vim.keymap.set('n', '<leader>yy', '"+yy', { noremap = true, silent = true })
-vim.keymap.set({ 'n', 'v', 'x' }, '<leader>p', '"+p', { noremap = true, silent = true })
+vim.keymap.set({ 'n', 'v', 'x' }, '<leader>x', '"d', { noremap = true, silent = true })
 
 -- resize splits if window got resized
 vim.api.nvim_create_autocmd({ "VimResized" }, {

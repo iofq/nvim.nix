@@ -9,7 +9,7 @@ return {
     event = 'VeryLazy',
     init = function()
       vim.api.nvim_set_hl(0, 'EyelinerPrimary', { underline = true })
-      vim.api.nvim_set_hl(0, 'EyelinerSecondary', { underline = true })
+      vim.api.nvim_set_hl(0, 'EyelinerSecondary', { underline = true, bold = true })
     end,
   },
   { 'tiagovla/scope.nvim',                       event = 'VeryLazy', config = true },
@@ -21,6 +21,12 @@ return {
       enhanced_diff_hl = true,
       default_args = {
         DiffviewOpen = { '--imply-local' },
+      },
+      view = {
+        merge_tool = {
+          layout = "diff4_mixed",
+          disable_diagnostics = true,
+        },
       },
       keymaps = {
         view = {
@@ -38,22 +44,22 @@ return {
       { '<leader>nb', vim.cmd.DiffviewOpen, noremap = true, desc = 'diffview open' }
     },
   },
-  -- {
-  --   'NeogitOrg/neogit',
-  --   opts = {
-  --     disable_builtin_notifications = true,
-  --     integrations = {
-  --       diffview = true,
-  --     },
-  --   },
-  --   keys = {
-  --     {
-  --       '<leader>ng',
-  --       function() require('neogit').open() end,
-  --       { noremap = true, silent = true, desc = 'Neogit' },
-  --     },
-  --   },
-  -- },
+  {
+    'NeogitOrg/neogit',
+    opts = {
+      disable_builtin_notifications = true,
+      integrations = {
+        diffview = true,
+      },
+    },
+    keys = {
+      {
+        '<leader>ng',
+        function() require('neogit').open() end,
+        { noremap = true, silent = true, desc = 'Neogit' },
+      },
+    },
+  },
   {
     'EdenEast/nightfox.nvim',
     lazy = false,
@@ -123,7 +129,6 @@ return {
       end,
     },
   },
-  { '/julienvincent/hunk.nvim', event = 'VeryLazy', opts = {} },
   {
     'gbprod/yanky.nvim',
     opts = {

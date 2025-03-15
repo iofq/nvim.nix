@@ -138,6 +138,9 @@ return {
   {
     'stevearc/conform.nvim',
     event = 'VeryLazy',
+    keys = {
+      { "\\f", function() require("conform").format({}) end, mode = { "n", "x" } },
+    },
     opts = {
       notify_no_formatters = false,
       formatters_by_ft = {
@@ -145,7 +148,7 @@ return {
         puppet = { "puppet-lint" },
         ['*'] = { 'trim_whitespace' }
       },
-      format_on_save = {
+      default_format_opts = {
         timeout_ms = 500,
         lsp_format = "last",
       },
