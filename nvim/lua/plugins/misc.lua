@@ -38,22 +38,22 @@ return {
       { '<leader>nb', vim.cmd.DiffviewOpen, noremap = true, desc = 'diffview open' }
     },
   },
-  {
-    'NeogitOrg/neogit',
-    opts = {
-      disable_builtin_notifications = true,
-      integrations = {
-        diffview = true,
-      },
-    },
-    keys = {
-      {
-        '<leader>ng',
-        function() require('neogit').open() end,
-        { noremap = true, silent = true, desc = 'Neogit' },
-      },
-    },
-  },
+  -- {
+  --   'NeogitOrg/neogit',
+  --   opts = {
+  --     disable_builtin_notifications = true,
+  --     integrations = {
+  --       diffview = true,
+  --     },
+  --   },
+  --   keys = {
+  --     {
+  --       '<leader>ng',
+  --       function() require('neogit').open() end,
+  --       { noremap = true, silent = true, desc = 'Neogit' },
+  --     },
+  --   },
+  -- },
   {
     'EdenEast/nightfox.nvim',
     lazy = false,
@@ -123,6 +123,7 @@ return {
       end,
     },
   },
+  { '/julienvincent/hunk.nvim', event = 'VeryLazy', opts = {} },
   {
     'gbprod/yanky.nvim',
     opts = {

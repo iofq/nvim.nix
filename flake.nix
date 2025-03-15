@@ -19,15 +19,12 @@
     gen-luarc,
     ...
   }: let
-    supportedSystems = [
-      "x86_64-linux"
-      "aarch64-linux"
-      "x86_64-darwin"
-      "aarch64-darwin"
-    ];
+    systems = builtins.attrNames nixpkgs.legacyPackages;
+
+    # This is where the Neovim derivation is built.
     neovim-overlay = import ./nix/neovim-overlay.nix {inherit inputs;};
   in
-    flake-utils.lib.eachSystem supportedSystems (system: let
+    flake-utils.lib.eachSystem systems (system: let
       pkgs = import nixpkgs {
         inherit system;
         overlays = [
@@ -43,9 +40,12 @@
           nil
           stylua
           luajitPackages.luacheck
+          nvim-dev
         ];
         shellHook = ''
           ln -fs ${pkgs.nvim-luarc-json} .luarc.json
+          # allow quick iteration of lua configs
+          ln -Tfns $PWD/nvim ~/.config/nvim-dev
         '';
       };
     in {

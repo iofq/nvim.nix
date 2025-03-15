@@ -21,6 +21,7 @@ with final.pkgs.lib; let
     eyeliner-nvim
     friendly-snippets
     gitsigns-nvim
+    hunk-nvim
     lazy-nvim
     luasnip
     mini-nvim
@@ -83,6 +84,17 @@ in {
     ];
   };
 
+  # This is meant to be used within a devshell.
+  # Instead of loading the lua Neovim configuration from
+  # the Nix store, it is loaded from $XDG_CONFIG_HOME/nvim-dev
+  nvim-dev = mkNeovim {
+    plugins = all-plugins;
+    extraPackages = basePackages ++ extraPackages;
+    appName = "nvim-dev";
+    wrapRc = false;
+  };
+
+  # This can be symlinked in the devShell's shellHook
   nvim-luarc-json = final.mk-luarc-json {
     plugins = all-plugins;
   };

@@ -34,6 +34,7 @@ with lib;
     # if the appName is something different than "nvim"
     viAlias ? appName == "nvim", # Add a "vi" binary to the build output as an alias?
     vimAlias ? appName == "nvim", # Add a "vim" binary to the build output as an alias?
+    wrapRc ? true,
   }: let
     # This is the structure of a plugin definition.
     # Each plugin in the `plugins` argument list can also be defined as this attrset
@@ -176,7 +177,7 @@ with lib;
           + extraMakeWrapperLuaCArgs
           + " "
           + extraMakeWrapperLuaArgs;
-        wrapRc = true;
+        wrapRc = wrapRc;
       });
 
     isCustomAppName = appName != null && appName != "nvim";
