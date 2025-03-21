@@ -1,5 +1,4 @@
 return {
-  { 'fang2hou/blink-copilot' },
   {
     'saghen/blink.cmp',
     event = 'VeryLazy',

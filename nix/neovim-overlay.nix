@@ -18,7 +18,6 @@ with final.pkgs.lib; let
     codecompanion-nvim
     conform-nvim
     copilot-lua
-    copilot-vim
     diffview-nvim
     eyeliner-nvim
     friendly-snippets
