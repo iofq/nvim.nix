@@ -3,27 +3,37 @@ return {
     'nvim-treesitter/nvim-treesitter',
     event = 'VeryLazy',
     dependencies = {
-      'nvim-treesitter/nvim-treesitter-context',
+      {
+        'nvim-treesitter/nvim-treesitter-context',
+        opts = {
+          max_lines = 2,
+          min_window_height = 50,
+        }
+      },
       'nvim-treesitter/nvim-treesitter-textobjects',
+      {
+        'aaronik/treewalker.nvim',
+        keys = {
+          { "<leader>wj", '<cmd>Treewalker Down<cr>',  silent = true, desc = 'Down (Treewalker)' },
+          { "<leader>wk", '<cmd>Treewalker Up<cr>',    silent = true, desc = 'Up (Treewalker)' },
+          { "<leader>wh", '<cmd>Treewalker Left<cr>',  silent = true, desc = 'Left (Treewalker)' },
+          { "<leader>wl", '<cmd>Treewalker Right<cr>', silent = true, desc = 'Right (Treewalker)' },
+          { "<leader>w<C-J>", '<cmd>Treewalker SwapDown<cr>',  silent = true, desc = 'SwapDown (Treewalker)' },
+          { "<leader>w<C-K>", '<cmd>Treewalker SwapUp<cr>',    silent = true, desc = 'SwapUp (Treewalker)' },
+          { "<leader>w<C-H>", '<cmd>Treewalker SwapLeft<cr>',  silent = true, desc = 'SwapLeft (Treewalker)' },
+          { "<leader>w<C-L>", '<cmd>Treewalker SwapRight<cr>', silent = true, desc = 'SwapRight (Treewalker)' },
+        }
+      }
     },
     config = function()
       require('nvim-treesitter.configs').setup {
         ensure_installed = {},
+        auto_install = false,
         highlight = {
           enable = true,
-          disable = function(_, buf)
-            local max_filesize = 100 * 1024 -- 100 KiB
-            local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-            if ok and stats and stats.size > max_filesize then
-              return true
-            end
-          end,
           additional_vim_regex_highlighting = false,
         },
         indent = {
-          enable = true,
-        },
-        autopairs = {
           enable = true,
         },
         matchup = {
@@ -32,16 +42,12 @@ return {
         textobjects = {
           select = {
             enable = true,
-            lookahead = true,
             keymaps = {
               ['af'] = '@function.outer',
               ['if'] = '@function.inner',
-              ['aa'] = '@statement.outer',
               ['ia'] = '@parameter.inner',
               ["ik"] = "@assignment.lhs",
-              ["ak"] = "@assignment.inner",
               ["iv"] = "@assignment.rhs",
-              ["av"] = "@assignment.outer",
             },
           },
           move = {
@@ -49,21 +55,21 @@ return {
             goto_next_start = {
               [']a'] = '@parameter.inner',
               [']f'] = '@function.outer',
-              [']]'] = '@block.inner',
+              [']]'] = '@block.outer',
             },
             goto_previous_start = {
               ['[a'] = '@parameter.inner',
               ['[f'] = '@function.outer',
-              ['[['] = '@block.inner',
+              ['[['] = '@block.outer',
             },
           },
           swap = {
             enable = true,
             swap_next = {
-              ['s]'] = '@parameter.inner',
+              ['a]'] = '@parameter.inner',
             },
             swap_previous = {
-              ['s['] = '@parameter.inner',
+              ['a['] = '@parameter.inner',
             },
           },
         },
@@ -77,10 +83,6 @@ return {
         },
       }
 
-      require('treesitter-context').setup {
-        max_lines = 2,
-        min_window_height = 50,
-      }
     end,
   },
 }

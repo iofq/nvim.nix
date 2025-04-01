@@ -62,6 +62,8 @@ return {
             { mode = 'n', keys = '"' },
             { mode = 'n', keys = '<C-w>' },
             { mode = 'n', keys = 'z' },
+            { mode = 'n', keys = ']' },
+            { mode = 'n', keys = '[' },
           },
           window = {
             config = { width = 'auto', },
@@ -72,6 +74,14 @@ return {
             miniclue.gen_clues.registers(),
             miniclue.gen_clues.windows(),
             miniclue.gen_clues.z(),
+            { mode = 'n',          keys = '<Leader>wj', postkeys = '<Leader>w',   desc = 'TS Down' },
+            { mode = 'n',          keys = '<Leader>wk', postkeys = '<Leader>w',   desc = 'TS Up' },
+            { mode = 'n',          keys = '<Leader>wh', postkeys = '<Leader>w',   desc = 'TS Left' },
+            { mode = 'n',          keys = '<Leader>wl', postkeys = '<Leader>w',   desc = 'TS Right' },
+            { mode = 'n',          keys = '<Leader>w<C-J>', postkeys = '<Leader>w',   desc = 'Swap TS Down' },
+            { mode = 'n',          keys = '<Leader>w<C-K>', postkeys = '<Leader>w',   desc = 'Swap TS Up' },
+            { mode = 'n',          keys = '<Leader>w<C-H>', postkeys = '<Leader>w',   desc = 'Swap TS Left' },
+            { mode = 'n',          keys = '<Leader>w<C-L>', postkeys = '<Leader>w',   desc = 'Swap TS Right' },
           },
         }
 

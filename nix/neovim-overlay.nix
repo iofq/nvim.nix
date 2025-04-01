@@ -35,10 +35,12 @@ with final.pkgs.lib; let
     nvim-treesitter-context
     nvim-treesitter-textobjects
     nvim-treesitter.withAllGrammars
+    refactoring-nvim
     render-markdown-nvim
     scope-nvim
     snacks-nvim
     trouble-nvim
+    treewalker-nvim
     yanky-nvim
   ];
 
