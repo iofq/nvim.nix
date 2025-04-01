@@ -146,4 +146,5 @@ return {
       { "<leader>fp", "<cmd>YankyRingHistory<cr>", mode = { "n", "x" }, noremap = true, silent = true, desc = 'Pick history (yanky.nvim)' }
     },
   },
+  { 'ThePrimeagen/refactoring.nvim', event = 'VeryLazy', config = true }
 }
