@@ -59,7 +59,7 @@ with final.pkgs.lib; let
     lua-language-server
     nil
     phpactor
-    python312Packages.jedi-language-server
+    basedpyright
 
     #other
     jujutsu

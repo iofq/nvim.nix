@@ -4,6 +4,8 @@ return {
     event = 'VeryLazy',
     opts = {
       pinned = true,
+      focus = true,
+      auto_jump = true,
       win = {
         size = 0.25,
         position = 'right',
@@ -16,6 +18,12 @@ return {
         '<cmd>Trouble diagnostics toggle<CR>',
         noremap = true,
         desc = 'Trouble diagnostics'
+      },
+      {
+        '<leader>nt',
+        '<cmd>Trouble qflist<CR>',
+        noremap = true,
+        desc = 'Trouble qflist'
       }
     }
   },
@@ -62,10 +70,9 @@ return {
           },
         },
       }
-      lspconfig.jedi_language_server.setup { capabilities = capabilities }
+      lspconfig.basedpyright.setup { capabilities = capabilities }
       lspconfig.nil_ls.setup { capabilities = capabilities }
       lspconfig.phpactor.setup { capabilities = capabilities }
-      lspconfig.ruby_lsp.setup { capabilities = capabilities }
       lspconfig.lua_ls.setup {
         capabilities = capabilities,
         on_init = function(client)
@@ -119,6 +126,12 @@ return {
           )
           vim.keymap.set(
             'n',
+            'grr',
+            '<cmd>Trouble lsp_references toggle win.position=left <CR>',
+            { buffer = ev.buf, noremap = true, silent = true, desc = 'Trouble LSP definition' }
+          )
+          vim.keymap.set(
+            'n',
             'grl',
             vim.lsp.codelens.run,
             { buffer = ev.buf, noremap = true, silent = true, desc = 'vim.lsp.codelens.run()' }
@@ -144,7 +157,8 @@ return {
     'stevearc/conform.nvim',
     event = 'VeryLazy',
     keys = {
-      { "\\f", function() require("conform").format({}) end, mode = { "n", "x" } },
+      { "\\f", function() vim.b.disable_autoformat = not vim.b.disable_autoformat end, mode = { "n", "x" } },
+      { "\\F", function() vim.g.disable_autoformat = not vim.g.disable_autoformat end, mode = { "n", "x" } },
     },
     opts = {
       notify_no_formatters = false,
@@ -153,6 +167,13 @@ return {
         puppet = { "puppet-lint" },
         ['*'] = { 'trim_whitespace' }
       },
+      format_on_save = function(bufnr)
+        -- Disable with a global or buffer-local variable
+        if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+          return
+        end
+        return { timeout_ms = 500, lsp_format = "last" }
+      end,
       default_format_opts = {
         timeout_ms = 500,
         lsp_format = "last",
