@@ -26,15 +26,12 @@ with final.pkgs.lib; let
     neogit
     nightfox-nvim
     nvim-autopairs
-    # nvim-dap
-    # nvim-dap-go
-    # nvim-dap-ui
     nvim-lint
     nvim-lspconfig
-    # nvim-nio
     nvim-treesitter-context
     nvim-treesitter-textobjects
     nvim-treesitter.withAllGrammars
+    oil-nvim
     refactoring-nvim
     render-markdown-nvim
     scope-nvim

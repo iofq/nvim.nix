@@ -4,47 +4,10 @@ return {
     cmd = 'Copilot',
     opts = {
       panel = {
-        enabled = true,
-        auto_refresh = false,
-        keymap = {
-          jump_prev = '<C-p>',
-          jump_next = '<C-n>',
-          accept = '<C-y>',
-          toggle = '<M-CR>',
-        },
+        enabled = false,
       },
       suggestion = {
         enabled = false,
-      },
-      completion = {
-        documentation = {
-          auto_show = true,
-        },
-        list = {
-          selection = {
-            preselect = false,
-            auto_insert = true,
-          },
-        },
-        accept = {
-          auto_brackets = {
-            enabled = true,
-          },
-        },
-      },
-      filetypes = {
-        go = true,
-        lua = true,
-        php = true,
-        python = true,
-        ruby = true,
-        sh = true,
-        bash = true,
-        javascript = true,
-        puppet = true,
-        yaml = true,
-        markdown = true,
-        ['*'] = false,
       },
     },
   },
@@ -61,14 +24,17 @@ return {
         chat = { adapter = 'copilot' },
         inline = { adapter = 'copilot' },
       },
+      adapters = {
+        ollama = function()
+          return require('codecompanion.adapters').extend('ollama', {
+            schema = {
+              model = { default = 'qwen2.5-coder:1.5b' },
+            },
+          })
+        end,
+      },
     },
     keys = {
-      {
-        '<leader>ac',
-        '<cmd>CodeCompanionChat Toggle<CR>',
-        noremap = true,
-        desc = 'Copilot chat toggle',
-      },
       {
         '<leader>as',
         '<cmd>CodeCompanionChat Add<CR>',
