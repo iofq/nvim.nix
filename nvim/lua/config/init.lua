@@ -21,7 +21,7 @@ vim.opt.winborder = 'single'
 
 -- Switch tab length on the fly
 vim.keymap.set('n', '\\t', function()
-  vim.o.tabstop = vim.o.tabstop == 2 and 4 or 2
+  vim.o.tabstop = vim.o.tabstop == 8 and 2 or 2 * vim.o.tabstop
 end, { silent = true, desc = 'toggle tabstop' })
 
 -- autocmd
@@ -45,9 +45,7 @@ vim.api.nvim_create_autocmd('BufWinEnter', {
 
 -- Configure Neovim diagnostic messages
 vim.diagnostic.config {
-  virtual_text = {
-    current_line = true,
-  },
+  virtual_text = true,
   underline = true,
   severity_sort = true,
   float = {
@@ -58,28 +56,28 @@ vim.diagnostic.config {
 }
 
 -- random keymaps
-vim.keymap.set({ 'v', 'i', }, 'wq', '<esc>l', { noremap = true, silent = true })
+vim.keymap.set({ 'v', 'i' }, 'wq', '<esc>l', { noremap = true, silent = true })
 vim.keymap.set('n', '<S-l>', vim.cmd.bnext, { noremap = true, silent = true })
 vim.keymap.set('n', '<S-h>', vim.cmd.bprev, { noremap = true, silent = true })
-vim.keymap.set('v', "<", "<gv")
-vim.keymap.set('v', ">", ">gv")
+vim.keymap.set('v', '<', '<gv')
+vim.keymap.set('v', '>', '>gv')
 
 -- resize splits if window got resized
-vim.api.nvim_create_autocmd({ "VimResized" }, {
-  group = vim.api.nvim_create_augroup("resize_splits", { clear = true }),
+vim.api.nvim_create_autocmd({ 'VimResized' }, {
+  group = vim.api.nvim_create_augroup('resize_splits', { clear = true }),
   callback = function()
     local current_tab = vim.fn.tabpagenr()
-    vim.cmd("tabdo wincmd =")
-    vim.cmd("tabnext " .. current_tab)
+    vim.cmd('tabdo wincmd =')
+    vim.cmd('tabnext ' .. current_tab)
   end,
 })
 
 -- Check if we need to reload the file when it changed
-vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
-  group = vim.api.nvim_create_augroup("check_reload", { clear = true }),
+vim.api.nvim_create_autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
+  group = vim.api.nvim_create_augroup('check_reload', { clear = true }),
   callback = function()
-    if vim.o.buftype ~= "nofile" then
-      vim.cmd("checktime")
+    if vim.o.buftype ~= 'nofile' then
+      vim.cmd('checktime')
     end
   end,
 })

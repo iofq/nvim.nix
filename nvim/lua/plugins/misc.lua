@@ -24,24 +24,24 @@ return {
       },
       view = {
         merge_tool = {
-          layout = "diff4_mixed",
+          layout = 'diff4_mixed',
           disable_diagnostics = true,
         },
       },
       keymaps = {
         view = {
-          { { "n" }, "q", vim.cmd.DiffviewClose, { desc = "Close Diffview" } },
+          { { 'n' }, 'q', vim.cmd.DiffviewClose, { desc = 'Close Diffview' } },
         },
         file_panel = {
-          { { "n" }, "q", vim.cmd.DiffviewClose, { desc = "Close Diffview" } },
+          { { 'n' }, 'q', vim.cmd.DiffviewClose, { desc = 'Close Diffview' } },
         },
         file_history_panel = {
-          { { "n" }, "q", vim.cmd.DiffviewClose, { desc = "Close Diffview" } },
-        }
-      }
+          { { 'n' }, 'q', vim.cmd.DiffviewClose, { desc = 'Close Diffview' } },
+        },
+      },
     },
     keys = {
-      { '<leader>nb', vim.cmd.DiffviewOpen, noremap = true, desc = 'diffview open' }
+      { '<leader>nb', vim.cmd.DiffviewOpen, noremap = true, desc = 'diffview open' },
     },
   },
   {
@@ -55,7 +55,9 @@ return {
     keys = {
       {
         '<leader>ng',
-        function() require('neogit').open() end,
+        function()
+          require('neogit').open()
+        end,
         { noremap = true, silent = true, desc = 'Neogit' },
       },
     },
@@ -69,10 +71,10 @@ return {
         transparent = true,
         terminal_colors = true,
         modules = {
-          "mini",
-          "treesitter",
-          "neogit",
-        }
+          'mini',
+          'treesitter',
+          'neogit',
+        },
       },
     },
     config = function(_, opts)
@@ -112,7 +114,7 @@ return {
             return ']c'
           end
           vim.schedule(function()
-            gs.next_hunk({ target = 'all' })
+            gs.next_hunk { target = 'all' }
           end)
           return '<Ignore>'
         end, { expr = true })
@@ -122,7 +124,7 @@ return {
             return '[c'
           end
           vim.schedule(function()
-            gs.prev_hunk({ target = 'all' })
+            gs.prev_hunk { target = 'all' }
           end)
           return '<Ignore>'
         end, { expr = true })
@@ -133,18 +135,25 @@ return {
     'gbprod/yanky.nvim',
     opts = {
       ring = {
-        storage = "memory",
+        storage = 'memory',
       },
       picker = {
         select = {
-          action = require('yanky.picker').actions.set_register("+")
-        }
-      }
+          action = require('yanky.picker').actions.set_register('+'),
+        },
+      },
     },
     keys = {
-      { "y",          "<Plug>(YankyYank)",         mode = { "n", "x" } },
-      { "<leader>fp", "<cmd>YankyRingHistory<cr>", mode = { "n", "x" }, noremap = true, silent = true, desc = 'Pick history (yanky.nvim)' }
+      { 'y', '<Plug>(YankyYank)', mode = { 'n', 'x' } },
+      {
+        '<leader>fp',
+        '<cmd>YankyRingHistory<cr>',
+        mode = { 'n', 'x' },
+        noremap = true,
+        silent = true,
+        desc = 'Pick history (yanky.nvim)',
+      },
     },
   },
-  { 'ThePrimeagen/refactoring.nvim', event = 'VeryLazy', config = true }
+  { 'ThePrimeagen/refactoring.nvim', event = 'VeryLazy', config = true },
 }

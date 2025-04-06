@@ -9,7 +9,7 @@ return {
       win = {
         size = 0.25,
         position = 'right',
-        type = 'split'
+        type = 'split',
       },
     },
     keys = {
@@ -17,15 +17,15 @@ return {
         'gre',
         '<cmd>Trouble diagnostics toggle<CR>',
         noremap = true,
-        desc = 'Trouble diagnostics'
+        desc = 'Trouble diagnostics',
       },
       {
         '<leader>nt',
         '<cmd>Trouble qflist<CR>',
         noremap = true,
-        desc = 'Trouble qflist'
-      }
-    }
+        desc = 'Trouble qflist',
+      },
+    },
   },
   {
     'neovim/nvim-lspconfig',
@@ -40,7 +40,7 @@ return {
       local capabilities = vim.tbl_deep_extend(
         'force',
         {},
-        require("blink.cmp").get_lsp_capabilities(),
+        require('blink.cmp').get_lsp_capabilities(),
         vim.lsp.protocol.make_client_capabilities()
       )
       lspconfig.gopls.setup {
@@ -121,13 +121,13 @@ return {
           vim.keymap.set(
             'n',
             'grd',
-            '<cmd>Trouble lsp_definitions toggle win.position=left <CR>',
+            '<cmd>Trouble lsp_definitions toggle <CR>',
             { buffer = ev.buf, noremap = true, silent = true, desc = 'Trouble LSP definition' }
           )
           vim.keymap.set(
             'n',
             'grr',
-            '<cmd>Trouble lsp_references toggle win.position=left <CR>',
+            '<cmd>Trouble lsp_references toggle <CR>',
             { buffer = ev.buf, noremap = true, silent = true, desc = 'Trouble LSP definition' }
           )
           vim.keymap.set(
@@ -143,7 +143,9 @@ return {
           if client.server_capabilities.codeLensProvider then
             vim.api.nvim_create_autocmd({ 'InsertLeave', 'BufWritePost', 'TextChanged' }, {
               group = vim.api.nvim_create_augroup(string.format('lsp-%s-%s', bufnr, client.id), {}),
-              callback = function() vim.lsp.codelens.refresh { bufnr = bufnr } end,
+              callback = function()
+                vim.lsp.codelens.refresh { bufnr = bufnr }
+              end,
               buffer = bufnr,
             })
             vim.lsp.codelens.refresh()
@@ -157,26 +159,38 @@ return {
     'stevearc/conform.nvim',
     event = 'VeryLazy',
     keys = {
-      { "\\f", function() vim.b.disable_autoformat = not vim.b.disable_autoformat end, mode = { "n", "x" } },
-      { "\\F", function() vim.g.disable_autoformat = not vim.g.disable_autoformat end, mode = { "n", "x" } },
+      {
+        '\\f',
+        function()
+          vim.b.disable_autoformat = not vim.b.disable_autoformat
+        end,
+        mode = { 'n', 'x' },
+      },
+      {
+        '\\F',
+        function()
+          vim.g.disable_autoformat = not vim.g.disable_autoformat
+        end,
+        mode = { 'n', 'x' },
+      },
     },
     opts = {
       notify_no_formatters = false,
       formatters_by_ft = {
-        json = { "jq" },
-        puppet = { "puppet-lint" },
-        ['*'] = { 'trim_whitespace' }
+        json = { 'jq' },
+        puppet = { 'puppet-lint' },
+        ['*'] = { 'trim_whitespace' },
       },
       format_on_save = function(bufnr)
         -- Disable with a global or buffer-local variable
         if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
           return
         end
-        return { timeout_ms = 500, lsp_format = "last" }
+        return { timeout_ms = 500, lsp_format = 'last' }
       end,
       default_format_opts = {
         timeout_ms = 500,
-        lsp_format = "last",
+        lsp_format = 'last',
       },
     },
   },
@@ -184,15 +198,15 @@ return {
     'mfussenegger/nvim-lint',
     event = 'VeryLazy',
     config = function()
-      require("lint").linters_by_ft = {
-        docker = { "hadolint" },
-        yaml = { "yamllint" },
-        puppet = { "puppet-lint" },
-        sh = { "shellcheck" },
-        go = { "golangcilint" },
-        ruby = { "rubocop" },
+      require('lint').linters_by_ft = {
+        docker = { 'hadolint' },
+        yaml = { 'yamllint' },
+        puppet = { 'puppet-lint' },
+        sh = { 'shellcheck' },
+        go = { 'golangcilint' },
+        ruby = { 'rubocop' },
       }
       vim.api.nvim_command('au BufWritePost * lua require("lint").try_lint()')
-    end
+    end,
   },
 }

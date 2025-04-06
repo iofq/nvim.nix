@@ -1,17 +1,17 @@
 return {
   {
-    "zbirenbaum/copilot.lua",
-    cmd = "Copilot",
+    'zbirenbaum/copilot.lua',
+    cmd = 'Copilot',
     opts = {
       panel = {
         enabled = true,
         auto_refresh = false,
         keymap = {
-          jump_prev = "<C-p>",
-          jump_next = "<C-n>",
-          accept = "<C-y>",
-          toggle = "<M-CR>"
-        }
+          jump_prev = '<C-p>',
+          jump_next = '<C-n>',
+          accept = '<C-y>',
+          toggle = '<M-CR>',
+        },
       },
       suggestion = {
         enabled = false,
@@ -24,12 +24,12 @@ return {
           selection = {
             preselect = false,
             auto_insert = true,
-          }
+          },
         },
         accept = {
           auto_brackets = {
-            enabled = true
-          }
+            enabled = true,
+          },
         },
       },
       filetypes = {
@@ -44,22 +44,22 @@ return {
         puppet = true,
         yaml = true,
         markdown = true,
-        ["*"] = false,
-      }
-    }
+        ['*'] = false,
+      },
+    },
   },
   {
-    "olimorris/codecompanion.nvim",
-    cmd = "Copilot",
+    'olimorris/codecompanion.nvim',
+    cmd = 'Copilot',
     dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
-      "zbirenbaum/copilot.lua",
+      'nvim-lua/plenary.nvim',
+      'nvim-treesitter/nvim-treesitter',
+      'zbirenbaum/copilot.lua',
     },
     opts = {
       strategies = {
-        chat = { adapter = "copilot", },
-        inline = { adapter = "copilot", },
+        chat = { adapter = 'copilot' },
+        inline = { adapter = 'copilot' },
       },
     },
     keys = {
@@ -67,23 +67,22 @@ return {
         '<leader>ac',
         '<cmd>CodeCompanionChat Toggle<CR>',
         noremap = true,
-        desc = 'Copilot chat toggle'
+        desc = 'Copilot chat toggle',
       },
       {
         '<leader>as',
         '<cmd>CodeCompanionChat Add<CR>',
         noremap = true,
-        mode = { "n", "v" },
-        desc = 'Copilot chat add selection'
+        mode = { 'n', 'v' },
+        desc = 'Copilot chat add selection',
       },
       {
         '<leader>aa',
         '<cmd>CodeCompanionActions<CR>',
         noremap = true,
-        mode = { "n", "v" },
-        desc = 'Copilot inline'
-      }
-    }
-
+        mode = { 'n', 'v' },
+        desc = 'Copilot inline',
+      },
+    },
   },
 }

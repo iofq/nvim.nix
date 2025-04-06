@@ -2,13 +2,13 @@ return {
   {
     'echasnovski/mini.nvim',
     lazy = false,
-    dependencies = { "folke/snacks.nvim" },
+    dependencies = { 'folke/snacks.nvim' },
     config = function()
-      require('mini.basics').setup { mappings = { windows = true, }, }
-      require('mini.tabline').setup({
+      require('mini.basics').setup { mappings = { windows = true } }
+      require('mini.tabline').setup {
         tabpage_section = 'right',
         show_icons = false,
-      })
+      }
       require('mini.statusline').setup {
         content = {
           active = function()
@@ -48,9 +48,10 @@ return {
         require('mini.align').setup()
         require('mini.bracketed').setup()
         require('mini.icons').setup()
-        require('mini.jump2d').setup({ mappings = { start_jumping = '<leader>S' } });
+        require('mini.jump2d').setup { mappings = { start_jumping = '<leader>S' } }
+        require('mini.operators').setup()
         require('mini.surround').setup()
-        require('mini.splitjoin').setup { detect = { separator = '[,;\n]' }, }
+        require('mini.splitjoin').setup { detect = { separator = '[,;\n]' } }
 
         local miniclue = require('mini.clue')
         miniclue.setup {
@@ -66,7 +67,7 @@ return {
             { mode = 'n', keys = '[' },
           },
           window = {
-            config = { width = 'auto', },
+            config = { width = 'auto' },
           },
           clues = {
             miniclue.gen_clues.g(),
@@ -74,14 +75,14 @@ return {
             miniclue.gen_clues.registers(),
             miniclue.gen_clues.windows(),
             miniclue.gen_clues.z(),
-            { mode = 'n',          keys = '<Leader>wj', postkeys = '<Leader>w',   desc = 'TS Down' },
-            { mode = 'n',          keys = '<Leader>wk', postkeys = '<Leader>w',   desc = 'TS Up' },
-            { mode = 'n',          keys = '<Leader>wh', postkeys = '<Leader>w',   desc = 'TS Left' },
-            { mode = 'n',          keys = '<Leader>wl', postkeys = '<Leader>w',   desc = 'TS Right' },
-            { mode = 'n',          keys = '<Leader>w<C-J>', postkeys = '<Leader>w',   desc = 'Swap TS Down' },
-            { mode = 'n',          keys = '<Leader>w<C-K>', postkeys = '<Leader>w',   desc = 'Swap TS Up' },
-            { mode = 'n',          keys = '<Leader>w<C-H>', postkeys = '<Leader>w',   desc = 'Swap TS Left' },
-            { mode = 'n',          keys = '<Leader>w<C-L>', postkeys = '<Leader>w',   desc = 'Swap TS Right' },
+            { mode = 'n', keys = '<Leader>wj',     postkeys = '<Leader>w', desc = 'TS Down' },
+            { mode = 'n', keys = '<Leader>wk',     postkeys = '<Leader>w', desc = 'TS Up' },
+            { mode = 'n', keys = '<Leader>wh',     postkeys = '<Leader>w', desc = 'TS Left' },
+            { mode = 'n', keys = '<Leader>wl',     postkeys = '<Leader>w', desc = 'TS Right' },
+            { mode = 'n', keys = '<Leader>w<C-J>', postkeys = '<Leader>w', desc = 'Swap TS Down' },
+            { mode = 'n', keys = '<Leader>w<C-K>', postkeys = '<Leader>w', desc = 'Swap TS Up' },
+            { mode = 'n', keys = '<Leader>w<C-H>', postkeys = '<Leader>w', desc = 'Swap TS Left' },
+            { mode = 'n', keys = '<Leader>w<C-L>', postkeys = '<Leader>w', desc = 'Swap TS Right' },
           },
         }
 
@@ -103,54 +104,6 @@ return {
           },
         }
         vim.keymap.set('n', '<leader>nm', map.toggle, { noremap = true, desc = 'minimap open' })
-
-        local files = require("mini.files")
-        files.setup {
-          mappings = {
-            go_in_plus = "<CR>"
-          },
-          windows = {
-            preview = true,
-            width_focus = 30,
-            width_preview = 50,
-          }
-        }
-        vim.keymap.set('n', '<leader>c', files.open, { noremap = true, desc = 'minifiles open' })
-        vim.api.nvim_create_autocmd("User", {
-          pattern = "MiniFilesBufferCreate",
-          callback = function(args)
-            vim.keymap.set(
-              "n",
-              "<leader>c",
-              function()
-                files.synchronize()
-                files.close()
-              end,
-              { buffer = args.data.buf_id }
-            )
-          end,
-        })
-        vim.api.nvim_create_autocmd("User", {
-          pattern = "MiniFilesBufferCreate",
-          callback = function(args)
-            vim.keymap.set(
-              "n",
-              "`",
-              function()
-                local cur_entry_path = MiniFiles.get_fs_entry().path
-                local cur_directory = vim.fs.dirname(cur_entry_path)
-                vim.fn.chdir(cur_directory)
-              end,
-              { buffer = args.data.buf_id }
-            )
-          end,
-        })
-        vim.api.nvim_create_autocmd("User", {
-          pattern = "MiniFilesActionRename",
-          callback = function(event)
-            Snacks.rename.on_rename_file(event.data.from, event.data.to)
-          end,
-        })
       end)
     end,
   },

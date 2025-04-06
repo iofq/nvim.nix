@@ -33,7 +33,7 @@ return {
               auto_refresh = {
                 backward = false,
                 forward = true,
-              }
+              },
             },
           },
         },
