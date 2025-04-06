@@ -35,6 +35,7 @@ with final.pkgs.lib; let
     nvim-treesitter-context
     nvim-treesitter-textobjects
     nvim-treesitter.withAllGrammars
+    oil-nvim
     refactoring-nvim
     render-markdown-nvim
     scope-nvim

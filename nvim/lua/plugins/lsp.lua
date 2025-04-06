@@ -179,6 +179,8 @@ return {
       formatters_by_ft = {
         json = { 'jq' },
         puppet = { 'puppet-lint' },
+        lua = { 'stylua' },
+        python = { 'ruff' },
         ['*'] = { 'trim_whitespace' },
       },
       format_on_save = function(bufnr)

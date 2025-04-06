@@ -1,8 +1,33 @@
 return {
   {
     'windwp/nvim-autopairs',
-    event = "InsertEnter",
-    config = true
+    event = 'InsertEnter',
+    config = true,
+  },
+  {
+    'stevearc/oil.nvim',
+    opts = {
+      watch_for_changes = true,
+      columns = {
+        'permissions',
+        'size',
+      },
+      view_options = {
+        show_hidden = true,
+      },
+      keymaps = {
+        ['wq'] = 'actions.close',
+      },
+    },
+    keys = {
+      {
+        '<leader>nc',
+        function()
+          require('oil').toggle_float()
+        end,
+        { noremap = true, silent = true },
+      },
+    },
   },
   {
     'jinh0/eyeliner.nvim',
