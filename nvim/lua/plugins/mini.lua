@@ -49,7 +49,11 @@ return {
         require('mini.bracketed').setup()
         require('mini.icons').setup()
         require('mini.jump2d').setup { mappings = { start_jumping = '<leader>S' } }
-        require('mini.operators').setup()
+        require('mini.operators').setup {
+          replace = {
+            prefix = "gR"
+          }
+        }
         require('mini.surround').setup()
         require('mini.splitjoin').setup { detect = { separator = '[,;\n]' } }
 
