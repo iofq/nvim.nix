@@ -20,7 +20,6 @@ with final.pkgs.lib; let
     copilot-lua
     diffview-nvim
     eyeliner-nvim
-    gitsigns-nvim
     lazy-nvim
     mini-nvim
     neogit

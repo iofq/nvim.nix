@@ -124,91 +124,115 @@ return {
         function()
           Snacks.picker.smart()
         end,
-        { noremap = true, silent = true, desc = 'Fuzzy find files' },
+        noremap = true,
+        desc = 'Fuzzy find files',
       },
       {
         '<leader>fe',
         function()
           Snacks.explorer()
         end,
-        { noremap = true, silent = true, desc = 'snacks explorer' },
+        noremap = true,
+        desc = 'snacks explorer',
       },
       {
         '<leader>fE',
         function()
           Snacks.explorer.reveal()
         end,
-        { noremap = true, silent = true, desc = 'snacks explorer open current file' },
+        noremap = true,
+        silent = true,
+        desc = 'snacks explorer open current file',
       },
       {
         '<leader>fg',
         function()
           Snacks.picker.git_files()
         end,
-        { noremap = true, silent = true, desc = 'Fuzzy find files' },
+        noremap = true,
+        silent = true,
+        desc = 'Fuzzy find files',
       },
       {
         '<leader>fa',
         function()
           Snacks.picker.grep()
         end,
-        { noremap = true, silent = true, desc = 'Fuzzy find grep' },
+        noremap = true,
+        silent = true,
+        desc = 'Fuzzy find grep',
       },
       {
         '<leader>f8',
         function()
           Snacks.picker.grep_word()
         end,
-        { noremap = true, silent = true, desc = 'Fuzzy find grep word' },
+        noremap = true,
+        silent = true,
+        desc = 'Fuzzy find grep word',
       },
       {
         '<leader>f?',
         function()
           Snacks.picker.pickers()
         end,
-        { noremap = true, silent = true, desc = 'See all pickers' },
+        noremap = true,
+        silent = true,
+        desc = 'See all pickers',
       },
       {
         "<leader>f'",
         function()
           Snacks.picker.marks()
         end,
-        { noremap = true, silent = true, desc = 'Pick marks' },
+        noremap = true,
+        silent = true,
+        desc = 'Pick marks',
       },
       {
         '<leader>fu',
         function()
           Snacks.picker.undo()
         end,
-        { noremap = true, silent = true, desc = 'Pick undotree' },
+        noremap = true,
+        silent = true,
+        desc = 'Pick undotree',
       },
       {
         '<leader>fj',
         function()
           Snacks.picker.jumps()
         end,
-        { noremap = true, silent = true, desc = 'Pick jumps' },
+        noremap = true,
+        silent = true,
+        desc = 'Pick jumps',
       },
       {
         '<leader>f.',
         function()
           Snacks.picker.resume()
         end,
-        { noremap = true, silent = true, desc = 'Fuzzy find resume' },
+        noremap = true,
+        silent = true,
+        desc = 'Fuzzy find resume',
       },
       {
         '<leader><leader>',
         function()
           Snacks.picker.buffers()
         end,
-        { noremap = true, silent = true, desc = 'Fuzzy find buffers' },
+        noremap = true,
+        silent = true,
+        desc = 'Fuzzy find buffers',
       },
       {
         '<leader>fn',
         function()
           Snacks.picker.notifications()
         end,
-        { noremap = true, silent = true, desc = 'pick notifications' },
+        noremap = true,
+        silent = true,
+        desc = 'pick notifications',
       },
     },
   },

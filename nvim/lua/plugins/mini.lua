@@ -3,6 +3,44 @@ return {
     'echasnovski/mini.nvim',
     lazy = false,
     dependencies = { 'folke/snacks.nvim' },
+    keys = {
+      {
+        '<leader>gp',
+        function()
+          MiniDiff.toggle_overlay(0)
+        end,
+        noremap = true,
+        desc = 'git diff overlay',
+      },
+      {
+        '<leader>gr',
+        function()
+          return MiniDiff.operator('reset') .. 'gh'
+        end,
+        noremap = true,
+        desc = 'git diff reset',
+      },
+      {
+        '<leader>gd',
+        function()
+          return MiniGit.show_at_cursor()
+        end,
+        noremap = true,
+        desc = 'git show at cursor',
+      },
+      {
+        '<leader>gb',
+        '<Cmd>vert Git blame -- %<CR>',
+        noremap = true,
+        desc = 'git blame',
+      },
+      {
+        '<leader>gg',
+        ':Git ',
+        noremap = true,
+        desc = 'git command',
+      },
+    },
     config = function()
       require('mini.basics').setup { mappings = { windows = true } }
       require('mini.tabline').setup {
@@ -13,17 +51,10 @@ return {
         content = {
           active = function()
             local mode, mode_hl = MiniStatusline.section_mode {}
-            local git = function()
-              local g = vim.b.gitsigns_head
-              return (g == nil) and '' or g
-            end
-            local diff = function()
-              local g = vim.b.gitsigns_status
-              return (g == nil) and '' or g
-            end
+            local filename = MiniStatusline.section_filename { trunc_width = 140 }
+            local diff = MiniStatusline.section_diff { trunc_width = 75, icon = '' }
             local diagnostics = MiniStatusline.section_diagnostics { trunc_width = 75 }
             local lsp = MiniStatusline.section_lsp { trunc_width = 75 }
-            local filename = MiniStatusline.section_filename { trunc_width = 140 }
             local search = MiniStatusline.section_searchcount { trunc_width = 75 }
 
             return MiniStatusline.combine_groups {
@@ -31,7 +62,7 @@ return {
               '%<', -- Mark general truncate point
               { hl = 'MiniStatuslineFilename', strings = { filename } },
               '%=', -- End left alignment
-              { hl = 'MiniStatusDevinfo', strings = { git(), diff(), diagnostics, lsp } },
+              { hl = 'MiniStatusDevinfo', strings = { diff, diagnostics, lsp } },
               { hl = mode_hl,             strings = { search } },
             }
           end,
@@ -51,12 +82,29 @@ return {
         require('mini.jump2d').setup { mappings = { start_jumping = '<leader>S' } }
         require('mini.operators').setup {
           replace = {
-            prefix = "gR"
-          }
+            prefix = 'gR',
+          },
         }
+        require('mini.git').setup()
+        local align_blame = function(au_data)
+          if au_data.data.git_subcommand ~= 'blame' then
+            return
+          end
+
+          -- Align blame output with source
+          local win_src = au_data.data.win_source
+          vim.wo.wrap = false
+          vim.fn.winrestview { topline = vim.fn.line('w0', win_src) }
+          vim.api.nvim_win_set_cursor(0, { vim.fn.line('.', win_src), 0 })
+
+          -- Bind both windows so that they scroll together
+          vim.wo[win_src].scrollbind, vim.wo.scrollbind = true, true
+        end
+        vim.api.nvim_create_autocmd('User', { pattern = 'MiniGitCommandSplit', callback = align_blame })
+
         require('mini.surround').setup()
         require('mini.splitjoin').setup { detect = { separator = '[,;\n]' } }
-
+        require('mini.diff').setup { options = { wrap_goto = true } }
         local miniclue = require('mini.clue')
         miniclue.setup {
           triggers = {
@@ -99,12 +147,10 @@ return {
           integrations = {
             map.gen_integration.builtin_search(),
             map.gen_integration.diagnostic(),
-            map.gen_integration.gitsigns(),
+            map.gen_integration.diff(),
           },
           window = {
             show_integration_count = false,
-            winblend = 0,
-            width = 5,
           },
         }
         vim.keymap.set('n', '<leader>nm', map.toggle, { noremap = true, desc = 'minimap open' })
