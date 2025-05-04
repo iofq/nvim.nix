@@ -7,15 +7,26 @@ return {
       'fang2hou/blink-copilot',
     },
     opts = {
+      fuzzy = {
+        sorts = {
+          'exact',
+          'score',
+          'sort_text',
+        },
+      },
       sources = {
         default = {
           'lsp',
           'path',
+          'snippets',
           'omni',
           'ripgrep',
           'copilot',
         },
         providers = {
+          snippets = {
+            score_offset = -20,
+          },
           ripgrep = {
             module = 'blink-ripgrep',
             name = 'rg',
@@ -25,10 +36,10 @@ return {
           copilot = {
             module = 'blink-copilot',
             name = 'Copilot',
-            score_offset = 100,
+            score_offset = 10,
             async = true,
             opts = {
-              max_completions = 3,
+              max_completions = 2,
               debounce = 500,
               auto_refresh = {
                 backward = false,
@@ -63,7 +74,12 @@ return {
           show_on_keyword = true,
         },
       },
-      signature = { enabled = true },
+      signature = {
+        enabled = true,
+        trigger = {
+          show_on_insert = true,
+        },
+      },
     },
   },
 }

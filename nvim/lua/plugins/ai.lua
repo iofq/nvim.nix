@@ -18,6 +18,7 @@ return {
       'nvim-lua/plenary.nvim',
       'nvim-treesitter/nvim-treesitter',
       'zbirenbaum/copilot.lua',
+      'MeanderingProgrammer/render-markdown.nvim',
     },
     opts = {
       strategies = {

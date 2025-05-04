@@ -85,6 +85,13 @@ return {
             prefix = 'gR',
           },
         }
+        require('mini.pairs').setup {
+          modes = { insert = true, command = true, terminal = false },
+          skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
+          skip_ts = { 'string' },
+          skip_unbalanced = true,
+          markdown = true,
+        }
         require('mini.git').setup()
         local align_blame = function(au_data)
           if au_data.data.git_subcommand ~= 'blame' then
@@ -153,7 +160,15 @@ return {
             show_integration_count = false,
           },
         }
+
         vim.keymap.set('n', '<leader>nm', map.toggle, { noremap = true, desc = 'minimap open' })
+
+        local multi = require('mini.keymap').map_multistep
+        local combo = require('mini.keymap').map_combo
+
+        combo({ 'i', 'c', 'x', 's' }, 'wq', '<BS><BS><Esc>l')
+        multi({ 'i', 's' }, '<Tab>', { 'blink_accept', 'vimsnippet_next', 'jump_after_close', 'jump_after_tsnode' })
+        multi({ 'i', 's' }, '<S-Tab>', { 'vimsnippet_prev', 'jump_before_open', 'jump_before_tsnode' })
       end)
     end,
   },

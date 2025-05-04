@@ -1,10 +1,5 @@
 return {
   {
-    'windwp/nvim-autopairs',
-    event = 'InsertEnter',
-    config = true,
-  },
-  {
     'stevearc/oil.nvim',
     opts = {
       watch_for_changes = true,
@@ -37,8 +32,14 @@ return {
       vim.api.nvim_set_hl(0, 'EyelinerSecondary', { underline = true, bold = true })
     end,
   },
-  { 'tiagovla/scope.nvim',                       event = 'VeryLazy', config = true },
-  { 'MeanderingProgrammer/render-markdown.nvim', event = 'VeryLazy', config = true },
+  { 'tiagovla/scope.nvim',           event = 'VeryLazy', config = true },
+  {
+    'MeanderingProgrammer/render-markdown.nvim',
+    event = 'VeryLazy',
+    opts = {
+      ft = { 'markdown', 'codecompanion ' },
+    },
+  },
   {
     'sindrets/diffview.nvim',
     event = 'VeryLazy',
@@ -110,6 +111,7 @@ return {
       vim.api.nvim_set_hl(0, 'MiniDiffSignAdd', { fg = 'green', bold = true })
       vim.api.nvim_set_hl(0, 'MiniDiffSignDelete', { fg = 'red', bold = true })
       vim.api.nvim_set_hl(0, 'MiniDiffSignChange', { fg = 'green', bold = true })
+      vim.api.nvim_set_hl(0, 'BlinkCmpGhostText', { link = 'String' })
     end,
   },
   {

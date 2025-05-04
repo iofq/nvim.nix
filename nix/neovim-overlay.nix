@@ -11,6 +11,8 @@ with final.pkgs.lib; let
     };
   mkNeovim = pkgs.callPackage ./mkNeovim.nix { inherit pkgs-wrapNeovim; };
 
+  mini-nvim-git = mkNvimPlugin inputs.mini-nvim "mini.nvim";
+
   all-plugins = with pkgs.vimPlugins; [
     blink-cmp
     blink-copilot
@@ -20,11 +22,11 @@ with final.pkgs.lib; let
     copilot-lua
     diffview-nvim
     eyeliner-nvim
+    friendly-snippets
     lazy-nvim
-    mini-nvim
+    mini-nvim-git
     neogit
     nightfox-nvim
-    nvim-autopairs
     nvim-lint
     nvim-lspconfig
     nvim-treesitter-context

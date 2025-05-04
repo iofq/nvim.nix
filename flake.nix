@@ -10,6 +10,10 @@
       url = "github:mrcjkb/nix-gen-luarc-json";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    mini-nvim = {
+      url = "github:echasnovski/mini.nvim";
+      flake = false;
+    };
     # Add bleeding-edge plugins here.
     # They can be updated with `nix flake update` (make sure to commit the generated flake.lock)
     # wf-nvim = {
