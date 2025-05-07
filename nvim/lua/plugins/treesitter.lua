@@ -48,6 +48,7 @@ return {
               ['ia'] = '@parameter.inner',
               ['ik'] = '@assignment.lhs',
               ['iv'] = '@assignment.rhs',
+              ['is'] = { query = '@local.scope', query_group = 'locals', desc = 'Select language scope' },
             },
           },
           move = {
@@ -55,12 +56,12 @@ return {
             goto_next_start = {
               [']a'] = '@parameter.inner',
               [']f'] = '@function.outer',
-              [']]'] = '@block.outer',
+              ['}'] = '@statement.outer',
             },
             goto_previous_start = {
               ['[a'] = '@parameter.inner',
               ['[f'] = '@function.outer',
-              ['[['] = '@block.outer',
+              ['{'] = '@statement.outer',
             },
           },
           swap = {

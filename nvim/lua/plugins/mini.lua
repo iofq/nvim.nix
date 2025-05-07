@@ -1,3 +1,42 @@
+-- ripped from lazyvim
+local function setup_pairs(opts)
+  local pairs = require('mini.pairs')
+  pairs.setup(opts)
+  local open = pairs.open
+  pairs.open = function(pair, neigh_pattern)
+    if vim.fn.getcmdline() ~= '' then
+      return open(pair, neigh_pattern)
+    end
+    local o, c = pair:sub(1, 1), pair:sub(2, 2)
+    local line = vim.api.nvim_get_current_line()
+    local cursor = vim.api.nvim_win_get_cursor(0)
+    local next = line:sub(cursor[2] + 1, cursor[2] + 1)
+    local before = line:sub(1, cursor[2])
+    if opts.markdown and o == '`' and vim.bo.filetype == 'markdown' and before:match('^%s*``') then
+      return '`\n```' .. vim.api.nvim_replace_termcodes('<up>', true, true, true)
+    end
+    if opts.skip_next and next ~= '' and next:match(opts.skip_next) then
+      return o
+    end
+    if opts.skip_ts and #opts.skip_ts > 0 then
+      local ok, captures = pcall(vim.treesitter.get_captures_at_pos, 0, cursor[1] - 1, math.max(cursor[2] - 1, 0))
+      for _, capture in ipairs(ok and captures or {}) do
+        if vim.tbl_contains(opts.skip_ts, capture.capture) then
+          return o
+        end
+      end
+    end
+    if opts.skip_unbalanced and next == c and c ~= o then
+      local _, count_open = line:gsub(vim.pesc(pair:sub(1, 1)), '')
+      local _, count_close = line:gsub(vim.pesc(pair:sub(2, 2)), '')
+      if count_close > count_open then
+        return o
+      end
+    end
+    return open(pair, neigh_pattern)
+  end
+end
+
 return {
   {
     'echasnovski/mini.nvim',
@@ -11,34 +50,6 @@ return {
         end,
         noremap = true,
         desc = 'git diff overlay',
-      },
-      {
-        '<leader>gr',
-        function()
-          return MiniDiff.operator('reset') .. 'gh'
-        end,
-        noremap = true,
-        desc = 'git diff reset',
-      },
-      {
-        '<leader>gd',
-        function()
-          return MiniGit.show_at_cursor()
-        end,
-        noremap = true,
-        desc = 'git show at cursor',
-      },
-      {
-        '<leader>gb',
-        '<Cmd>vert Git blame -- %<CR>',
-        noremap = true,
-        desc = 'git blame',
-      },
-      {
-        '<leader>gg',
-        ':Git ',
-        noremap = true,
-        desc = 'git command',
       },
     },
     config = function()
@@ -85,29 +96,13 @@ return {
             prefix = 'gR',
           },
         }
-        require('mini.pairs').setup {
+        setup_pairs {
           modes = { insert = true, command = true, terminal = false },
           skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
           skip_ts = { 'string' },
           skip_unbalanced = true,
           markdown = true,
         }
-        require('mini.git').setup()
-        local align_blame = function(au_data)
-          if au_data.data.git_subcommand ~= 'blame' then
-            return
-          end
-
-          -- Align blame output with source
-          local win_src = au_data.data.win_source
-          vim.wo.wrap = false
-          vim.fn.winrestview { topline = vim.fn.line('w0', win_src) }
-          vim.api.nvim_win_set_cursor(0, { vim.fn.line('.', win_src), 0 })
-
-          -- Bind both windows so that they scroll together
-          vim.wo[win_src].scrollbind, vim.wo.scrollbind = true, true
-        end
-        vim.api.nvim_create_autocmd('User', { pattern = 'MiniGitCommandSplit', callback = align_blame })
 
         require('mini.surround').setup()
         require('mini.splitjoin').setup { detect = { separator = '[,;\n]' } }
@@ -160,15 +155,14 @@ return {
             show_integration_count = false,
           },
         }
-
         vim.keymap.set('n', '<leader>nm', map.toggle, { noremap = true, desc = 'minimap open' })
 
         local multi = require('mini.keymap').map_multistep
         local combo = require('mini.keymap').map_combo
 
-        combo({ 'i', 'c', 'x', 's' }, 'wq', '<BS><BS><Esc>l')
-        multi({ 'i', 's' }, '<Tab>', { 'blink_accept', 'vimsnippet_next', 'jump_after_close', 'jump_after_tsnode' })
-        multi({ 'i', 's' }, '<S-Tab>', { 'vimsnippet_prev', 'jump_before_open', 'jump_before_tsnode' })
+        combo({ 'v', 'r', 'i', 's' }, 'wq', '<BS><BS><Esc>l')
+        multi({ 'i', 's' }, '<Tab>', { 'blink_accept', 'vimsnippet_next' })
+        multi({ 'i', 's' }, '<S-Tab>', { 'vimsnippet_prev' })
       end)
     end,
   },

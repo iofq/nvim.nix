@@ -37,7 +37,7 @@ return {
     'MeanderingProgrammer/render-markdown.nvim',
     event = 'VeryLazy',
     opts = {
-      ft = { 'markdown', 'codecompanion ' },
+      ft = { 'markdown', 'codecompanion' },
     },
   },
   {
@@ -68,6 +68,13 @@ return {
     },
     keys = {
       { '<leader>nb', vim.cmd.DiffviewOpen, noremap = true, desc = 'diffview open' },
+      {
+        '<leader>nh',
+        vim.cmd.DiffviewFileHistory,
+        mode = { 'n', 'v' },
+        noremap = true,
+        desc = 'diffview history',
+      },
     },
   },
   {
@@ -100,6 +107,8 @@ return {
           'mini',
           'treesitter',
           'neogit',
+          'native_lsp',
+          'diagnostic',
         },
       },
     },
