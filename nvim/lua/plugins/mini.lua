@@ -159,10 +159,9 @@ return {
 
         local multi = require('mini.keymap').map_multistep
         local combo = require('mini.keymap').map_combo
-
-        combo({ 'v', 'r', 'i', 's' }, 'wq', '<BS><BS><Esc>l')
-        multi({ 'i', 's' }, '<Tab>', { 'blink_accept', 'vimsnippet_next' })
-        multi({ 'i', 's' }, '<S-Tab>', { 'vimsnippet_prev' })
+        combo({ 'v', 'i', 's' }, 'wq', '<BS><BS><Esc>l')
+        multi({ 'i', 's' }, '<Tab>', { 'vimsnippet_next', 'increase_indent' })
+        multi({ 'i', 's' }, '<S-Tab>', { 'vimsnippet_prev', 'decrease_indent' })
       end)
     end,
   },

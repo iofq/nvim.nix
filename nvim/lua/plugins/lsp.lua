@@ -31,20 +31,11 @@ return {
     'neovim/nvim-lspconfig',
     event = 'VeryLazy',
     dependencies = {
-      'folke/snacks.nvim',
       'folke/trouble.nvim',
       'saghen/blink.cmp',
     },
     config = function()
-      local lspconfig = require('lspconfig')
-      local capabilities = vim.tbl_deep_extend(
-        'force',
-        {},
-        require('blink.cmp').get_lsp_capabilities(),
-        vim.lsp.protocol.make_client_capabilities()
-      )
-      lspconfig.gopls.setup {
-        capabilities = capabilities,
+      vim.lsp.config('gopls', {
         settings = {
           gopls = {
             gofumpt = true,
@@ -69,12 +60,8 @@ return {
             staticcheck = true,
           },
         },
-      }
-      lspconfig.basedpyright.setup { capabilities = capabilities }
-      lspconfig.nil_ls.setup { capabilities = capabilities }
-      lspconfig.phpactor.setup { capabilities = capabilities }
-      lspconfig.lua_ls.setup {
-        capabilities = capabilities,
+      })
+      vim.lsp.config('lua_ls', {
         on_init = function(client)
           local path = client.workspace_folders[1].name
           if vim.loop.fs_stat(path .. '/.luarc.json') or vim.loop.fs_stat(path .. '/.luarc.jsonc') then
@@ -96,6 +83,13 @@ return {
         settings = {
           Lua = {},
         },
+      })
+
+      vim.lsp.enable {
+        'nil_ls',
+        'phpactor',
+        'gopls',
+        'lua_ls',
       }
 
       vim.api.nvim_create_autocmd('LspAttach', {
@@ -139,9 +133,10 @@ return {
           vim.keymap.set('n', 'grh', function()
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
           end, { buffer = ev.buf, noremap = true, silent = true, desc = 'LSP hints toggle' })
+
           -- Auto-refresh code lenses
           if client.server_capabilities.codeLensProvider then
-            vim.api.nvim_create_autocmd({ 'InsertLeave', 'BufWritePost', 'TextChanged' }, {
+            vim.api.nvim_create_autocmd({ 'InsertLeave', 'TextChanged' }, {
               group = vim.api.nvim_create_augroup(string.format('lsp-%s-%s', bufnr, client.id), {}),
               callback = function()
                 vim.lsp.codelens.refresh { bufnr = bufnr }
