@@ -5,6 +5,7 @@ return {
     dependencies = {
       'mikavilpas/blink-ripgrep.nvim',
       'fang2hou/blink-copilot',
+      'nvim-orgmode/orgmode',
     },
     opts = {
       fuzzy = {
@@ -22,6 +23,9 @@ return {
           'omni',
           'ripgrep',
           'copilot',
+        },
+        per_filetype = {
+          org = { 'orgmode' },
         },
         providers = {
           snippets = {
@@ -46,6 +50,11 @@ return {
                 forward = true,
               },
             },
+          },
+          orgmode = {
+            name = 'Orgmode',
+            module = 'orgmode.org.autocompletion.blink',
+            fallbacks = { 'buffer' },
           },
         },
       },

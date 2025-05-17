@@ -410,6 +410,22 @@
         "type": "github"
       }
     },
+    "nvim-orgmode": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1747057841,
+        "narHash": "sha256-mLT3XnsRyG+ZldB9NrR9tjmaznRAISBsdVTVPSjhj0A=",
+        "owner": "nvim-orgmode",
+        "repo": "orgmode",
+        "rev": "8ff03c75f3d808e3ea1765b7aba0fb4783a5a83f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nvim-orgmode",
+        "repo": "orgmode",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -417,7 +433,8 @@
         "mini-nvim": "mini-nvim",
         "neovim-nightly-overlay": "neovim-nightly-overlay",
         "nixpkgs": "nixpkgs_2",
-        "nixpkgs-uns": "nixpkgs-uns"
+        "nixpkgs-uns": "nixpkgs-uns",
+        "nvim-orgmode": "nvim-orgmode"
       }
     },
     "systems": {

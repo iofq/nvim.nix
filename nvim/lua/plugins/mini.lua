@@ -51,6 +51,26 @@ return {
         noremap = true,
         desc = 'git diff overlay',
       },
+      {
+        '<leader>gd',
+        function()
+          return MiniGit.show_at_cursor()
+        end,
+        noremap = true,
+        desc = 'git show at cursor',
+      },
+      {
+        '<leader>gb',
+        '<Cmd>Git blame -- %<CR>',
+        noremap = true,
+        desc = 'git blame',
+      },
+      {
+        '<leader>gg',
+        ':Git ',
+        noremap = true,
+        desc = 'git command',
+      },
     },
     config = function()
       require('mini.basics').setup { mappings = { windows = true } }
@@ -96,6 +116,7 @@ return {
             prefix = 'gR',
           },
         }
+        require('mini.git').setup()
         setup_pairs {
           modes = { insert = true, command = true, terminal = false },
           skip_next = [=[[%w%%%'%[%"%.%`%$]]=],

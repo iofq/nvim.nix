@@ -12,6 +12,7 @@ with final.pkgs.lib; let
   mkNeovim = pkgs.callPackage ./mkNeovim.nix { inherit pkgs-wrapNeovim; };
 
   mini-nvim-git = mkNvimPlugin inputs.mini-nvim "mini.nvim";
+  nvim-orgmode = mkNvimPlugin inputs.nvim-orgmode "orgmode";
 
   all-plugins = with pkgs.vimPlugins; [
     blink-cmp
@@ -29,9 +30,23 @@ with final.pkgs.lib; let
     nightfox-nvim
     nvim-lint
     nvim-lspconfig
+    nvim-orgmode
     nvim-treesitter-context
     nvim-treesitter-textobjects
-    nvim-treesitter.withAllGrammars
+    (nvim-treesitter.withPlugins (_:
+      nvim-treesitter.allGrammars ++
+      [(pkgs.tree-sitter.buildGrammar {
+        language = "org";
+        version = "2.0.1";
+        src = pkgs.fetchFromGitHub {
+          owner = "nvim-orgmode";
+          repo = "tree-sitter-org";
+          rev = "2.0.1";
+          hash = "sha256-k1g5+iyJvVWKOuAkFNaaKl42Xmmz9BN+vT0+IQ/4RQI=";
+        };
+        meta.homepage = "https://github.com/nvim-orgmode/tree-sitter-org";
+      })]
+    ))
     oil-nvim
     refactoring-nvim
     render-markdown-nvim

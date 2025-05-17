@@ -28,6 +28,7 @@ return {
     config = function()
       require('nvim-treesitter.configs').setup {
         ensure_installed = {},
+        ignore_install = { 'org' },
         auto_install = false,
         highlight = {
           enable = true,
@@ -56,12 +57,12 @@ return {
             goto_next_start = {
               [']a'] = '@parameter.inner',
               [']f'] = '@function.outer',
-              ['}'] = '@statement.outer',
+              [']]'] = '@statement.outer',
             },
             goto_previous_start = {
               ['[a'] = '@parameter.inner',
               ['[f'] = '@function.outer',
-              ['{'] = '@statement.outer',
+              ['[['] = '@statement.outer',
             },
           },
           swap = {
