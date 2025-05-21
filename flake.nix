@@ -14,10 +14,6 @@
       url = "github:echasnovski/mini.nvim";
       flake = false;
     };
-    nvim-orgmode = {
-      url = "github:nvim-orgmode/orgmode";
-      flake = false;
-    };
     # Add bleeding-edge plugins here.
     # They can be updated with `nix flake update` (make sure to commit the generated flake.lock)
     # wf-nvim = {
@@ -57,6 +53,7 @@
           stylua
           luajitPackages.luacheck
           nvim-dev
+          alejandra
         ];
         shellHook = ''
           # symlink the .luarc.json generated in the overlay

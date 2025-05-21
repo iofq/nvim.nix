@@ -79,7 +79,7 @@ return {
           enable = true,
           keymaps = {
             init_selection = '<CR>',
-            node_incremental = '<TAB>',
+            node_incremental = 'v',
             node_decremental = '<S-TAB>',
           },
         },

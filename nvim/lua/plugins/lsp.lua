@@ -176,6 +176,7 @@ return {
         puppet = { 'puppet-lint' },
         lua = { 'stylua' },
         python = { 'ruff' },
+        nix = { 'alejandra' },
         ['*'] = { 'trim_whitespace' },
       },
       format_on_save = function(bufnr)

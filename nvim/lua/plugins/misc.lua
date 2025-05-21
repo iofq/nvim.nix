@@ -118,6 +118,7 @@ return {
       vim.cmd('colorscheme terafox')
       vim.api.nvim_set_hl(0, 'StatusLine', { bg = 'none' })
       vim.api.nvim_set_hl(0, 'StatusLineNC', { bg = 'none' })
+      vim.api.nvim_set_hl(0, 'TablineFill', { bg = 'none' })
       vim.api.nvim_set_hl(0, 'MiniDiffSignAdd', { fg = 'green', bold = true })
       vim.api.nvim_set_hl(0, 'MiniDiffSignDelete', { fg = 'red', bold = true })
       vim.api.nvim_set_hl(0, 'MiniDiffSignChange', { fg = 'green', bold = true })
@@ -149,47 +150,4 @@ return {
     },
   },
   { 'ThePrimeagen/refactoring.nvim', event = 'VeryLazy', config = true },
-  {
-    'nvim-orgmode/orgmode',
-    event = 'VeryLazy',
-    ft = { 'org' },
-    dependencies = 'nvim-treesitter',
-    keys = {
-      {
-        '<leader>oR',
-        '<cmd>e ~/orgfiles/refile.org<CR>',
-        desc = 'open org refile',
-      },
-    },
-    config = function()
-      require('orgmode').setup {
-        org_agenda_files = '~/orgfiles/**/*',
-        org_default_notes_file = '~/orgfiles/refile.org',
-        org_todo_keywords = {
-          'TODO',
-          'IN_PROGRESS',
-          'BLOCKED',
-          '|',
-          'DONE',
-          'NOT DOING',
-        },
-        org_capture_templates = {
-          l = {
-            description = 'Work Log',
-            template = '* %?',
-            target = '~/orgfiles/worklog.org',
-          },
-        },
-      }
-      vim.api.nvim_create_autocmd('FileType', {
-        pattern = 'org',
-        callback = function()
-          vim.keymap.set({ 'n', 'i' }, '\\\\', '<cmd>lua require("orgmode").action("org_mappings.meta_return")<CR>', {
-            silent = true,
-            buffer = true,
-          })
-        end,
-      })
-    end,
-  },
 }

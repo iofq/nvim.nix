@@ -2,6 +2,7 @@ vim.opt.autowrite = true
 vim.opt.backspace = 'indent,eol,start'
 vim.opt.confirm = true
 vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
+vim.opt.cmdheight = 0
 vim.opt.diffopt = 'internal,filler,closeoff,inline:char'
 vim.opt.expandtab = true          -- insert tabs as spaces
 vim.opt.inccommand = 'split'      -- incremental live completion
@@ -61,6 +62,7 @@ vim.keymap.set('n', '<S-l>', vim.cmd.bnext, { noremap = true, silent = true })
 vim.keymap.set('n', '<S-h>', vim.cmd.bprev, { noremap = true, silent = true })
 vim.keymap.set('v', '<', '<gv')
 vim.keymap.set('v', '>', '>gv')
+vim.keymap.set('v', 'q:', '<Nop')
 
 -- resize splits if window got resized
 vim.api.nvim_create_autocmd({ 'VimResized' }, {
