@@ -1,5 +1,7 @@
 ## nvim.nix - personal Neovim config. First-class nix support, but doesn't sacrifice portability
 
+![neovim](./img.png?raw=true)
+
 ## Usage
 Try it out!
 ```bash
