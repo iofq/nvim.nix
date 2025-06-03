@@ -57,6 +57,23 @@ vim.diagnostic.config {
   },
 }
 
+-- Allow basic deletion in qflist
+vim.api.nvim_create_autocmd({ 'FileType' }, {
+  pattern = "qf",
+  callback = function()
+    vim.keymap.set({ "n", "i" }, 'dd', function()
+      local ln = vim.fn.line('.')
+      local qf = vim.fn.getqflist()
+      if #qf == 0 then return end
+      table.remove(qf, ln)
+      vim.fn.setqflist(qf, 'r')
+      vim.cmd('copen')
+      -- move cursor to stay at same index (or up one if at EOF)
+      vim.api.nvim_win_set_cursor(vim.fn.win_getid(), { ln < #qf and ln or math.max(ln - 1, 1), 0 })
+    end, { buffer = true })
+  end,
+})
+
 -- random keymaps
 vim.keymap.set({ 'v', 'i' }, 'wq', '<esc>l', { noremap = true, silent = true })
 vim.keymap.set('n', '<S-l>', vim.cmd.bnext, { noremap = true, silent = true })
