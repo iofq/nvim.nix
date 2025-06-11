@@ -92,9 +92,9 @@ return {
               '%<', -- Mark general truncate point
               { hl = 'MiniStatuslineFilename', strings = { '' } },
               '%=', -- End left alignment
-              { hl = 'MiniStatusDevinfo', strings = { diff, diagnostics, lsp } },
+              { hl = 'MiniStatusDevinfo',      strings = { diff, diagnostics, lsp } },
               { hl = 'MiniStatuslineFilename', strings = { search } },
-              { hl = mode_hl, strings = { mode } },
+              { hl = mode_hl,                  strings = { mode } },
             }
           end,
           inactive = function()
@@ -150,10 +150,10 @@ return {
             miniclue.gen_clues.registers(),
             miniclue.gen_clues.windows(),
             miniclue.gen_clues.z(),
-            { mode = 'n', keys = '<Leader>wj', postkeys = '<Leader>w', desc = 'TS Down' },
-            { mode = 'n', keys = '<Leader>wk', postkeys = '<Leader>w', desc = 'TS Up' },
-            { mode = 'n', keys = '<Leader>wh', postkeys = '<Leader>w', desc = 'TS Left' },
-            { mode = 'n', keys = '<Leader>wl', postkeys = '<Leader>w', desc = 'TS Right' },
+            { mode = 'n', keys = '<Leader>wj',     postkeys = '<Leader>w', desc = 'TS Down' },
+            { mode = 'n', keys = '<Leader>wk',     postkeys = '<Leader>w', desc = 'TS Up' },
+            { mode = 'n', keys = '<Leader>wh',     postkeys = '<Leader>w', desc = 'TS Left' },
+            { mode = 'n', keys = '<Leader>wl',     postkeys = '<Leader>w', desc = 'TS Right' },
             { mode = 'n', keys = '<Leader>w<C-J>', postkeys = '<Leader>w', desc = 'Swap TS Down' },
             { mode = 'n', keys = '<Leader>w<C-K>', postkeys = '<Leader>w', desc = 'Swap TS Up' },
             { mode = 'n', keys = '<Leader>w<C-H>', postkeys = '<Leader>w', desc = 'Swap TS Left' },
@@ -179,9 +179,8 @@ return {
         vim.keymap.set('n', '<leader>nm', map.toggle, { noremap = true, desc = 'minimap open' })
 
         local multi = require('mini.keymap').map_multistep
-        local combo = require('mini.keymap').map_combo
-        combo({ 'v', 'i', 's' }, 'wq', '<BS><BS><Esc>l')
-        multi({ 'i', 's' }, '<Tab>', { 'vimsnippet_next', 'increase_indent' })
+        multi({ 'i' }, '<BS>', { 'minipairs_bs' })
+        multi({ 'i', 's' }, '<Tab>', { 'blink_accept', 'vimsnippet_next', 'increase_indent' })
         multi({ 'i', 's' }, '<S-Tab>', { 'vimsnippet_prev', 'decrease_indent' })
       end)
     end,

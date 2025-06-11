@@ -17,7 +17,6 @@ with final.pkgs.lib; let
     blink-cmp
     blink-copilot
     blink-ripgrep-nvim
-    codecompanion-nvim
     conform-nvim
     copilot-lua
     diffview-nvim
@@ -25,7 +24,6 @@ with final.pkgs.lib; let
     friendly-snippets
     lazy-nvim
     mini-nvim-git
-    neogit
     nightfox-nvim
     nvim-lint
     nvim-lspconfig

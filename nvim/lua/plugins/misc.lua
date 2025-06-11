@@ -37,7 +37,7 @@ return {
     'MeanderingProgrammer/render-markdown.nvim',
     event = 'VeryLazy',
     opts = {
-      file_types = { 'markdown', 'codecompanion' },
+      file_types = { 'markdown' },
     },
   },
   {
@@ -74,24 +74,6 @@ return {
         mode = { 'n', 'v' },
         noremap = true,
         desc = 'diffview history',
-      },
-    },
-  },
-  {
-    'NeogitOrg/neogit',
-    opts = {
-      disable_builtin_notifications = true,
-      integrations = {
-        diffview = true,
-      },
-    },
-    keys = {
-      {
-        '<leader>ng',
-        function()
-          require('neogit').open()
-        end,
-        { noremap = true, silent = true, desc = 'Neogit' },
       },
     },
   },

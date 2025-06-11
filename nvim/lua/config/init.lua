@@ -58,6 +58,7 @@ vim.diagnostic.config {
 }
 
 -- random keymaps
+vim.keymap.set({ 'v', 'i' }, 'wq', '<esc>l', { noremap = true, silent = true })
 vim.keymap.set('n', '<S-l>', vim.cmd.bnext, { noremap = true, silent = true })
 vim.keymap.set('n', '<S-h>', vim.cmd.bprev, { noremap = true, silent = true })
 vim.keymap.set('v', '<', '<gv')
