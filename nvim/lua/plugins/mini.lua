@@ -61,7 +61,7 @@ return {
       },
       {
         '<leader>gb',
-        '<Cmd>Git blame -- %<CR>',
+        '<Cmd>vertical Git blame -- %<CR>',
         noremap = true,
         desc = 'git blame',
       },
@@ -70,6 +70,14 @@ return {
         ':Git ',
         noremap = true,
         desc = 'git command',
+      },
+      {
+        'S',
+        function()
+          MiniJump2d.start { spotter = MiniJump2d.gen_spotter.vimpattern() }
+        end,
+        noremap = true,
+        desc = 'mini jump',
       },
     },
     config = function()
@@ -92,7 +100,7 @@ return {
               '%<', -- Mark general truncate point
               { hl = 'MiniStatuslineFilename', strings = { '' } },
               '%=', -- End left alignment
-              { hl = 'MiniStatusDevinfo',      strings = { diff, diagnostics, lsp } },
+              { hl = 'MiniStatusDevinfo',      strings = { diagnostics, lsp } },
               { hl = 'MiniStatuslineFilename', strings = { search } },
               { hl = mode_hl,                  strings = { mode } },
             }
@@ -110,13 +118,24 @@ return {
         require('mini.align').setup()
         require('mini.bracketed').setup()
         require('mini.icons').setup()
-        require('mini.jump2d').setup { mappings = { start_jumping = '<leader>S' } }
-        require('mini.operators').setup {
-          replace = {
-            prefix = 'gR',
-          },
+        require('mini.jump2d').setup {
+          view = { n_steps_ahead = 1, dim = true },
         }
-        require('mini.git').setup()
+        require('mini.git').setup { command = { split = 'vertical' } }
+        -- Bind both windows so that they scroll together
+        local align_blame = function(au_data)
+          if au_data.data.git_subcommand ~= 'blame' then
+            return
+          end
+          local win_src = au_data.data.win_source
+          vim.wo.wrap = false
+          vim.fn.winrestview { topline = vim.fn.line('w0', win_src) }
+          vim.api.nvim_win_set_cursor(0, { vim.fn.line('.', win_src), 0 })
+          vim.wo[win_src].scrollbind, vim.wo.scrollbind = true, true
+        end
+
+        local au_opts = { pattern = 'MiniGitCommandSplit', callback = align_blame }
+        vim.api.nvim_create_autocmd('User', au_opts)
         setup_pairs {
           modes = { insert = true, command = true, terminal = false },
           skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
