@@ -49,6 +49,7 @@ with final.pkgs.lib; let
     puppet-lint
     yamllint
     jq
+    alejandra
 
     # LSPs
     gopls
