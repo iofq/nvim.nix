@@ -25,6 +25,7 @@ with final.pkgs.lib; let
     lazy-nvim
     mini-nvim-git
     nightfox-nvim
+    nvim-bqf
     nvim-lint
     nvim-lspconfig
     nvim-treesitter-context

@@ -32,13 +32,11 @@ return {
       vim.api.nvim_set_hl(0, 'EyelinerSecondary', { underline = true, bold = true })
     end,
   },
-  { 'tiagovla/scope.nvim',           event = 'VeryLazy', config = true },
+  { 'tiagovla/scope.nvim',   event = 'VeryLazy', config = true },
   {
     'MeanderingProgrammer/render-markdown.nvim',
     event = 'VeryLazy',
-    opts = {
-      file_types = { 'markdown' },
-    },
+    config = true,
   },
   {
     'sindrets/diffview.nvim',
@@ -131,5 +129,20 @@ return {
       },
     },
   },
-  { 'ThePrimeagen/refactoring.nvim', event = 'VeryLazy', config = true },
+  {
+    'ThePrimeagen/refactoring.nvim',
+    event = 'VeryLazy',
+    config = true,
+    keys = {
+      { '<leader>rv', '<cmd>Refactor inline_var<cr>dd', mode = { 'n', 'x' } },
+      {
+        '<leader>rr',
+        function()
+          require('refactoring').select_refactor { prefer_ex_cmd = true }
+        end,
+        mode = { 'n', 'x' },
+      },
+    },
+  },
+  { 'kevinhwang91/nvim-bqf', event = 'VeryLazy', config = true },
 }

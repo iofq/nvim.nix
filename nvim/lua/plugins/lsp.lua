@@ -19,12 +19,6 @@ return {
         noremap = true,
         desc = 'Trouble diagnostics',
       },
-      {
-        '<leader>nt',
-        '<cmd>Trouble qflist<CR>',
-        noremap = true,
-        desc = 'Trouble qflist',
-      },
     },
   },
   {
