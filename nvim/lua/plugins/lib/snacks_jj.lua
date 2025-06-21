@@ -23,7 +23,7 @@ function M.status()
           file = string.match(text, '{.-=>%s*(.-)}')
         end
 
-        local diff = vim.fn.system('jj diff ' .. file .. ' --no-pager --stat --git')
+        local diff = vim.fn.system('jj diff ' .. file .. ' --ignore-working-copy --no-pager --stat --git')
         table.insert(files, {
           text = text,
           file = file,
@@ -56,77 +56,64 @@ function M.status()
 end
 
 function M.revs()
-  local function jj_new()
-    return function(picker, item)
-      picker:close()
-      if item then
-        if not item.rev then
-          Snacks.notify.warn('No branch or commit found', { title = 'Snacks Picker' })
-          return
-        end
-        local cmd = { 'jj', 'new', '-r', item.rev }
-        Snacks.picker.util.cmd(cmd, function()
-          Snacks.notify('Checking out revision: ' .. item.rev, { title = 'Snacks Picker' })
-          vim.cmd.checktime()
-        end, { cwd = item.cwd })
+  local function jj_new(picker, item)
+    picker:close()
+    if item then
+      if not item.rev then
+        Snacks.notify.warn('No branch or commit found', { title = 'Snacks Picker' })
+        return
       end
+      local cmd = { 'jj', 'new', '-r', item.rev }
+      Snacks.picker.util.cmd(cmd, function()
+        Snacks.notify('Checking out revision: ' .. item.rev, { title = 'Snacks Picker' })
+        vim.cmd.checktime()
+      end, { cwd = item.cwd })
     end
   end
 
-  local function jj_rev_cmd(rev)
-    if rev ~= nil then
-      return vim.fn.system { 'jj', 'show', '--git', '-r', rev }
+  local function jj_rev_cmd(ctx)
+    if ctx.item.rev then
+      Snacks.picker.preview.cmd({ 'jj', 'show', '--ignore-working-copy', '--git', '-r', ctx.item.rev }, ctx)
     else
+      ctx.preview:reset()
       return 'No preview available.'
     end
   end
 
   local function jj_log(revset)
     if revset == nil then
-      revset = '-r @'
+      revset = '-r "ancestors(@,25)"'
     else
       revset = '-r ' .. revset
     end
     local status_raw = vim.fn.system(
-      'jj log '
+      'jj log --ignore-working-copy '
       .. revset
       ..
-      ' --template \'if(root, format_root_commit(self), label(if(current_working_copy, "working_copy"), concat( format_short_commit_header(self) ++ " ", separate(" ", if(empty, label("empty", "(empty)")), if(description, description.first_line(), label(if(empty, "empty"), description_placeholder),),) ++ "\n",),))\''
+      ' --template \'if(root, format_root_commit(self), label(if(current_working_copy, "working_copy"), concat(separate(" ", self.change_id().shortest(8), self.bookmarks()), " | ", if(empty, label("empty", "(empty)")), if(description, description.first_line(), label(if(empty, "empty"), description_placeholder),),) ++ "\n",),)\''
     )
     local lines = {}
 
     for line in status_raw:gmatch('[^\r\n]+') do
-      local sign, rev, description = string.match(line, '(.)%s*(%a+)(.*)')
+      local sign, rev = string.match(line, '(.)%s(%a+)%s.*')
       table.insert(lines, {
         text = line,
-        file = line,
         sign = sign,
         rev = rev,
-        hl = 'SnacksPickerGitMsg',
-        description = description,
-        diff = jj_rev_cmd(rev),
       })
     end
 
     return lines
   end
 
-  local lines = jj_log('::@')
-
   Snacks.picker.pick {
     source = 'jj_revs',
-    items = lines,
+    layout = 'ivy',
     format = 'text',
     title = 'jj log',
-    confirm = jj_new(),
-    preview = function(ctx)
-      if ctx.item.file then
-        Snacks.picker.preview.diff(ctx)
-      else
-        ctx.preview:reset()
-        ctx.preview:set_title('No rev found')
-      end
-    end,
+    items = jj_log(),
+    confirm = jj_new,
+    preview = jj_rev_cmd,
   }
 end
 

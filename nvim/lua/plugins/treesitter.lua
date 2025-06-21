@@ -11,19 +11,6 @@ return {
         },
       },
       'nvim-treesitter/nvim-treesitter-textobjects',
-      {
-        'aaronik/treewalker.nvim',
-        keys = {
-          { '<leader>wj',     '<cmd>Treewalker Down<cr>',      silent = true, desc = 'Down (Treewalker)' },
-          { '<leader>wk',     '<cmd>Treewalker Up<cr>',        silent = true, desc = 'Up (Treewalker)' },
-          { '<leader>wh',     '<cmd>Treewalker Left<cr>',      silent = true, desc = 'Left (Treewalker)' },
-          { '<leader>wl',     '<cmd>Treewalker Right<cr>',     silent = true, desc = 'Right (Treewalker)' },
-          { '<leader>w<C-J>', '<cmd>Treewalker SwapDown<cr>',  silent = true, desc = 'SwapDown (Treewalker)' },
-          { '<leader>w<C-K>', '<cmd>Treewalker SwapUp<cr>',    silent = true, desc = 'SwapUp (Treewalker)' },
-          { '<leader>w<C-H>', '<cmd>Treewalker SwapLeft<cr>',  silent = true, desc = 'SwapLeft (Treewalker)' },
-          { '<leader>w<C-L>', '<cmd>Treewalker SwapRight<cr>', silent = true, desc = 'SwapRight (Treewalker)' },
-        },
-      },
     },
     config = function()
       require('nvim-treesitter.configs').setup {

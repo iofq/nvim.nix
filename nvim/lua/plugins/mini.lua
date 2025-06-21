@@ -41,7 +41,6 @@ return {
   {
     'echasnovski/mini.nvim',
     lazy = false,
-    dependencies = { 'folke/snacks.nvim' },
     keys = {
       {
         '<leader>gp',
@@ -52,7 +51,7 @@ return {
         desc = 'git diff overlay',
       },
       {
-        '<leader>gd',
+        '<leader>go',
         function()
           return MiniGit.show_at_cursor()
         end,
@@ -61,7 +60,7 @@ return {
       },
       {
         '<leader>gb',
-        '<Cmd>vertical Git blame -- %<CR>',
+        '<Cmd>Git blame -- %<CR>',
         noremap = true,
         desc = 'git blame',
       },
@@ -72,12 +71,12 @@ return {
         desc = 'git command',
       },
       {
-        'S',
+        '<leader>fs',
         function()
-          MiniJump2d.start { spotter = MiniJump2d.gen_spotter.vimpattern() }
+          require('plugins.lib.session_jj').load()
         end,
         noremap = true,
-        desc = 'mini jump',
+        desc = 'mini session select',
       },
     },
     config = function()
@@ -91,18 +90,17 @@ return {
           active = function()
             local mode, mode_hl = MiniStatusline.section_mode {}
             local filename = MiniStatusline.section_filename { trunc_width = 140 }
-            local diff = MiniStatusline.section_diff { trunc_width = 75, icon = '' }
             local diagnostics = MiniStatusline.section_diagnostics { trunc_width = 75 }
             local lsp = MiniStatusline.section_lsp { trunc_width = 75 }
             local search = MiniStatusline.section_searchcount { trunc_width = 75 }
 
             return MiniStatusline.combine_groups {
               '%<', -- Mark general truncate point
-              { hl = 'MiniStatuslineFilename', strings = { '' } },
+              -- { hl = 'MiniStatuslineFilename', strings = { filename } },
               '%=', -- End left alignment
-              { hl = 'MiniStatusDevinfo', strings = { diagnostics, lsp } },
-              { hl = 'MiniStatuslineFilename', strings = { search } },
-              { hl = mode_hl, strings = { mode } },
+              { hl = 'MiniStatuslineDevinfo', strings = { rec, diagnostics, lsp } },
+              { hl = 'MiniStatuslineDevinfo', strings = { search } },
+              { hl = mode_hl,                 strings = { mode } },
             }
           end,
           inactive = function()
@@ -118,24 +116,28 @@ return {
         require('mini.align').setup()
         require('mini.bracketed').setup()
         require('mini.icons').setup()
-        require('mini.jump2d').setup {
-          view = { n_steps_ahead = 1, dim = true },
+        require('mini.git').setup()
+        require('mini.surround').setup()
+        require('mini.splitjoin').setup { detect = { separator = '[,;\n]' } }
+
+        local sessions = require('mini.sessions')
+        sessions.setup {
+          file = '',
+          autowrite = true,
+          verbose = {
+            write = false,
+          },
         }
-        require('mini.git').setup { command = { split = 'vertical' } }
-        -- Bind both windows so that they scroll together
-        local align_blame = function(au_data)
-          if au_data.data.git_subcommand ~= 'blame' then
-            return
-          end
-          local win_src = au_data.data.win_source
-          vim.wo.wrap = false
-          vim.fn.winrestview { topline = vim.fn.line('w0', win_src) }
-          vim.api.nvim_win_set_cursor(0, { vim.fn.line('.', win_src), 0 })
-          vim.wo[win_src].scrollbind, vim.wo.scrollbind = true, true
+        if #vim.fn.argv() == 0 then
+          require('plugins.lib.session_jj').load()
         end
 
-        local au_opts = { pattern = 'MiniGitCommandSplit', callback = align_blame }
-        vim.api.nvim_create_autocmd('User', au_opts)
+        local jump = require('mini.jump2d')
+        jump.setup {
+          view = { n_steps_ahead = 1, dim = true },
+          spotter = jump.gen_spotter.vimpattern(),
+        }
+
         setup_pairs {
           modes = { insert = true, command = true, terminal = false },
           skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
@@ -144,10 +146,7 @@ return {
           markdown = true,
         }
 
-        require('mini.surround').setup()
-        require('mini.splitjoin').setup { detect = { separator = '[,;\n]' } }
-
-        local jj = require('nvim.lua.plugins.lib.minidiff_jj')
+        local jj = require('plugins.lib.minidiff_jj')
         local diff = require('mini.diff')
         diff.setup {
           options = { wrap_goto = true },
@@ -178,14 +177,6 @@ return {
             miniclue.gen_clues.registers(),
             miniclue.gen_clues.windows(),
             miniclue.gen_clues.z(),
-            { mode = 'n', keys = '<Leader>wj', postkeys = '<Leader>w', desc = 'TS Down' },
-            { mode = 'n', keys = '<Leader>wk', postkeys = '<Leader>w', desc = 'TS Up' },
-            { mode = 'n', keys = '<Leader>wh', postkeys = '<Leader>w', desc = 'TS Left' },
-            { mode = 'n', keys = '<Leader>wl', postkeys = '<Leader>w', desc = 'TS Right' },
-            { mode = 'n', keys = '<Leader>w<C-J>', postkeys = '<Leader>w', desc = 'Swap TS Down' },
-            { mode = 'n', keys = '<Leader>w<C-K>', postkeys = '<Leader>w', desc = 'Swap TS Up' },
-            { mode = 'n', keys = '<Leader>w<C-H>', postkeys = '<Leader>w', desc = 'Swap TS Left' },
-            { mode = 'n', keys = '<Leader>w<C-L>', postkeys = '<Leader>w', desc = 'Swap TS Right' },
           },
         }
 

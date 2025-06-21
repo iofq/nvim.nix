@@ -20,7 +20,7 @@ return {
         function()
           require('oil').toggle_float()
         end,
-        { noremap = true, silent = true },
+        { noremap = true, silent = true, desc = 'oil' },
       },
     },
   },
@@ -32,7 +32,6 @@ return {
       vim.api.nvim_set_hl(0, 'EyelinerSecondary', { underline = true, bold = true })
     end,
   },
-  { 'tiagovla/scope.nvim',   event = 'VeryLazy', config = true },
   {
     'MeanderingProgrammer/render-markdown.nvim',
     event = 'VeryLazy',
@@ -68,7 +67,14 @@ return {
       { '<leader>nb', vim.cmd.DiffviewOpen, noremap = true, desc = 'diffview open' },
       {
         '<leader>nh',
-        vim.cmd.DiffviewFileHistory,
+        '<cmd>DiffviewFileHistory %<cr>',
+        mode = { 'n', 'v' },
+        noremap = true,
+        desc = 'diffview history',
+      },
+      {
+        '<leader>nH',
+        '<cmd>DiffviewFileHistory<cr>',
         mode = { 'n', 'v' },
         noremap = true,
         desc = 'diffview history',
@@ -106,30 +112,6 @@ return {
     end,
   },
   {
-    'gbprod/yanky.nvim',
-    opts = {
-      ring = {
-        storage = 'memory',
-      },
-      picker = {
-        select = {
-          action = require('yanky.picker').actions.set_register('+'),
-        },
-      },
-    },
-    keys = {
-      { 'y', '<Plug>(YankyYank)', mode = { 'n', 'x' } },
-      {
-        '<leader>fp',
-        '<cmd>YankyRingHistory<cr>',
-        mode = { 'n', 'x' },
-        noremap = true,
-        silent = true,
-        desc = 'Pick history (yanky.nvim)',
-      },
-    },
-  },
-  {
     'ThePrimeagen/refactoring.nvim',
     event = 'VeryLazy',
     config = true,
@@ -144,5 +126,14 @@ return {
       },
     },
   },
-  { 'kevinhwang91/nvim-bqf', event = 'VeryLazy', config = true },
+  {
+    'kevinhwang91/nvim-bqf',
+    event = 'VeryLazy',
+    opts = {
+      auto_resize_height = true,
+      preview = {
+        winblend = 0,
+      },
+    },
+  },
 }

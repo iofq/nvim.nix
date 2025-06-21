@@ -2,7 +2,7 @@ vim.opt.autowrite = true
 vim.opt.backspace = 'indent,eol,start'
 vim.opt.confirm = true
 vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
-vim.opt.cmdheight = 0
+vim.opt.cmdheight = 1
 vim.opt.diffopt = 'internal,filler,closeoff,inline:char'
 vim.opt.expandtab = true          -- insert tabs as spaces
 vim.opt.inccommand = 'split'      -- incremental live completion
@@ -28,7 +28,7 @@ end, { silent = true, desc = 'toggle tabstop' })
 
 -- autocmd
 ----------------------------------------
-local undopath = '~/.local/share/nvim/undo'
+local undopath = vim.fn.stdpath('data') .. 'undo'
 vim.api.nvim_create_autocmd('VimEnter', {
   command = 'silent !mkdir -p ' .. undopath,
   group = vim.api.nvim_create_augroup('Init', {}),

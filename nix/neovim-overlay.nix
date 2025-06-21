@@ -22,6 +22,7 @@ with final.pkgs.lib; let
     diffview-nvim
     eyeliner-nvim
     friendly-snippets
+    fzf-vim
     lazy-nvim
     mini-nvim-git
     nightfox-nvim
@@ -34,11 +35,8 @@ with final.pkgs.lib; let
     oil-nvim
     refactoring-nvim
     render-markdown-nvim
-    scope-nvim
     snacks-nvim
     trouble-nvim
-    treewalker-nvim
-    yanky-nvim
   ];
 
   basePackages = with pkgs; [

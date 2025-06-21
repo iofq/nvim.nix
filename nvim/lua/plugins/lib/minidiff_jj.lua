@@ -10,7 +10,7 @@ end
 
 JJ.jj_start_watching_tree_state = function(buf_id, path)
   local stdout = vim.loop.new_pipe()
-  local args = { 'workspace', 'root' }
+  local args = { 'workspace', 'root', '--ignore-working-copy' }
   local spawn_opts = {
     args = args,
     cwd = vim.fn.fnamemodify(path, ':h'),
@@ -86,7 +86,7 @@ JJ.jj_set_ref_text = vim.schedule_wrap(function(buf_id)
   -- Set
   local stdout = vim.loop.new_pipe()
   local spawn_opts = {
-    args = { 'file', 'show', '-r', '@-', './' .. basename },
+    args = { 'file', 'show', '--ignore-working-copy', '-r', '@-', './' .. basename },
     cwd = cwd,
     stdio = { nil, stdout, nil },
   }

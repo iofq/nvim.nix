@@ -2,3 +2,4 @@ result
 *.AppImage
 .direnv
 .luarc.json
+nvim/lazy*json

@@ -28,5 +28,6 @@ if not LAZY_OPTS then
     },
   }
 end
+vim.cmd('packadd cfilter')
 require('lazy').setup(LAZY_OPTS)
 require('config')

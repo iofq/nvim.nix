@@ -1,7 +1,9 @@
 return {
   {
     'folke/snacks.nvim',
-    dependencies = { 'folke/trouble.nvim' },
+    dependencies = {
+      'folke/trouble.nvim',
+    },
     lazy = false,
     priority = 1000,
     opts = {
@@ -10,7 +12,6 @@ return {
       dim = { enabled = true },
       quickfile = { enabled = true },
       notifier = { enabled = true },
-      scope = { enabled = true },
       terminal = { enabled = true },
       indent = { enabled = true },
       input = { enabled = true },
@@ -136,15 +137,6 @@ return {
         desc = 'snacks explorer',
       },
       {
-        '<leader>fE',
-        function()
-          Snacks.explorer.reveal()
-        end,
-        noremap = true,
-        silent = true,
-        desc = 'snacks explorer open current file',
-      },
-      {
         '<leader>fg',
         function()
           Snacks.picker.git_files()
@@ -179,15 +171,6 @@ return {
         noremap = true,
         silent = true,
         desc = 'See all pickers',
-      },
-      {
-        "<leader>f'",
-        function()
-          Snacks.picker.marks()
-        end,
-        noremap = true,
-        silent = true,
-        desc = 'Pick marks',
       },
       {
         '<leader>fu',
@@ -235,18 +218,54 @@ return {
         desc = 'pick notifications',
       },
       {
-        '<leader>fj',
+        '<leader>fm',
         function()
-          require('nvim.lua.plugins.lib.snacks_jj').status()
+          vim.cmd.delmarks { args = { '0-9' } }
+          Snacks.picker.pick {
+            finder = 'vim_marks',
+            format = 'file',
+            ['local'] = false,
+            global = true,
+            actions = {
+              markdel = function(picker)
+                for _, item in ipairs(picker:selected()) do
+                  vim.cmd.delmarks { args = { item.label } }
+                end
+                vim.cmd('wshada')
+                picker.list:set_selected()
+                picker.list:set_target()
+                picker:find()
+              end,
+            },
+            win = {
+              input = {
+                keys = {
+                  ['<c-x>'] = { 'markdel', mode = { 'n', 'i' } },
+                },
+              },
+              list = {
+                keys = { ['dd'] = 'markdel' },
+              },
+            },
+          }
+        end,
+        noremap = true,
+        silent = true,
+        desc = 'pick global marks',
+      },
+      {
+        '<leader>jf',
+        function()
+          require('plugins.lib.snacks_jj').status()
         end,
         noremap = true,
         silent = true,
         desc = 'pick notifications',
       },
       {
-        '<leader>fr',
+        '<leader>jj',
         function()
-          require('nvim.lua.plugins.lib.snacks_jj').revs()
+          require('plugins.lib.snacks_jj').revs()
         end,
         noremap = true,
         silent = true,

@@ -7,6 +7,9 @@ return {
       'fang2hou/blink-copilot',
     },
     opts = {
+      enabled = function()
+        return not vim.tbl_contains({ 'snacks_picker_input', 'oil' }, vim.bo.filetype)
+      end,
       fuzzy = {
         sorts = {
           'exact',
