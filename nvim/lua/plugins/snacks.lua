@@ -234,6 +234,24 @@ return {
         silent = true,
         desc = 'pick notifications',
       },
+      {
+        '<leader>fj',
+        function()
+          require('nvim.lua.plugins.lib.snacks_jj').status()
+        end,
+        noremap = true,
+        silent = true,
+        desc = 'pick notifications',
+      },
+      {
+        '<leader>fr',
+        function()
+          require('nvim.lua.plugins.lib.snacks_jj').revs()
+        end,
+        noremap = true,
+        silent = true,
+        desc = 'pick notifications',
+      },
     },
   },
 }
