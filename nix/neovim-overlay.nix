@@ -22,7 +22,6 @@ with final.pkgs.lib; let
     diffview-nvim
     eyeliner-nvim
     friendly-snippets
-    fzf-vim
     lazy-nvim
     mini-nvim-git
     nightfox-nvim
@@ -43,22 +42,20 @@ with final.pkgs.lib; let
     ripgrep
     fd
   ];
+  # Extra packages that should be included on nixos but don't need to be bundled
   extraPackages = with pkgs; [
     # linters
-    puppet-lint
+    alejandra
     yamllint
     jq
-    alejandra
+    hadolint
+    shellcheck
 
     # LSPs
     gopls
     lua-language-server
     nil
-    phpactor
     basedpyright
-
-    #other
-    jujutsu
   ];
 in {
   nvim-pkg = mkNeovim {
@@ -72,11 +69,8 @@ in {
     plugins = all-plugins;
     appName = "nvim";
     extraPackages = basePackages;
-    ignoreConfigRegexes = [
-      ".*lsp.lua"
-      ".*debug.lua"
-      ".*ai.lua"
-    ];
+    withSqlite = false;
+    withPython3 = false;
   };
 
   # This is meant to be used within a devshell.
