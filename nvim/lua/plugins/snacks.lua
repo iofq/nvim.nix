@@ -16,6 +16,7 @@ return {
       indent = { enabled = true },
       input = { enabled = true },
       words = { enabled = true },
+      scope = { enabled = true },
       picker = {
         enabled = true,
         matcher = { frecency = true },

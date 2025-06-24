@@ -378,22 +378,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-uns": {
-      "locked": {
-        "lastModified": 1750506804,
-        "narHash": "sha256-VLFNc4egNjovYVxDGyBYTrvVCgDYgENp5bVi9fPTDYc=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "4206c4cb56751df534751b058295ea61357bbbaa",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1750749555,
@@ -410,6 +394,22 @@
         "type": "github"
       }
     },
+    "oil-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1749076816,
+        "narHash": "sha256-fbRbRT9VJdppOs4hML1J113qLHdj7YRuSDQgZkt34cM=",
+        "owner": "stevearc",
+        "repo": "oil.nvim",
+        "rev": "08c2bce8b00fd780fb7999dbffdf7cd174e896fb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "stevearc",
+        "repo": "oil.nvim",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -417,7 +417,7 @@
         "mini-nvim": "mini-nvim",
         "neovim-nightly-overlay": "neovim-nightly-overlay",
         "nixpkgs": "nixpkgs_2",
-        "nixpkgs-uns": "nixpkgs-uns"
+        "oil-nvim": "oil-nvim"
       }
     },
     "systems": {

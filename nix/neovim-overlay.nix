@@ -12,6 +12,7 @@ with final.pkgs.lib; let
   mkNeovim = pkgs.callPackage ./mkNeovim.nix {inherit pkgs-wrapNeovim;};
 
   mini-nvim-git = mkNvimPlugin inputs.mini-nvim "mini.nvim";
+  oil-nvim-git = mkNvimPlugin inputs.oil-nvim "oil.nvim";
 
   all-plugins = with pkgs.vimPlugins; [
     blink-cmp
@@ -25,13 +26,13 @@ with final.pkgs.lib; let
     lazy-nvim
     mini-nvim-git
     nightfox-nvim
-    nvim-bqf
     nvim-lint
     nvim-lspconfig
     nvim-treesitter-context
     nvim-treesitter-textobjects
     nvim-treesitter.withAllGrammars
-    oil-nvim
+    oil-nvim-git
+    quicker-nvim
     refactoring-nvim
     render-markdown-nvim
     snacks-nvim
@@ -40,7 +41,6 @@ with final.pkgs.lib; let
 
   basePackages = with pkgs; [
     ripgrep
-    fd
   ];
   # Extra packages that should be included on nixos but don't need to be bundled
   extraPackages = with pkgs; [
@@ -49,6 +49,7 @@ with final.pkgs.lib; let
     yamllint
     jq
     hadolint
+    alejandra
     shellcheck
 
     # LSPs
@@ -56,6 +57,10 @@ with final.pkgs.lib; let
     lua-language-server
     nil
     basedpyright
+
+    #other
+    jujutsu
+    fd
   ];
 in {
   nvim-pkg = mkNeovim {
@@ -69,8 +74,8 @@ in {
     plugins = all-plugins;
     appName = "nvim";
     extraPackages = basePackages;
+    withNodeJs = false;
     withSqlite = false;
-    withPython3 = false;
   };
 
   # This is meant to be used within a devshell.

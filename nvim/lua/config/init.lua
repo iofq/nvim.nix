@@ -5,6 +5,9 @@ vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
 vim.opt.cmdheight = 1
 vim.opt.diffopt = 'internal,filler,closeoff,inline:char'
 vim.opt.expandtab = true          -- insert tabs as spaces
+vim.o.foldenable = true
+vim.o.foldmethod = 'expr'         -- use tree-sitter for folding method
+vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 vim.opt.inccommand = 'split'      -- incremental live completion
 vim.opt.list = true
 vim.opt.nrformats:append('alpha') -- let Ctrl-a do letters as well
@@ -80,7 +83,8 @@ vim.keymap.set('n', '<S-l>', vim.cmd.bnext, { noremap = true, silent = true })
 vim.keymap.set('n', '<S-h>', vim.cmd.bprev, { noremap = true, silent = true })
 vim.keymap.set('v', '<', '<gv')
 vim.keymap.set('v', '>', '>gv')
-vim.keymap.set('v', 'q:', '<Nop')
+vim.keymap.set({ 'v', 'n' }, 'q:', '<nop>')
+vim.keymap.set({ 'n', 'v' }, '<C-b>', '<C-a>') -- usually have C-a mapped to tmux
 
 -- resize splits if window got resized
 vim.api.nvim_create_autocmd({ 'VimResized' }, {

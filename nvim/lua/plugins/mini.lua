@@ -1,45 +1,7 @@
--- ripped from lazyvim
-local function setup_pairs(opts)
-  local pairs = require('mini.pairs')
-  pairs.setup(opts)
-  local open = pairs.open
-  pairs.open = function(pair, neigh_pattern)
-    if vim.fn.getcmdline() ~= '' then
-      return open(pair, neigh_pattern)
-    end
-    local o, c = pair:sub(1, 1), pair:sub(2, 2)
-    local line = vim.api.nvim_get_current_line()
-    local cursor = vim.api.nvim_win_get_cursor(0)
-    local next = line:sub(cursor[2] + 1, cursor[2] + 1)
-    local before = line:sub(1, cursor[2])
-    if opts.markdown and o == '`' and vim.bo.filetype == 'markdown' and before:match('^%s*``') then
-      return '`\n```' .. vim.api.nvim_replace_termcodes('<up>', true, true, true)
-    end
-    if opts.skip_next and next ~= '' and next:match(opts.skip_next) then
-      return o
-    end
-    if opts.skip_ts and #opts.skip_ts > 0 then
-      local ok, captures = pcall(vim.treesitter.get_captures_at_pos, 0, cursor[1] - 1, math.max(cursor[2] - 1, 0))
-      for _, capture in ipairs(ok and captures or {}) do
-        if vim.tbl_contains(opts.skip_ts, capture.capture) then
-          return o
-        end
-      end
-    end
-    if opts.skip_unbalanced and next == c and c ~= o then
-      local _, count_open = line:gsub(vim.pesc(pair:sub(1, 1)), '')
-      local _, count_close = line:gsub(vim.pesc(pair:sub(2, 2)), '')
-      if count_close > count_open then
-        return o
-      end
-    end
-    return open(pair, neigh_pattern)
-  end
-end
-
 return {
   {
     'echasnovski/mini.nvim',
+    dependencies = 'nvim-treesitter/nvim-treesitter-textobjects',
     lazy = false,
     keys = {
       {
@@ -112,7 +74,24 @@ return {
         },
       }
       vim.schedule(function()
-        require('mini.ai').setup()
+        local ai = require('mini.ai')
+        local extra_ai = require('mini.extra').gen_ai_spec
+        ai.setup {
+          n_lines = 300,
+          custom_textobjects = {
+            i = extra_ai.indent(),
+            g = extra_ai.buffer(),
+            u = ai.gen_spec.function_call(),
+            a = ai.gen_spec.treesitter { a = '@parameter.outer', i = '@parameter.inner' },
+            k = ai.gen_spec.treesitter { a = '@assignment.lhs', i = '@assignment.lhs' },
+            v = ai.gen_spec.treesitter { a = '@assignment.rhs', i = '@assignment.rhs' },
+            f = ai.gen_spec.treesitter { a = '@function.outer', i = '@function.inner' },
+            o = ai.gen_spec.treesitter {
+              a = { '@block.outer', '@conditional.outer', '@loop.outer' },
+              i = { '@block.inner', '@conditional.inner', '@loop.inner' },
+            },
+          },
+        }
         require('mini.align').setup()
         require('mini.bracketed').setup()
         require('mini.icons').setup()
@@ -138,7 +117,7 @@ return {
           spotter = jump.gen_spotter.vimpattern(),
         }
 
-        setup_pairs {
+        require('plugins.lib.minipairs') {
           modes = { insert = true, command = true, terminal = false },
           skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
           skip_ts = { 'string' },
@@ -167,6 +146,7 @@ return {
             { mode = 'n', keys = 'z' },
             { mode = 'n', keys = ']' },
             { mode = 'n', keys = '[' },
+            { mode = 'n', keys = '\\' },
           },
           window = {
             config = { width = 'auto' },

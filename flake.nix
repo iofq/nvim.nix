@@ -2,7 +2,6 @@
   description = "Neovim derivation";
 
   inputs = {
-    nixpkgs-uns.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs.url = "github:NixOS/nixpkgs/master";
     flake-utils.url = "github:numtide/flake-utils";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
@@ -12,6 +11,10 @@
     };
     mini-nvim = {
       url = "github:echasnovski/mini.nvim";
+      flake = false;
+    };
+    oil-nvim = {
+      url = "github:stevearc/oil.nvim";
       flake = false;
     };
     # Add bleeding-edge plugins here.
@@ -52,7 +55,6 @@
           nil
           stylua
           luajitPackages.luacheck
-          nvim-dev
           alejandra
         ];
         shellHook = ''
@@ -67,6 +69,7 @@
         default = nvim;
         nvim = pkgs.nvim-pkg;
         nvim-min = pkgs.nvim-min-pkg;
+        nvim-dev = pkgs.nvim-dev;
       };
       devShells = {
         default = shell;

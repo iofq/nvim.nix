@@ -127,12 +127,23 @@ return {
     },
   },
   {
-    'kevinhwang91/nvim-bqf',
+    'stevearc/quicker.nvim',
     event = 'VeryLazy',
-    opts = {
-      auto_resize_height = true,
-      preview = {
-        winblend = 0,
+    config = true,
+    keys = {
+      {
+        '<leader>qf',
+        function()
+          require('quicker').toggle()
+        end,
+        desc = 'Toggle qflist',
+      },
+      {
+        '<leader>qr',
+        function()
+          require('quicker').refresh()
+        end,
+        desc = 'Refresh qflist',
       },
     },
   },

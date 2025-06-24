@@ -39,6 +39,10 @@ return {
             },
             analyses = {
               unusedvariable = true,
+              unusedparams = true,
+              useany = true,
+              unusedwrite = true,
+              nilness = true,
               shadow = true,
             },
             hints = {
@@ -52,6 +56,8 @@ return {
             },
             usePlaceholders = true,
             staticcheck = true,
+            completeUnimported = true,
+            semanticTokens = true,
           },
         },
       })
@@ -154,6 +160,7 @@ return {
           vim.b.disable_autoformat = not vim.b.disable_autoformat
         end,
         mode = { 'n', 'x' },
+        desc = 'toggle buffer formatting',
       },
       {
         '\\F',
@@ -161,6 +168,7 @@ return {
           vim.g.disable_autoformat = not vim.g.disable_autoformat
         end,
         mode = { 'n', 'x' },
+        desc = 'toggle global formatting',
       },
     },
     opts = {
@@ -171,6 +179,7 @@ return {
         lua = { 'stylua' },
         python = { 'ruff' },
         nix = { 'alejandra' },
+        fish = { 'fish_indent' },
         ['*'] = { 'trim_whitespace' },
       },
       format_on_save = function(bufnr)
@@ -181,8 +190,8 @@ return {
         return { timeout_ms = 500, lsp_format = 'last' }
       end,
       default_format_opts = {
-        timeout_ms = 500,
-        lsp_format = 'last',
+        timeout_ms = 1500,
+        lsp_format = 'fallback',
       },
     },
   },
@@ -197,6 +206,7 @@ return {
         sh = { 'shellcheck' },
         go = { 'golangcilint' },
         ruby = { 'rubocop' },
+        fish = { 'fish' },
       }
       vim.api.nvim_command('au BufWritePost * lua require("lint").try_lint()')
     end,
