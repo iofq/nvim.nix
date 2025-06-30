@@ -31,7 +31,7 @@ return {
           explorer = { hidden = true },
           git_files = { untracked = true },
           smart = {
-            multi = { 'buffers', 'recent', 'files', 'git_files' },
+            multi = { 'buffers', 'recent', 'files' },
           },
         },
         actions = {
