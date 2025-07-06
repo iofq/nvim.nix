@@ -9,14 +9,12 @@ return {
     opts = {
       bigfile = { enabled = true },
       bufdelete = { enabled = true },
-      dim = { enabled = true },
       quickfile = { enabled = true },
       notifier = { enabled = true },
       terminal = { enabled = true },
       indent = { enabled = true },
       input = { enabled = true },
       words = { enabled = true },
-      scope = { enabled = true },
       picker = {
         enabled = true,
         matcher = { frecency = true },

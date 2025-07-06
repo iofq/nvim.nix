@@ -4,7 +4,6 @@ return {
     event = 'VeryLazy',
     dependencies = {
       'mikavilpas/blink-ripgrep.nvim',
-      'fang2hou/blink-copilot',
     },
     opts = {
       enabled = function()
@@ -24,7 +23,6 @@ return {
           'snippets',
           'omni',
           'ripgrep',
-          'copilot',
         },
         providers = {
           snippets = {
@@ -35,20 +33,6 @@ return {
             name = 'rg',
             score_offset = -30,
             async = true,
-          },
-          copilot = {
-            module = 'blink-copilot',
-            name = 'Copilot',
-            score_offset = 10,
-            async = true,
-            opts = {
-              max_completions = 2,
-              debounce = 500,
-              auto_refresh = {
-                backward = false,
-                forward = true,
-              },
-            },
           },
         },
       },

@@ -5,7 +5,8 @@ return {
     opts = {
       pinned = true,
       focus = true,
-      auto_jump = true,
+      follow = false,
+      auto_close = false,
       win = {
         size = 0.25,
         position = 'right',
@@ -29,62 +30,6 @@ return {
       'saghen/blink.cmp',
     },
     config = function()
-      vim.lsp.config('gopls', {
-        settings = {
-          gopls = {
-            gofumpt = true,
-            codelenses = {
-              gc_details = true,
-              test = true,
-            },
-            analyses = {
-              unusedvariable = true,
-              unusedparams = true,
-              useany = true,
-              unusedwrite = true,
-              nilness = true,
-              shadow = true,
-            },
-            hints = {
-              assignVariableTypes = true,
-              compositeLiteralFields = true,
-              compositeLiteralTypes = true,
-              constantValues = true,
-              functionTypeParameters = true,
-              rangeVariableTypes = true,
-              parameterNames = true,
-            },
-            usePlaceholders = true,
-            staticcheck = true,
-            completeUnimported = true,
-            semanticTokens = true,
-          },
-        },
-      })
-      vim.lsp.config('lua_ls', {
-        on_init = function(client)
-          local path = client.workspace_folders[1].name
-          if vim.loop.fs_stat(path .. '/.luarc.json') or vim.loop.fs_stat(path .. '/.luarc.jsonc') then
-            return
-          end
-
-          client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
-            runtime = {
-              version = 'LuaJIT',
-            },
-            workspace = {
-              checkThirdParty = false,
-              library = {
-                vim.env.VIMRUNTIME,
-              },
-            },
-          })
-        end,
-        settings = {
-          Lua = {},
-        },
-      })
-
       vim.lsp.enable {
         'nil_ls',
         'phpactor',
@@ -207,6 +152,9 @@ return {
         go = { 'golangcilint' },
         ruby = { 'rubocop' },
         fish = { 'fish' },
+        bash = { 'bash' },
+        nix = { 'nix' },
+        php = { 'php' },
       }
       vim.api.nvim_command('au BufWritePost * lua require("lint").try_lint()')
     end,

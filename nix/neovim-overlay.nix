@@ -1,32 +1,25 @@
 # This overlay, when applied to nixpkgs, adds the final neovim derivation to nixpkgs.
-{ inputs }:
-final: prev:
-with final.pkgs.lib;
-let
+{inputs}: final: prev:
+with final.pkgs.lib; let
   pkgs = final;
   pkgs-wrapNeovim = prev;
 
-  mkNvimPlugin =
-    src: pname:
+  mkNvimPlugin = src: pname:
     pkgs.vimUtils.buildVimPlugin {
       inherit pname src;
       version = src.lastModifiedDate;
     };
-  mkNeovim = pkgs.callPackage ./mkNeovim.nix { inherit pkgs-wrapNeovim; };
-
-  mini-nvim-git = mkNvimPlugin inputs.mini-nvim "mini.nvim";
+  mkNeovim = pkgs.callPackage ./mkNeovim.nix {inherit pkgs-wrapNeovim;};
 
   all-plugins = with pkgs.vimPlugins; [
     blink-cmp
-    blink-copilot
     blink-ripgrep-nvim
     conform-nvim
-    copilot-lua
     diffview-nvim
     eyeliner-nvim
     friendly-snippets
     lazy-nvim
-    mini-nvim-git
+    mini-nvim
     nightfox-nvim
     nvim-lint
     nvim-lspconfig
@@ -63,8 +56,7 @@ let
     jujutsu
     fd
   ];
-in
-{
+in {
   nvim-pkg = mkNeovim {
     plugins = all-plugins;
     appName = "nvim";

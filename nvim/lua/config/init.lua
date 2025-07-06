@@ -87,7 +87,6 @@ vim.keymap.set('n', '<S-h>', vim.cmd.bprev, { noremap = true, silent = true })
 vim.keymap.set('v', '<', '<gv')
 vim.keymap.set('v', '>', '>gv')
 vim.keymap.set({ 'v', 'n' }, 'q:', '<nop>')
-vim.keymap.set({ 'n', 'v' }, '<C-b>', '<C-a>') -- usually have C-a mapped to tmux
 
 -- resize splits if window got resized
 vim.api.nvim_create_autocmd({ 'VimResized' }, {
