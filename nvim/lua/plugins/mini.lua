@@ -51,7 +51,7 @@ return {
         content = {
           active = function()
             local mode, mode_hl = MiniStatusline.section_mode {}
-            local filename = MiniStatusline.section_filename { trunc_width = 140 }
+            -- local filename = MiniStatusline.section_filename { trunc_width = 140 }
             local diagnostics = MiniStatusline.section_diagnostics { trunc_width = 75 }
             local lsp = MiniStatusline.section_lsp { trunc_width = 75 }
             local search = MiniStatusline.section_searchcount { trunc_width = 75 }
@@ -60,7 +60,7 @@ return {
               '%<', -- Mark general truncate point
               -- { hl = 'MiniStatuslineFilename', strings = { filename } },
               '%=', -- End left alignment
-              { hl = 'MiniStatuslineDevinfo', strings = { rec, diagnostics, lsp } },
+              { hl = 'MiniStatuslineDevinfo', strings = { diagnostics, lsp } },
               { hl = 'MiniStatuslineDevinfo', strings = { search } },
               { hl = mode_hl,                 strings = { mode } },
             }
@@ -93,7 +93,7 @@ return {
           },
         }
         require('mini.align').setup()
-        require('mini.bracketed').setup()
+        require('mini.bracketed').setup { file = { suffix = 'm' } }
         require('mini.icons').setup()
         require('mini.git').setup()
         require('mini.surround').setup()
@@ -159,23 +159,28 @@ return {
             miniclue.gen_clues.z(),
           },
         }
-
-        local map = require('mini.map')
-        map.setup {
-          symbols = {
-            scroll_line = '┃',
-            scroll_view = '',
+        local files = require('mini.files')
+        files.setup {
+          mappings = {
+            go_in_plus = '<CR>',
           },
-          integrations = {
-            map.gen_integration.builtin_search(),
-            map.gen_integration.diagnostic(),
-            map.gen_integration.diff(),
-          },
-          window = {
-            show_integration_count = false,
+          windows = {
+            preview = true,
+            width_focus = 30,
+            width_preview = 50,
           },
         }
-        vim.keymap.set('n', '<leader>nm', map.toggle, { noremap = true, desc = 'minimap open' })
+        vim.keymap.set('n', '<leader>nc', files.open, { noremap = true, desc = 'minifiles open' })
+        vim.api.nvim_create_autocmd('User', {
+          pattern = 'MiniFilesBufferCreate',
+          callback = function(args)
+            vim.keymap.set('n', '`', function()
+              local cur_entry_path = MiniFiles.get_fs_entry().path
+              local cur_directory = vim.fs.dirname(cur_entry_path)
+              vim.fn.chdir(cur_directory)
+            end, { buffer = args.data.buf_id })
+          end,
+        })
 
         local multi = require('mini.keymap').map_multistep
         multi({ 'i' }, '<BS>', { 'minipairs_bs' })

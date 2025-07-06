@@ -1,30 +1,5 @@
 return {
   {
-    'stevearc/oil.nvim',
-    opts = {
-      watch_for_changes = true,
-      columns = {
-        'permissions',
-        'size',
-      },
-      view_options = {
-        show_hidden = true,
-      },
-      keymaps = {
-        ['wq'] = 'actions.close',
-      },
-    },
-    keys = {
-      {
-        '<leader>nc',
-        function()
-          require('oil').toggle_float()
-        end,
-        { noremap = true, silent = true, desc = 'oil' },
-      },
-    },
-  },
-  {
     'jinh0/eyeliner.nvim',
     event = 'VeryLazy',
     init = function()

@@ -4,10 +4,11 @@ vim.opt.confirm = true
 vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
 vim.opt.cmdheight = 1
 vim.opt.diffopt = 'internal,filler,closeoff,inline:char'
-vim.opt.expandtab = true          -- insert tabs as spaces
+vim.opt.expandtab = true  -- insert tabs as spaces
 vim.o.foldenable = true
-vim.o.foldmethod = 'expr'         -- use tree-sitter for folding method
+vim.o.foldmethod = 'expr' -- use tree-sitter for folding method
 vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+vim.o.foldlevelstart = 99
 vim.opt.inccommand = 'split'      -- incremental live completion
 vim.opt.list = true
 vim.opt.nrformats:append('alpha') -- let Ctrl-a do letters as well
@@ -62,12 +63,14 @@ vim.diagnostic.config {
 
 -- Allow basic deletion in qflist
 vim.api.nvim_create_autocmd({ 'FileType' }, {
-  pattern = "qf",
+  pattern = 'qf',
   callback = function()
-    vim.keymap.set({ "n", "i" }, 'dd', function()
+    vim.keymap.set({ 'n', 'i' }, 'dd', function()
       local ln = vim.fn.line('.')
       local qf = vim.fn.getqflist()
-      if #qf == 0 then return end
+      if #qf == 0 then
+        return
+      end
       table.remove(qf, ln)
       vim.fn.setqflist(qf, 'r')
       vim.cmd('copen')
