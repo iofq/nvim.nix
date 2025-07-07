@@ -11,6 +11,7 @@ return {
         },
       },
       'nvim-treesitter/nvim-treesitter-textobjects',
+      'RRethy/nvim-treesitter-textsubjects',
     },
     config = function()
       require('nvim-treesitter.configs').setup {
@@ -47,13 +48,6 @@ return {
             swap_previous = {
               ['a['] = '@parameter.inner',
             },
-          },
-        },
-        incremental_selection = {
-          enable = true,
-          keymaps = {
-            node_incremental = 'v',
-            node_decremental = '<S-TAB>',
           },
         },
       }

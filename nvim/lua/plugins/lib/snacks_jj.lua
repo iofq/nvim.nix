@@ -67,6 +67,7 @@ function M.revs()
       Snacks.picker.util.cmd(cmd, function()
         Snacks.notify('Checking out revision: ' .. item.rev, { title = 'Snacks Picker' })
         vim.cmd.checktime()
+        require('plugins.lib.session_jj').load()
       end, { cwd = item.cwd })
     end
   end

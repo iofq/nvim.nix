@@ -8,7 +8,7 @@ return {
       follow = false,
       auto_close = false,
       win = {
-        size = 0.25,
+        size = 0.33,
         position = 'right',
         type = 'split',
       },
@@ -17,7 +17,6 @@ return {
       {
         'gre',
         '<cmd>Trouble diagnostics toggle<CR>',
-        noremap = true,
         desc = 'Trouble diagnostics',
       },
     },
@@ -25,10 +24,6 @@ return {
   {
     'neovim/nvim-lspconfig',
     event = 'VeryLazy',
-    dependencies = {
-      'folke/trouble.nvim',
-      'saghen/blink.cmp',
-    },
     config = function()
       vim.lsp.enable {
         'nil_ls',
@@ -40,53 +35,36 @@ return {
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('UserLspConfig', {}),
         callback = function(ev)
-          local bufnr = ev.buf
           local client = vim.lsp.get_client_by_id(ev.data.client_id)
           if not client then
             return
           end
+          vim.keymap.set('n', 'grg', '<cmd>Trouble lsp toggle<CR>', { buffer = ev.buf, desc = 'Trouble LSP' })
           vim.keymap.set(
             'n',
-            'grt',
-            '<cmd>Trouble lsp toggle focus=true <CR>',
-            { buffer = ev.buf, noremap = true, silent = true, desc = 'Trouble LSP ' }
+            'gO',
+            '<cmd>Trouble lsp_document_symbols win.position=left<CR>',
+            { buffer = ev.buf, desc = 'Trouble LSP symbols' }
           )
-          vim.keymap.set(
-            'n',
-            'grs',
-            '<cmd>Trouble lsp_document_symbols toggle win.position=left <CR>',
-            { buffer = ev.buf, noremap = true, silent = true, desc = 'Trouble LSP symbols' }
-          )
-          vim.keymap.set(
-            'n',
-            'grd',
-            '<cmd>Trouble lsp_definitions toggle <CR>',
-            { buffer = ev.buf, noremap = true, silent = true, desc = 'Trouble LSP definition' }
-          )
-          vim.keymap.set(
-            'n',
-            'grr',
-            '<cmd>Trouble lsp_references toggle <CR>',
-            { buffer = ev.buf, noremap = true, silent = true, desc = 'Trouble LSP definition' }
-          )
-          vim.keymap.set(
-            'n',
-            'grl',
-            vim.lsp.codelens.run,
-            { buffer = ev.buf, noremap = true, silent = true, desc = 'vim.lsp.codelens.run()' }
-          )
+          vim.keymap.set('n', 'grd', function()
+            Snacks.picker.lsp_definitions { focus = 'list' }
+          end, { buffer = ev.buf, desc = 'LSP definition' })
+          vim.keymap.set('n', 'grr', function()
+            Snacks.picker.lsp_references { focus = 'list' }
+          end, { buffer = ev.buf, desc = 'LSP definition' })
           vim.keymap.set('n', 'grh', function()
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-          end, { buffer = ev.buf, noremap = true, silent = true, desc = 'LSP hints toggle' })
+          end, { buffer = ev.buf, desc = 'LSP hints toggle' })
+          vim.keymap.set('n', 'grl', vim.lsp.codelens.run, { buffer = ev.buf, desc = 'vim.lsp.codelens.run()' })
 
           -- Auto-refresh code lenses
           if client.server_capabilities.codeLensProvider then
             vim.api.nvim_create_autocmd({ 'InsertLeave', 'TextChanged' }, {
-              group = vim.api.nvim_create_augroup(string.format('lsp-%s-%s', bufnr, client.id), {}),
+              group = vim.api.nvim_create_augroup(string.format('lsp-%s-%s', ev.buf, client.id), {}),
               callback = function()
-                vim.lsp.codelens.refresh { bufnr = bufnr }
+                vim.lsp.codelens.refresh { bufnr = ev.buf }
               end,
-              buffer = bufnr,
+              buffer = ev.buf,
             })
             vim.lsp.codelens.refresh()
           end

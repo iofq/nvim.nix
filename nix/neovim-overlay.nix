@@ -1,15 +1,18 @@
 # This overlay, when applied to nixpkgs, adds the final neovim derivation to nixpkgs.
-{inputs}: final: prev:
-with final.pkgs.lib; let
+{ inputs }:
+final: prev:
+with final.pkgs.lib;
+let
   pkgs = final;
   pkgs-wrapNeovim = prev;
 
-  mkNvimPlugin = src: pname:
+  mkNvimPlugin =
+    src: pname:
     pkgs.vimUtils.buildVimPlugin {
       inherit pname src;
       version = src.lastModifiedDate;
     };
-  mkNeovim = pkgs.callPackage ./mkNeovim.nix {inherit pkgs-wrapNeovim;};
+  mkNeovim = pkgs.callPackage ./mkNeovim.nix { inherit pkgs-wrapNeovim; };
 
   all-plugins = with pkgs.vimPlugins; [
     blink-cmp
@@ -20,11 +23,11 @@ with final.pkgs.lib; let
     friendly-snippets
     lazy-nvim
     mini-nvim
-    nightfox-nvim
     nvim-lint
     nvim-lspconfig
     nvim-treesitter-context
     nvim-treesitter-textobjects
+    nvim-treesitter-textsubjects
     nvim-treesitter.withAllGrammars
     quicker-nvim
     refactoring-nvim
@@ -35,6 +38,7 @@ with final.pkgs.lib; let
 
   basePackages = with pkgs; [
     ripgrep
+    fd
   ];
   # Extra packages that should be included on nixos but don't need to be bundled
   extraPackages = with pkgs; [
@@ -54,14 +58,14 @@ with final.pkgs.lib; let
 
     #other
     jujutsu
-    fd
   ];
-in {
+in
+{
   nvim-pkg = mkNeovim {
     plugins = all-plugins;
     appName = "nvim";
     extraPackages = basePackages ++ extraPackages;
-    withNodeJs = true;
+    withNodeJs = false;
   };
 
   nvim-min-pkg = mkNeovim {

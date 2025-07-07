@@ -39,52 +39,20 @@ return {
       },
     },
     keys = {
-      { '<leader>nb', vim.cmd.DiffviewOpen, noremap = true, desc = 'diffview open' },
+      { '<leader>nb', vim.cmd.DiffviewOpen, desc = 'diffview open' },
       {
         '<leader>nh',
         '<cmd>DiffviewFileHistory %<cr>',
         mode = { 'n', 'v' },
-        noremap = true,
         desc = 'diffview history',
       },
       {
         '<leader>nH',
         '<cmd>DiffviewFileHistory<cr>',
         mode = { 'n', 'v' },
-        noremap = true,
         desc = 'diffview history',
       },
     },
-  },
-  {
-    'EdenEast/nightfox.nvim',
-    lazy = false,
-    priority = 1000,
-    opts = {
-      options = {
-        transparent = true,
-        terminal_colors = true,
-        modules = {
-          'mini',
-          'treesitter',
-          'neogit',
-          'native_lsp',
-          'diagnostic',
-          'modes',
-        },
-      },
-    },
-    config = function(_, opts)
-      require('nightfox').setup(opts)
-      vim.cmd('colorscheme terafox')
-      vim.api.nvim_set_hl(0, 'StatusLine', { bg = 'none' })
-      vim.api.nvim_set_hl(0, 'StatusLineNC', { bg = 'none' })
-      vim.api.nvim_set_hl(0, 'TablineFill', { bg = 'none' })
-      vim.api.nvim_set_hl(0, 'MiniDiffSignAdd', { fg = 'green', bold = true })
-      vim.api.nvim_set_hl(0, 'MiniDiffSignDelete', { fg = 'red', bold = true })
-      vim.api.nvim_set_hl(0, 'MiniDiffSignChange', { fg = 'green', bold = true })
-      vim.api.nvim_set_hl(0, 'BlinkCmpGhostText', { link = 'String' })
-    end,
   },
   {
     'ThePrimeagen/refactoring.nvim',

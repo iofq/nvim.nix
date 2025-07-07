@@ -18,6 +18,12 @@ return {
     })
   end,
   settings = {
-    Lua = {},
+    Lua = {
+      hint = {
+        enable = true,
+        arrayIndex = 'Enable',
+        setType = true,
+      },
+    },
   },
 }

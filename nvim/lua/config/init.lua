@@ -24,6 +24,7 @@ vim.opt.tabstop = 2               -- 2 space tabs are based
 vim.opt.updatetime = 250          -- decrease update time
 vim.opt.virtualedit = 'onemore'
 vim.opt.winborder = 'single'
+vim.cmd('colorscheme iofq')
 
 -- Switch tab length on the fly
 vim.keymap.set('n', '\\t', function()
@@ -44,7 +45,7 @@ vim.api.nvim_create_autocmd('BufWinEnter', {
     if vim.bo[event.buf].filetype == 'help' then
       vim.cmd.only()
       vim.keymap.set('n', 'q', vim.cmd.bdelete, { noremap = true, silent = true })
-      vim.bo.buflisted = true
+      vim.bo.buflisted = false
     end
   end,
 })
@@ -87,6 +88,10 @@ vim.keymap.set('n', '<S-h>', vim.cmd.bprev, { noremap = true, silent = true })
 vim.keymap.set('v', '<', '<gv')
 vim.keymap.set('v', '>', '>gv')
 vim.keymap.set({ 'v', 'n' }, 'q:', '<nop>')
+vim.keymap.set('n', 'gq', vim.cmd.bdelete, { noremap = true, silent = true, desc = 'close buffer' })
+vim.keymap.set('n', 'gQ', function()
+  vim.cmd('bufdo bdelete')
+end, { noremap = true, silent = true, desc = 'close all buffers' })
 
 -- resize splits if window got resized
 vim.api.nvim_create_autocmd({ 'VimResized' }, {

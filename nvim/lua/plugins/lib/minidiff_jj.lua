@@ -1,14 +1,14 @@
 local diff = require('mini.diff')
-local JJ = {
+local M = {
   cache = {},
   jj_cache = {},
 }
 
-JJ.get_buf_realpath = function(buf_id)
+M.get_buf_realpath = function(buf_id)
   return vim.loop.fs_realpath(vim.api.nvim_buf_get_name(buf_id)) or ''
 end
 
-JJ.jj_start_watching_tree_state = function(buf_id, path)
+M.jj_start_watching_tree_state = function(buf_id, path)
   local stdout = vim.loop.new_pipe()
   local args = { 'workspace', 'root', '--ignore-working-copy' }
   local spawn_opts = {
@@ -19,11 +19,11 @@ JJ.jj_start_watching_tree_state = function(buf_id, path)
 
   local on_not_in_jj = vim.schedule_wrap(function()
     if not vim.api.nvim_buf_is_valid(buf_id) then
-      JJ.cache[buf_id] = nil
+      M.cache[buf_id] = nil
       return
     end
     diff.fail_attach(buf_id)
-    JJ.jj_cache[buf_id] = {}
+    M.jj_cache[buf_id] = {}
   end)
 
   local process, stdout_feed = nil, {}
@@ -37,20 +37,20 @@ JJ.jj_start_watching_tree_state = function(buf_id, path)
 
     -- Set up index watching
     local jj_dir_path = table.concat(stdout_feed, ''):gsub('\n+$', '') .. '/.jj/working_copy'
-    JJ.jj_setup_tree_state_watch(buf_id, jj_dir_path)
+    M.jj_setup_tree_state_watch(buf_id, jj_dir_path)
 
     -- Set reference text immediately
-    JJ.jj_set_ref_text(buf_id)
+    M.jj_set_ref_text(buf_id)
   end
 
   process = vim.loop.spawn('jj', spawn_opts, on_exit)
-  JJ.jj_read_stream(stdout, stdout_feed)
+  M.jj_read_stream(stdout, stdout_feed)
 end
 
-JJ.jj_setup_tree_state_watch = function(buf_id, jj_dir_path)
+M.jj_setup_tree_state_watch = function(buf_id, jj_dir_path)
   local buf_fs_event, timer = vim.loop.new_fs_event(), vim.loop.new_timer()
   local buf_jj_set_ref_text = function()
-    JJ.jj_set_ref_text(buf_id)
+    M.jj_set_ref_text(buf_id)
   end
 
   local watch_tree_state = function(_, filename, _)
@@ -63,11 +63,11 @@ JJ.jj_setup_tree_state_watch = function(buf_id, jj_dir_path)
   end
   buf_fs_event:start(jj_dir_path, { recursive = false }, watch_tree_state)
 
-  JJ.jj_invalidate_cache(JJ.jj_cache[buf_id])
-  JJ.jj_cache[buf_id] = { fs_event = buf_fs_event, timer = timer }
+  M.jj_invalidate_cache(M.jj_cache[buf_id])
+  M.jj_cache[buf_id] = { fs_event = buf_fs_event, timer = timer }
 end
 
-JJ.jj_set_ref_text = vim.schedule_wrap(function(buf_id)
+M.jj_set_ref_text = vim.schedule_wrap(function(buf_id)
   if not vim.api.nvim_buf_is_valid(buf_id) then
     return
   end
@@ -77,7 +77,7 @@ JJ.jj_set_ref_text = vim.schedule_wrap(function(buf_id)
   end)
 
   -- NOTE: Do not cache buffer's name to react to its possible rename
-  local path = JJ.get_buf_realpath(buf_id)
+  local path = M.get_buf_realpath(buf_id)
   if path == '' then
     return buf_set_ref_text {}
   end
@@ -105,10 +105,10 @@ JJ.jj_set_ref_text = vim.schedule_wrap(function(buf_id)
   end
 
   process = vim.loop.spawn('jj', spawn_opts, on_exit)
-  JJ.jj_read_stream(stdout, stdout_feed)
+  M.jj_read_stream(stdout, stdout_feed)
 end)
 
-JJ.jj_read_stream = function(stream, feed)
+M.jj_read_stream = function(stream, feed)
   local callback = function(err, data)
     if data ~= nil then
       return table.insert(feed, data)
@@ -121,7 +121,7 @@ JJ.jj_read_stream = function(stream, feed)
   stream:read_start(callback)
 end
 
-JJ.jj_invalidate_cache = function(cache)
+M.jj_invalidate_cache = function(cache)
   if cache == nil then
     return
   end
@@ -129,26 +129,26 @@ JJ.jj_invalidate_cache = function(cache)
   pcall(vim.loop.timer_stop, cache.timer)
 end
 
-local jj = function()
+M.gen_source = function()
   local attach = function(buf_id)
     -- Try attaching to a buffer only once
-    if JJ.jj_cache[buf_id] ~= nil then
+    if M.jj_cache[buf_id] ~= nil then
       return false
     end
     -- - Possibly resolve symlinks to get data from the original repo
-    local path = JJ.get_buf_realpath(buf_id)
+    local path = M.get_buf_realpath(buf_id)
     if path == '' then
       return false
     end
 
-    JJ.jj_cache[buf_id] = {}
-    JJ.jj_start_watching_tree_state(buf_id, path)
+    M.jj_cache[buf_id] = {}
+    M.jj_start_watching_tree_state(buf_id, path)
   end
 
   local detach = function(buf_id)
-    local cache = JJ.jj_cache[buf_id]
-    JJ.jj_cache[buf_id] = nil
-    JJ.jj_invalidate_cache(cache)
+    local cache = M.jj_cache[buf_id]
+    M.jj_cache[buf_id] = nil
+    M.jj_invalidate_cache(cache)
   end
 
   local apply_hunks = function(_, _)
@@ -162,4 +162,4 @@ local jj = function()
     apply_hunks = apply_hunks,
   }
 end
-return jj
+return M

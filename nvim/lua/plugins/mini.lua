@@ -1,7 +1,6 @@
 return {
   {
     'echasnovski/mini.nvim',
-    dependencies = 'nvim-treesitter/nvim-treesitter-textobjects',
     lazy = false,
     keys = {
       {
@@ -23,13 +22,11 @@ return {
       {
         '<leader>gb',
         '<Cmd>Git blame -- %<CR>',
-        noremap = true,
         desc = 'git blame',
       },
       {
         '<leader>gg',
         ':Git ',
-        noremap = true,
         desc = 'git command',
       },
       {
@@ -39,6 +36,13 @@ return {
         end,
         noremap = true,
         desc = 'mini session select',
+      },
+      {
+        '\\z',
+        function()
+          require('mini.misc').zoom()
+        end,
+        desc = 'mini zoom',
       },
     },
     config = function()
@@ -99,16 +103,17 @@ return {
         require('mini.surround').setup()
         require('mini.splitjoin').setup { detect = { separator = '[,;\n]' } }
 
-        local sessions = require('mini.sessions')
-        sessions.setup {
+        require('mini.sessions').setup {
           file = '',
           autowrite = true,
           verbose = {
             write = false,
           },
         }
-        if #vim.fn.argv() == 0 then
-          require('plugins.lib.session_jj').load()
+        local jj_sesh = require('plugins.lib.session_jj')
+        local jj_id = jj_sesh.get_id()
+        if jj_sesh.check_exists(jj_id) then
+          Snacks.notify('Existing session for ' .. jj_id)
         end
 
         local jump = require('mini.jump2d')
@@ -130,7 +135,7 @@ return {
         diff.setup {
           options = { wrap_goto = true },
           source = {
-            jj(),
+            jj.gen_source(),
             diff.gen_source.git(),
           },
         }
@@ -170,10 +175,14 @@ return {
             width_preview = 50,
           },
         }
-        vim.keymap.set('n', '<leader>nc', files.open, { noremap = true, desc = 'minifiles open' })
+        vim.keymap.set('n', '<leader>nc', files.open, { desc = 'minifiles open' })
         vim.api.nvim_create_autocmd('User', {
           pattern = 'MiniFilesBufferCreate',
           callback = function(args)
+            vim.keymap.set('n', '<leader>nc', function()
+              files.synchronize()
+              files.close()
+            end, { buffer = args.data.buf_id })
             vim.keymap.set('n', '`', function()
               local cur_entry_path = MiniFiles.get_fs_entry().path
               local cur_directory = vim.fs.dirname(cur_entry_path)
@@ -181,7 +190,12 @@ return {
             end, { buffer = args.data.buf_id })
           end,
         })
-
+        vim.api.nvim_create_autocmd('User', {
+          pattern = 'MiniFilesActionRename',
+          callback = function(event)
+            Snacks.rename.on_rename_file(event.data.from, event.data.to)
+          end,
+        })
         local multi = require('mini.keymap').map_multistep
         multi({ 'i' }, '<BS>', { 'minipairs_bs' })
         multi({ 'i', 's' }, '<Tab>', { 'blink_accept', 'vimsnippet_next', 'increase_indent' })
