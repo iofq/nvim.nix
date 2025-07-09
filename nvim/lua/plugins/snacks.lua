@@ -38,9 +38,10 @@ return {
           smart = {
             multi = {
               require('plugins.lib.snacks').marks(),
-              { source = 'buffers', current = false },
+              { source = 'buffers',   current = false },
               'recent',
-              { source = 'files',   hidden = true },
+              { source = 'files',     hidden = true },
+              { source = 'git_files', untracked = true },
             },
           },
         },

@@ -21,17 +21,21 @@ return {
           'lsp',
           'path',
           'snippets',
-          'omni',
           'ripgrep',
+          'buffer',
         },
         providers = {
+          lsp = {
+            fallbacks = {}, -- include buffer even when LSP is active
+            score_offset = 10,
+          },
           snippets = {
-            score_offset = -20,
+            score_offset = -10,
           },
           ripgrep = {
             module = 'blink-ripgrep',
             name = 'rg',
-            score_offset = -30,
+            score_offset = -10,
             async = true,
           },
         },

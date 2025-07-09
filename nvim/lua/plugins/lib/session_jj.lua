@@ -1,5 +1,5 @@
 local M = {}
-sessions = require('mini.sessions')
+local sessions = require('mini.sessions')
 
 M.get_id = function()
   local jj_root = vim.system({ 'jj', 'workspace', 'root' }):wait()

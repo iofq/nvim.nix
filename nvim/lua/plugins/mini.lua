@@ -123,7 +123,7 @@ return {
         }
 
         require('plugins.lib.minipairs') {
-          modes = { insert = true, command = true, terminal = false },
+          modes = { insert = true, command = false, terminal = false },
           skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
           skip_ts = { 'string' },
           skip_unbalanced = true,
@@ -196,6 +196,7 @@ return {
             Snacks.rename.on_rename_file(event.data.from, event.data.to)
           end,
         })
+
         local multi = require('mini.keymap').map_multistep
         multi({ 'i' }, '<BS>', { 'minipairs_bs' })
         multi({ 'i', 's' }, '<Tab>', { 'blink_accept', 'vimsnippet_next', 'increase_indent' })
