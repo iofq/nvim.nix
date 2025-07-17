@@ -175,7 +175,15 @@ return {
             width_preview = 50,
           },
         }
-        vim.keymap.set('n', '<leader>nc', files.open, { desc = 'minifiles open' })
+        vim.keymap.set(
+          'n',
+          '<leader>nc',
+          function()
+            files.open(vim.api.nvim_buf_get_name(0), false) -- open current buffer's dir
+            files.reveal_cwd()
+          end,
+          { desc = 'minifiles open' }
+        )
         vim.api.nvim_create_autocmd('User', {
           pattern = 'MiniFilesBufferCreate',
           callback = function(args)
