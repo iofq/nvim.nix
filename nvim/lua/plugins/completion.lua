@@ -32,6 +32,13 @@ return {
           snippets = {
             score_offset = -10,
           },
+          path = {
+            opts = {
+              get_cwd = function(_)
+                return vim.fn.getcwd()
+              end,
+            },
+          },
           ripgrep = {
             module = 'blink-ripgrep',
             name = 'rg',

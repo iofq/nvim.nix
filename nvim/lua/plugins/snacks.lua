@@ -37,7 +37,7 @@ return {
           },
           smart = {
             multi = {
-              require('plugins.lib.snacks').marks(),
+              'marks',
               { source = 'buffers',   current = false },
               'recent',
               { source = 'files',     hidden = true },
@@ -178,8 +178,28 @@ return {
       {
         '<leader>fm',
         function()
-          vim.cmd.delmarks { args = { '0-9' } }
-          Snacks.picker.pick(require('plugins.lib.snacks').marks())
+          Snacks.picker.marks {
+            ['local'] = false,
+            on_show = function()
+              vim.cmd.delmarks { args = { '0-9' } }
+            end,
+            actions = {
+              markdel = function(picker)
+                for _, item in ipairs(picker:selected()) do
+                  vim.cmd.delmarks { args = { item.label } }
+                end
+                vim.cmd('wshada')
+                picker.list:set_selected()
+                picker.list:set_target()
+                picker:find()
+              end,
+            },
+            win = {
+              input = {
+                keys = { ['<c-x>'] = 'markdel' },
+              },
+            },
+          }
         end,
         desc = 'pick global marks',
       },
