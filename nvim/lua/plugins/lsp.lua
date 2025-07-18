@@ -1,29 +1,22 @@
 return {
   {
-    'folke/trouble.nvim',
-    event = 'VeryLazy',
-    opts = {
-      pinned = true,
-      focus = true,
-      follow = false,
-      auto_close = false,
-      win = {
-        size = 0.33,
-        position = 'right',
-        type = 'split',
-      },
-    },
-    keys = {
-      {
-        'gre',
-        '<cmd>Trouble diagnostics toggle<CR>',
-        desc = 'Trouble diagnostics',
-      },
-    },
-  },
-  {
     'neovim/nvim-lspconfig',
     event = 'VeryLazy',
+    dependencies = {
+      'folke/trouble.nvim',
+      event = 'VeryLazy',
+      opts = {
+        pinned = true,
+        focus = true,
+        follow = false,
+        auto_close = false,
+        win = {
+          size = 0.33,
+          position = 'right',
+          type = 'split',
+        },
+      },
+    },
     config = function()
       vim.lsp.enable {
         'nil_ls',
@@ -40,22 +33,34 @@ return {
             return
           end
           vim.keymap.set('n', 'grg', '<cmd>Trouble lsp toggle<CR>', { buffer = ev.buf, desc = 'Trouble LSP' })
-          vim.keymap.set(
-            'n',
-            'gO',
-            '<cmd>Trouble lsp_document_symbols win.position=left<CR>',
-            { buffer = ev.buf, desc = 'Trouble LSP symbols' }
-          )
-          vim.keymap.set('n', 'grd', function()
+
+          vim.keymap.set('n', 'gO', function()
+            Snacks.picker.lsp_symbols { focus = 'list' }
+          end, { buffer = ev.buf, desc = 'LSP symbols' })
+          vim.keymap.set('n', '<C-]>', function()
             Snacks.picker.lsp_definitions { focus = 'list' }
           end, { buffer = ev.buf, desc = 'LSP definition' })
+          vim.keymap.set('n', 'grt', function()
+            Snacks.picker.lsp_type_definitions { focus = 'list' }
+          end, { buffer = ev.buf, desc = 'LSP type definition' })
           vim.keymap.set('n', 'grr', function()
             Snacks.picker.lsp_references { focus = 'list' }
-          end, { buffer = ev.buf, desc = 'LSP definition' })
+          end, { buffer = ev.buf, desc = 'LSP refrences' })
+          vim.keymap.set('n', 'gri', function()
+            Snacks.picker.lsp_implementations { focus = 'list' }
+          end, { buffer = ev.buf, desc = 'LSP implementations' })
+
           vim.keymap.set('n', 'grh', function()
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
           end, { buffer = ev.buf, desc = 'LSP hints toggle' })
           vim.keymap.set('n', 'grl', vim.lsp.codelens.run, { buffer = ev.buf, desc = 'vim.lsp.codelens.run()' })
+
+          vim.keymap.set('n', 'gre', function()
+            require('plugins.lib.snacks').diagnostics { buf = true }
+          end, { buffer = ev.buf, desc = 'LSP buffer diagnostics' })
+          vim.keymap.set('n', 'grE', function()
+            require('plugins.lib.snacks').diagnostics { cwd = false }
+          end, { buffer = ev.buf, desc = 'LSP diagnostics' })
 
           -- Auto-refresh code lenses
           if client.server_capabilities.codeLensProvider then
@@ -81,6 +86,7 @@ return {
         '\\f',
         function()
           vim.b.disable_autoformat = not vim.b.disable_autoformat
+          Snacks.notify(string.format('Buffer formatting disabled: %s', vim.b.disable_autoformat))
         end,
         mode = { 'n', 'x' },
         desc = 'toggle buffer formatting',
@@ -89,6 +95,7 @@ return {
         '\\F',
         function()
           vim.g.disable_autoformat = not vim.g.disable_autoformat
+          Snacks.notify(string.format('Global formatting disabled: %s', vim.g.disable_autoformat))
         end,
         mode = { 'n', 'x' },
         desc = 'toggle global formatting',

@@ -1,7 +1,6 @@
 local diff = require('mini.diff')
 local M = {
   cache = {},
-  jj_cache = {},
 }
 
 M.get_buf_realpath = function(buf_id)
@@ -20,10 +19,10 @@ M.jj_start_watching_tree_state = function(buf_id, path)
   local on_not_in_jj = vim.schedule_wrap(function()
     if not vim.api.nvim_buf_is_valid(buf_id) then
       M.cache[buf_id] = nil
-      return
+      return false
     end
     diff.fail_attach(buf_id)
-    M.jj_cache[buf_id] = {}
+    M.cache[buf_id] = {}
   end)
 
   local process, stdout_feed = nil, {}
@@ -61,12 +60,11 @@ M.jj_setup_tree_state_watch = function(buf_id, jj_dir_path)
     timer:stop()
     timer:start(50, 0, buf_jj_set_ref_text)
   end
-  buf_fs_event:start(jj_dir_path, { recursive = false }, watch_tree_state)
+  buf_fs_event:start(jj_dir_path, { stat = true }, watch_tree_state)
 
-  M.jj_invalidate_cache(M.jj_cache[buf_id])
-  M.jj_cache[buf_id] = { fs_event = buf_fs_event, timer = timer }
+  M.jj_invalidate_cache(M.cache[buf_id])
+  M.cache[buf_id] = { fs_event = buf_fs_event, timer = timer }
 end
-
 M.jj_set_ref_text = vim.schedule_wrap(function(buf_id)
   if not vim.api.nvim_buf_is_valid(buf_id) then
     return
@@ -86,13 +84,13 @@ M.jj_set_ref_text = vim.schedule_wrap(function(buf_id)
   -- Set
   local stdout = vim.loop.new_pipe()
   local spawn_opts = {
-    args = { 'file', 'show', '--ignore-working-copy', '-r', '@-', './' .. basename },
+    args = { 'file', 'show', '--no-pager', '--ignore-working-copy', '-r', '@-', './' .. basename },
     cwd = cwd,
     stdio = { nil, stdout, nil },
   }
 
   local process, stdout_feed = nil, {}
-  local on_exit = function(exit_code)
+  process = vim.loop.spawn('jj', spawn_opts, function(exit_code)
     process:close()
 
     if exit_code ~= 0 or stdout_feed[1] == nil then
@@ -102,9 +100,8 @@ M.jj_set_ref_text = vim.schedule_wrap(function(buf_id)
     -- Set reference text accounting for possible 'crlf' end of line in index
     local text = table.concat(stdout_feed, ''):gsub('\r\n', '\n')
     buf_set_ref_text(text)
-  end
+  end)
 
-  process = vim.loop.spawn('jj', spawn_opts, on_exit)
   M.jj_read_stream(stdout, stdout_feed)
 end)
 
@@ -132,7 +129,7 @@ end
 M.gen_source = function()
   local attach = function(buf_id)
     -- Try attaching to a buffer only once
-    if M.jj_cache[buf_id] ~= nil then
+    if M.cache[buf_id] ~= nil then
       return false
     end
     -- - Possibly resolve symlinks to get data from the original repo
@@ -141,13 +138,13 @@ M.gen_source = function()
       return false
     end
 
-    M.jj_cache[buf_id] = {}
+    M.cache[buf_id] = {}
     M.jj_start_watching_tree_state(buf_id, path)
   end
 
   local detach = function(buf_id)
-    local cache = M.jj_cache[buf_id]
-    M.jj_cache[buf_id] = nil
+    local cache = M.cache[buf_id]
+    M.cache[buf_id] = nil
     M.jj_invalidate_cache(cache)
   end
 

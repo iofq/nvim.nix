@@ -49,6 +49,7 @@
             stylua
             luajitPackages.luacheck
             alejandra
+            nvim-dev
           ];
           shellHook = ''
             # symlink the .luarc.json generated in the overlay

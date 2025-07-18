@@ -50,6 +50,17 @@ return {
       require('mini.tabline').setup {
         tabpage_section = 'right',
         show_icons = false,
+        format = function(buf_id, label) -- show global marks in tab
+          local default = MiniTabline.default_format(buf_id, label)
+          for _, mark in ipairs(vim.fn.getmarklist()) do
+            if mark.pos[1] == buf_id then
+              if mark.mark:match("^'[A-Z]$") then
+                return ' [' .. mark.mark:sub(2) .. ']' .. default
+              end
+            end
+          end
+          return default
+        end,
       }
       require('mini.statusline').setup {
         content = {
@@ -175,15 +186,10 @@ return {
             width_preview = 50,
           },
         }
-        vim.keymap.set(
-          'n',
-          '<leader>nc',
-          function()
-            files.open(vim.api.nvim_buf_get_name(0), false) -- open current buffer's dir
-            files.reveal_cwd()
-          end,
-          { desc = 'minifiles open' }
-        )
+        vim.keymap.set('n', '<leader>nc', function()
+          files.open(vim.api.nvim_buf_get_name(0), false) -- open current buffer's dir
+          files.reveal_cwd()
+        end, { desc = 'minifiles open' })
         vim.api.nvim_create_autocmd('User', {
           pattern = 'MiniFilesBufferCreate',
           callback = function(args)

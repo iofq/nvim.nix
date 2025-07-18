@@ -32,12 +32,10 @@ return {
             goto_next_start = {
               [']a'] = '@parameter.inner',
               [']f'] = '@function.outer',
-              [']t'] = '@statement.outer',
             },
             goto_previous_start = {
               ['[a'] = '@parameter.inner',
               ['[f'] = '@function.outer',
-              ['[t'] = '@statement.outer',
             },
           },
           swap = {

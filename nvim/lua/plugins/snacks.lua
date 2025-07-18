@@ -37,7 +37,7 @@ return {
           },
           smart = {
             multi = {
-              require('plugins.lib.snacks').marks(),
+              'marks',
               { source = 'buffers',   current = false },
               'recent',
               { source = 'files',     hidden = true },
@@ -178,8 +178,7 @@ return {
       {
         '<leader>fm',
         function()
-          vim.cmd.delmarks { args = { '0-9' } }
-          Snacks.picker.pick(require('plugins.lib.snacks').marks())
+          require('plugins.lib.snacks').marks()
         end,
         desc = 'pick global marks',
       },
