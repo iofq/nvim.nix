@@ -47,7 +47,7 @@ let
     yamllint
     jq
     hadolint
-    alejandra
+    nixfmt
     shellcheck
 
     # LSPs

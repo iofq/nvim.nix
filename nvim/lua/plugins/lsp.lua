@@ -62,6 +62,13 @@ return {
             require('plugins.lib.snacks').diagnostics { cwd = false }
           end, { buffer = ev.buf, desc = 'LSP diagnostics' })
 
+          vim.keymap.set('n', 'grc', function()
+            vim.lsp.buf.incoming_calls()
+          end, { buffer = ev.buf, desc = 'LSP incoming_calls' })
+          vim.keymap.set('n', 'gro', function()
+            vim.lsp.buf.outgoing_calls()
+          end, { buffer = ev.buf, desc = 'LSP outgoing_calls' })
+
           -- Auto-refresh code lenses
           if client.server_capabilities.codeLensProvider then
             vim.api.nvim_create_autocmd({ 'InsertLeave', 'TextChanged' }, {
@@ -108,7 +115,7 @@ return {
         puppet = { 'puppet-lint' },
         lua = { 'stylua' },
         python = { 'ruff' },
-        nix = { 'alejandra' },
+        nix = { 'nixfmt' },
         fish = { 'fish_indent' },
         ['*'] = { 'trim_whitespace' },
       },
@@ -117,7 +124,7 @@ return {
         if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
           return
         end
-        return { timeout_ms = 500, lsp_format = 'last' }
+        return { timeout_ms = 1500, lsp_format = 'fallback' }
       end,
       default_format_opts = {
         timeout_ms = 1500,
@@ -141,7 +148,14 @@ return {
         nix = { 'nix' },
         php = { 'php' },
       }
-      vim.api.nvim_command('au BufWritePost * lua require("lint").try_lint()')
+      vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
+        group = vim.api.nvim_create_augroup('lint', { clear = true }),
+        callback = function()
+          if vim.bo.modifiable then
+            require('lint').try_lint()
+          end
+        end,
+      })
     end,
   },
 }
