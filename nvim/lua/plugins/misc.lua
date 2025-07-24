@@ -10,7 +10,11 @@ return {
   {
     'MeanderingProgrammer/render-markdown.nvim',
     event = 'VeryLazy',
-    config = true,
+    opts = {
+      completions = {
+        blink = { enabled = true },
+      },
+    },
   },
   {
     'sindrets/diffview.nvim',

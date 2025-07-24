@@ -1,27 +1,28 @@
 vim.opt.autowrite = true
+
 vim.opt.backspace = 'indent,eol,start'
 vim.opt.confirm = true
 vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
 vim.opt.cmdheight = 1
 vim.opt.diffopt = 'internal,filler,closeoff,inline:char'
-vim.opt.expandtab = true  -- insert tabs as spaces
+vim.opt.expandtab = true -- insert tabs as spaces
 vim.o.foldenable = true
 vim.o.foldmethod = 'expr' -- use tree-sitter for folding method
 vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 vim.o.foldlevelstart = 99
-vim.opt.inccommand = 'split'      -- incremental live completion
+vim.opt.inccommand = 'split' -- incremental live completion
 vim.opt.list = true
 vim.opt.nrformats:append('alpha') -- let Ctrl-a do letters as well
-vim.opt.path:append('**')         -- enable fuzzy :find ing
+vim.opt.path:append('**') -- enable fuzzy :find ing
 vim.opt.relativenumber = true
-vim.opt.shadafile = 'NONE'        -- disable shada
-vim.opt.shiftwidth = 0            -- >> shifts by tabstop
-vim.opt.showmatch = true          -- highlight matching brackets
+vim.opt.shadafile = 'NONE' -- disable shada
+vim.opt.shiftwidth = 0 -- >> shifts by tabstop
+vim.opt.showmatch = true -- highlight matching brackets
 vim.opt.signcolumn = 'no'
-vim.opt.softtabstop = -1          -- backspace removes tabstop
+vim.opt.softtabstop = -1 -- backspace removes tabstop
 vim.opt.swapfile = false
-vim.opt.tabstop = 2               -- 2 space tabs are based
-vim.opt.updatetime = 250          -- decrease update time
+vim.opt.tabstop = 2 -- 2 space tabs are based
+vim.opt.updatetime = 250 -- decrease update time
 vim.opt.virtualedit = 'onemore'
 vim.opt.winborder = 'single'
 vim.cmd('colorscheme iofq')
@@ -83,17 +84,23 @@ vim.api.nvim_create_autocmd({ 'FileType' }, {
 
 -- random keymaps
 vim.keymap.set({ 'v', 'i' }, 'wq', '<esc>l', { noremap = true, silent = true })
-vim.keymap.set('n', '<S-l>', vim.cmd.bnext, { noremap = true, silent = true })
-vim.keymap.set('n', '<S-h>', vim.cmd.bprev, { noremap = true, silent = true })
+vim.keymap.set({ 'v', 'n' }, 'q:', '<nop>')
 vim.keymap.set('v', '<', '<gv')
 vim.keymap.set('v', '>', '>gv')
+vim.keymap.set('n', 'n', 'nzz', { noremap = true })
+vim.keymap.set('n', 'N', 'Nzz', { noremap = true })
+vim.keymap.set('n', '<C-u>', '<C-u>zz', { noremap = true })
+vim.keymap.set('n', '<C-d>', '<C-d>zz', { noremap = true })
 vim.keymap.set('v', '<A-j>', ":m '>+1<CR>gv=gv", { desc = 'move selection down' })
 vim.keymap.set('v', '<A-k>', ":m '<-2<CR>gv=gv", { desc = 'move selection up' })
-vim.keymap.set({ 'v', 'n' }, 'q:', '<nop>')
 vim.keymap.set('n', 'gq', vim.cmd.bdelete, { noremap = true, silent = true, desc = 'close buffer' })
 vim.keymap.set('n', 'gQ', function()
   vim.cmd('bufdo bdelete')
 end, { noremap = true, silent = true, desc = 'close all buffers' })
+
+-- custom tabline
+local dart = require('plugins.lib.dart')
+dart.setup()
 
 -- resize splits if window got resized
 vim.api.nvim_create_autocmd({ 'VimResized' }, {

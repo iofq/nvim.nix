@@ -50,7 +50,7 @@ M.load = function()
         -- load session (buffers, etc) as well as shada (marks)
         sessions.read(id)
         vim.cmd('rshada')
-        Snacks.notify('loaded jj session: ' .. id)
+        vim.notify('loaded jj session: ' .. id)
       end
     end)
   else

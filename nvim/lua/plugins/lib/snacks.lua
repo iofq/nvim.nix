@@ -4,10 +4,11 @@ M.marks = function()
     ['local'] = false,
     on_show = function()
       vim.cmd.delmarks { args = { '0-9' } }
+      vim.cmd.delmarks { args = { '"' } }
     end,
     actions = {
       markdel = function(picker)
-        for _, item in ipairs(picker:selected()) do
+        for _, item in ipairs(picker:selected { fallback = true }) do
           vim.cmd.delmarks { args = { item.label } }
         end
         vim.cmd('wshada')
@@ -18,7 +19,7 @@ M.marks = function()
     },
     win = {
       input = {
-        keys = { ['<c-x>'] = 'markdel' },
+        keys = { ['<c-x>'] = { 'markdel', mode = { 'n', 'i' } } },
       },
     },
   }
