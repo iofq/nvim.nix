@@ -60,12 +60,12 @@ function M.revs()
     picker:close()
     if item then
       if not item.rev then
-        Snacks.notify.warn('No branch or commit found', { title = 'Snacks Picker' })
+        vim.notify.warn('No branch or commit found', { title = 'Snacks Picker' })
         return
       end
       local cmd = { 'jj', 'new', '-r', item.rev }
       Snacks.picker.util.cmd(cmd, function()
-        Snacks.notify('Checking out revision: ' .. item.rev, { title = 'Snacks Picker' })
+        vim.notify('Checking out revision: ' .. item.rev, { title = 'Snacks Picker' })
         vim.cmd.checktime()
         require('plugins.lib.session_jj').load()
       end, { cwd = item.cwd })

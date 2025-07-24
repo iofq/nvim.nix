@@ -50,17 +50,6 @@ return {
       require('mini.tabline').setup {
         tabpage_section = 'right',
         show_icons = false,
-        format = function(buf_id, label) -- show global marks in tab
-          local default = MiniTabline.default_format(buf_id, label)
-          for _, mark in ipairs(vim.fn.getmarklist()) do
-            if mark.pos[1] == buf_id then
-              if mark.mark:match("^'[A-Z]$") then
-                return ' [' .. mark.mark:sub(2) .. ']' .. default
-              end
-            end
-          end
-          return default
-        end,
       }
       require('mini.statusline').setup {
         content = {
@@ -73,11 +62,11 @@ return {
 
             return MiniStatusline.combine_groups {
               '%<', -- Mark general truncate point
-              -- { hl = 'MiniStatuslineFilename', strings = { filename } },
               '%=', -- End left alignment
+              -- { hl = 'MiniStatuslineDevinfo', strings = { filename } },
               { hl = 'MiniStatuslineDevinfo', strings = { diagnostics, lsp } },
               { hl = 'MiniStatuslineDevinfo', strings = { search } },
-              { hl = mode_hl,                 strings = { mode } },
+              { hl = mode_hl, strings = { mode } },
             }
           end,
           inactive = function()
@@ -89,6 +78,7 @@ return {
         },
       }
       vim.schedule(function()
+        vim.o.tabline = '%!v:lua.Tabline()'
         local ai = require('mini.ai')
         local extra_ai = require('mini.extra').gen_ai_spec
         ai.setup {
@@ -124,7 +114,7 @@ return {
         local jj_sesh = require('plugins.lib.session_jj')
         local jj_id = jj_sesh.get_id()
         if jj_sesh.check_exists(jj_id) then
-          Snacks.notify('Existing session for ' .. jj_id)
+          vim.notify('Existing session for ' .. jj_id)
         end
 
         local jump = require('mini.jump2d')

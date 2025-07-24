@@ -8,7 +8,7 @@ return {
       quickfile = { enabled = true },
       notifier = {
         enabled = true,
-        timeout = 5000,
+        timeout = 4000,
       },
       styles = {
         notification = {
@@ -21,6 +21,9 @@ return {
       words = { enabled = true },
       picker = {
         enabled = true,
+        jump = {
+          reuse_win = true,
+        },
         matcher = {
           frecency = true,
           history_bonus = true,
@@ -38,9 +41,9 @@ return {
           smart = {
             multi = {
               'marks',
-              { source = 'buffers',   current = false },
+              { source = 'buffers', current = false },
               'recent',
-              { source = 'files',     hidden = true },
+              { source = 'files', hidden = true },
               { source = 'git_files', untracked = true },
             },
           },
@@ -94,6 +97,7 @@ return {
         '<leader><leader>',
         function()
           vim.cmd.delmarks { args = { '0-9' } }
+          vim.cmd.delmarks { args = { '"' } }
           Snacks.picker.smart()
         end,
         desc = 'Fuzzy find smart',
@@ -174,6 +178,13 @@ return {
           Snacks.picker.notifications()
         end,
         desc = 'pick notifications',
+      },
+      {
+        'gO',
+        function()
+          Snacks.picker.treesitter()
+        end,
+        desc = 'pick treesitter nodes',
       },
       {
         '<leader>fm',

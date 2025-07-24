@@ -63,8 +63,8 @@ return {
           draw = {
             treesitter = { 'lsp' },
             columns = {
-              { 'label',       'label_description', gap = 1 },
-              { 'source_name', 'kind',              gap = 1 },
+              { 'label', 'label_description', gap = 1 },
+              { 'source_name', 'kind', gap = 1 },
             },
           },
         },
@@ -79,5 +79,9 @@ return {
         },
       },
     },
+    config = function(_, opts)
+      require('blink.cmp').setup(opts)
+      vim.treesitter.language.register('markdown', 'blink-cmp-documentation')
+    end,
   },
 }
