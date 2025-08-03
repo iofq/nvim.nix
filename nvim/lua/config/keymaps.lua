@@ -1,0 +1,18 @@
+-- Switch tab length on the fly
+vim.keymap.set('n', '\\t', function()
+  vim.o.tabstop = vim.o.tabstop == 8 and 2 or 2 * vim.o.tabstop
+end, { silent = true, desc = 'toggle tabstop' })
+vim.keymap.set({ 'v', 'i' }, 'wq', '<esc>l', { noremap = true, silent = true })
+vim.keymap.set({ 'v', 'n' }, 'q:', '<nop>')
+vim.keymap.set('v', '<', '<gv')
+vim.keymap.set('v', '>', '>gv')
+vim.keymap.set('n', 'n', 'nzz', { noremap = true })
+vim.keymap.set('n', 'N', 'Nzz', { noremap = true })
+vim.keymap.set('n', '<C-u>', '<C-u>zz', { noremap = true })
+vim.keymap.set('n', '<C-d>', '<C-d>zz', { noremap = true })
+vim.keymap.set('v', '<A-j>', ":m '>+1<CR>gv=gv", { desc = 'move selection down' })
+vim.keymap.set('v', '<A-k>', ":m '<-2<CR>gv=gv", { desc = 'move selection up' })
+vim.keymap.set('n', 'gq', vim.cmd.bdelete, { noremap = true, silent = true, desc = 'close buffer' })
+vim.keymap.set('n', 'gQ', function()
+  vim.cmd('bufdo bdelete')
+end, { noremap = true, silent = true, desc = 'close all buffers' })

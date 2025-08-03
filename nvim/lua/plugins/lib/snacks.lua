@@ -1,29 +1,4 @@
 M = {}
-M.marks = function()
-  Snacks.picker.marks {
-    ['local'] = false,
-    on_show = function()
-      vim.cmd.delmarks { args = { '0-9' } }
-      vim.cmd.delmarks { args = { '"' } }
-    end,
-    actions = {
-      markdel = function(picker)
-        for _, item in ipairs(picker:selected { fallback = true }) do
-          vim.cmd.delmarks { args = { item.label } }
-        end
-        vim.cmd('wshada')
-        picker.list:set_selected()
-        picker.list:set_target()
-        picker:find()
-      end,
-    },
-    win = {
-      input = {
-        keys = { ['<c-x>'] = { 'markdel', mode = { 'n', 'i' } } },
-      },
-    },
-  }
-end
 M.diagnostics = function(filter)
   Snacks.picker.diagnostics {
     filter = filter,

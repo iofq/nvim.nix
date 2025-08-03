@@ -102,6 +102,18 @@ return {
         require('mini.sessions').setup {
           file = '',
           autowrite = true,
+          hooks = {
+            pre = {
+              read = function(session) -- load Dart state *before* buffers are loaded
+                vim.cmd('rshada')
+                Dart.read_session(session['name'])
+              end,
+              write = function(session)
+                vim.cmd('wshada')
+                Dart.write_session(session['name'])
+              end,
+            },
+          },
           verbose = {
             write = false,
           },
@@ -126,12 +138,11 @@ return {
           markdown = true,
         }
 
-        local jj = require('plugins.lib.minidiff_jj')
         local diff = require('mini.diff')
         diff.setup {
           options = { wrap_goto = true },
           source = {
-            jj.gen_source(),
+            require('plugins.lib.minidiff_jj').gen_source(),
             diff.gen_source.git(),
           },
         }
@@ -185,7 +196,9 @@ return {
             vim.keymap.set('n', '`', function()
               local cur_entry_path = MiniFiles.get_fs_entry().path
               local cur_directory = vim.fs.dirname(cur_entry_path)
-              vim.fn.chdir(cur_directory)
+              if cur_directory ~= '' then
+                vim.fn.chdir(cur_directory)
+              end
             end, { buffer = args.data.buf_id })
           end,
         })

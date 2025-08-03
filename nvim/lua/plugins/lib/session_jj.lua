@@ -9,18 +9,18 @@ M.get_id = function()
   end
 
   local result = vim
-      .system({
-        'jj',
-        'log',
-        '-r',
-        'latest(heads(::@ & bookmarks()))',
-        '--template',
-        'bookmarks',
-        '--no-pager',
-        '--no-graph',
-      })
-      :wait()
-  local branch = vim.trim(string.gsub(result.stdout, '[\n*]', ''))             -- trim newlines and unpushed indicator
+    .system({
+      'jj',
+      'log',
+      '-r',
+      'latest(heads(::@ & bookmarks()))',
+      '--template',
+      'bookmarks',
+      '--no-pager',
+      '--no-graph',
+    })
+    :wait()
+  local branch = vim.trim(string.gsub(result.stdout, '[\n*]', '')) -- trim newlines and unpushed indicator
   local root = vim.trim(string.gsub(jj_root.stdout, '\n', ''))
   local id = string.gsub(string.format('jj:%s:%s', root, branch), '[./]', '-') -- slugify
   return id
@@ -49,12 +49,10 @@ M.load = function()
       if c == 'Yes' then
         -- load session (buffers, etc) as well as shada (marks)
         sessions.read(id)
-        vim.cmd('rshada')
         vim.notify('loaded jj session: ' .. id)
       end
     end)
   else
-    vim.cmd('wshada') -- create session if it did not exist
     sessions.write(id)
   end
 end

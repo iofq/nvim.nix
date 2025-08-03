@@ -1,5 +1,20 @@
 {
   "nodes": {
+    "dart": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1754291267,
+        "owner": "iofq",
+        "repo": "dart.nvim",
+        "rev": "617587d40fd2f2727c18758c4e6decac78459529",
+        "type": "github"
+      },
+      "original": {
+        "owner": "iofq",
+        "repo": "dart.nvim",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -376,6 +391,7 @@
     },
     "root": {
       "inputs": {
+        "dart": "dart",
         "flake-utils": "flake-utils",
         "gen-luarc": "gen-luarc",
         "neovim-nightly-overlay": "neovim-nightly-overlay",

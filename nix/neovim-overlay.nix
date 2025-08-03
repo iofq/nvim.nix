@@ -14,10 +14,13 @@ let
     };
   mkNeovim = pkgs.callPackage ./mkNeovim.nix { inherit pkgs-wrapNeovim; };
 
+  dart-nvim-git = mkNvimPlugin inputs.dart "dart.nvim";
+
   all-plugins = with pkgs.vimPlugins; [
     blink-cmp
     blink-ripgrep-nvim
     conform-nvim
+    dart-nvim-git
     diffview-nvim
     eyeliner-nvim
     friendly-snippets
@@ -43,12 +46,12 @@ let
   # Extra packages that should be included on nixos but don't need to be bundled
   extraPackages = with pkgs; [
     # linters
-    alejandra
     yamllint
     jq
     hadolint
     nixfmt
     shellcheck
+    golangci-lint
 
     # LSPs
     gopls

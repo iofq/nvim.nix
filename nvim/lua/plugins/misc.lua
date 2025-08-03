@@ -1,5 +1,10 @@
 return {
   {
+    'iofq/dart.nvim',
+    event = 'VeryLazy',
+    config = true,
+  },
+  {
     'jinh0/eyeliner.nvim',
     event = 'VeryLazy',
     init = function()

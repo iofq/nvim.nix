@@ -9,6 +9,10 @@
       url = "github:mrcjkb/nix-gen-luarc-json";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    dart = {
+      url = "github:iofq/dart.nvim";
+      flake = false;
+    };
     # Add bleeding-edge plugins here.
     # They can be updated with `nix flake update` (make sure to commit the generated flake.lock)
     # wf-nvim = {
@@ -16,19 +20,22 @@
     #   flake = false;
     # };
   };
-  outputs = inputs @ {
-    self,
-    nixpkgs,
-    flake-utils,
-    ...
-  }: let
-    systems = builtins.attrNames nixpkgs.legacyPackages;
+  outputs =
+    inputs@{
+      self,
+      nixpkgs,
+      flake-utils,
+      ...
+    }:
+    let
+      systems = builtins.attrNames nixpkgs.legacyPackages;
 
-    # This is where the Neovim derivation is built.
-    neovim-overlay = import ./nix/neovim-overlay.nix {inherit inputs;};
-  in
+      # This is where the Neovim derivation is built.
+      neovim-overlay = import ./nix/neovim-overlay.nix { inherit inputs; };
+    in
     flake-utils.lib.eachSystem systems (
-      system: let
+      system:
+      let
         pkgs = import nixpkgs {
           inherit system;
           config.allowUnfree = true;
@@ -48,7 +55,6 @@
             nil
             stylua
             luajitPackages.luacheck
-            alejandra
             nvim-dev
           ];
           shellHook = ''
@@ -58,7 +64,8 @@
             ln -Tfns $PWD/nvim ~/.config/nvim-dev
           '';
         };
-      in {
+      in
+      {
         packages = rec {
           default = nvim;
           nvim = pkgs.nvim-pkg;

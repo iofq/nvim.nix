@@ -27,6 +27,7 @@ return {
         matcher = {
           frecency = true,
           history_bonus = true,
+          cwd_bonus = true,
         },
         layout = 'ivy_split',
         sources = {
@@ -110,13 +111,6 @@ return {
         desc = 'snacks explorer',
       },
       {
-        '<leader>fg',
-        function()
-          Snacks.picker.git_files()
-        end,
-        desc = 'Fuzzy find git files',
-      },
-      {
         '<leader>ff',
         function()
           Snacks.picker.files()
@@ -185,13 +179,6 @@ return {
           Snacks.picker.treesitter()
         end,
         desc = 'pick treesitter nodes',
-      },
-      {
-        '<leader>fm',
-        function()
-          require('plugins.lib.snacks').marks()
-        end,
-        desc = 'pick global marks',
       },
       {
         '<leader>jf',
