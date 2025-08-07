@@ -35,7 +35,7 @@ return {
           path = {
             opts = {
               get_cwd = function(_)
-                return vim.fn.getcwd()
+                return vim.fn.getcwd() -- use nvim pwd instead of current file pwd
               end,
             },
           },

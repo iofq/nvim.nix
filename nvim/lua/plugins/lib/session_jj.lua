@@ -1,5 +1,15 @@
 local M = {}
-local sessions = require('mini.sessions')
+
+M.setup = function()
+  local id = M.get_id()
+  if M.check_exists(id) then
+    vim.notify('Existing session for ' .. id)
+  end
+
+  vim.keymap.set('n', '<leader>fs', function()
+    require('plugins.lib.session_jj').load()
+  end, { noremap = true, desc = 'mini session select' })
+end
 
 M.get_id = function()
   local jj_root = vim.system({ 'jj', 'workspace', 'root' }):wait()
@@ -27,7 +37,7 @@ M.get_id = function()
 end
 
 M.check_exists = function(id)
-  for name, _ in pairs(sessions.detected) do
+  for name, _ in pairs(MiniSessions.detected) do
     if name == id then
       return true
     end
@@ -48,13 +58,14 @@ M.load = function()
     }, { prompt = 'Session found at ' .. id .. ', load it?' }, function(c)
       if c == 'Yes' then
         -- load session (buffers, etc) as well as shada (marks)
-        sessions.read(id)
+        MiniSessions.read(id)
         vim.notify('loaded jj session: ' .. id)
       end
     end)
   else
-    sessions.write(id)
+    MiniSessions.write(id)
   end
 end
 
+_G.M = M
 return M

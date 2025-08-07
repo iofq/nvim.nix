@@ -13,6 +13,14 @@
       url = "github:iofq/dart.nvim";
       flake = false;
     };
+    nvim-treesitter = {
+      url = "github:nvim-treesitter/nvim-treesitter/main";
+      flake = false;
+    };
+    nvim-treesitter-textobjects = {
+      url = "github:nvim-treesitter/nvim-treesitter-textobjects/main";
+      flake = false;
+    };
     # Add bleeding-edge plugins here.
     # They can be updated with `nix flake update` (make sure to commit the generated flake.lock)
     # wf-nvim = {

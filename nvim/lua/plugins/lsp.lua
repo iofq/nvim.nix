@@ -2,21 +2,6 @@ return {
   {
     'neovim/nvim-lspconfig',
     event = 'VeryLazy',
-    dependencies = {
-      'folke/trouble.nvim',
-      event = 'VeryLazy',
-      opts = {
-        pinned = true,
-        focus = true,
-        follow = false,
-        auto_close = false,
-        win = {
-          size = 0.33,
-          position = 'right',
-          type = 'split',
-        },
-      },
-    },
     config = function()
       vim.lsp.enable {
         'nil_ls',
@@ -93,7 +78,7 @@ return {
         '\\f',
         function()
           vim.b.disable_autoformat = not vim.b.disable_autoformat
-          vim.notify(string.format('Buffer formatting disabled: %s', vim.b.disable_autoformat))
+          Snacks.notify(string.format('Buffer formatting disabled: %s', vim.b.disable_autoformat))
         end,
         mode = { 'n', 'x' },
         desc = 'toggle buffer formatting',
@@ -102,7 +87,7 @@ return {
         '\\F',
         function()
           vim.g.disable_autoformat = not vim.g.disable_autoformat
-          vim.notify(string.format('Global formatting disabled: %s', vim.g.disable_autoformat))
+          Snacks.notify(string.format('Global formatting disabled: %s', vim.g.disable_autoformat))
         end,
         mode = { 'n', 'x' },
         desc = 'toggle global formatting',

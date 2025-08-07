@@ -5,12 +5,36 @@ return {
     config = true,
   },
   {
+    'windwp/nvim-autopairs',
+    event = 'VeryLazy',
+    config = true,
+  },
+  {
+    'nvim-treesitter/nvim-treesitter',
+    event = 'VeryLazy',
+    branch = 'main',
+    main = 'nvim-treesitter.configs',
+    config = true,
+    dependencies = {
+      {
+        'nvim-treesitter/nvim-treesitter-textobjects',
+        branch = 'main',
+        config = true,
+      },
+      'RRethy/nvim-treesitter-textsubjects',
+      {
+        'nvim-treesitter/nvim-treesitter-context',
+        opts = {
+          max_lines = 5,
+          min_window_height = 50,
+        },
+      },
+    },
+  },
+  {
     'jinh0/eyeliner.nvim',
     event = 'VeryLazy',
-    init = function()
-      vim.api.nvim_set_hl(0, 'EyelinerPrimary', { underline = true })
-      vim.api.nvim_set_hl(0, 'EyelinerSecondary', { underline = true, bold = true })
-    end,
+    config = true,
   },
   {
     'MeanderingProgrammer/render-markdown.nvim',

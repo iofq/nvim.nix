@@ -29,50 +29,9 @@ return {
         ':Git ',
         desc = 'git command',
       },
-      {
-        '<leader>fs',
-        function()
-          require('plugins.lib.session_jj').load()
-        end,
-        noremap = true,
-        desc = 'mini session select',
-      },
-      {
-        '\\z',
-        function()
-          require('mini.misc').zoom()
-        end,
-        desc = 'mini zoom',
-      },
     },
     config = function()
       require('mini.basics').setup { mappings = { windows = true } }
-      require('mini.statusline').setup {
-        content = {
-          active = function()
-            local mode, mode_hl = MiniStatusline.section_mode {}
-            -- local filename = MiniStatusline.section_filename { trunc_width = 140 }
-            local diagnostics = MiniStatusline.section_diagnostics { trunc_width = 75 }
-            local lsp = MiniStatusline.section_lsp { trunc_width = 75 }
-            local search = MiniStatusline.section_searchcount { trunc_width = 75 }
-
-            return MiniStatusline.combine_groups {
-              '%<', -- Mark general truncate point
-              '%=', -- End left alignment
-              -- { hl = 'MiniStatuslineDevinfo', strings = { filename } },
-              { hl = 'MiniStatuslineDevinfo', strings = { diagnostics, lsp } },
-              { hl = 'MiniStatuslineDevinfo', strings = { search } },
-              { hl = mode_hl, strings = { mode } },
-            }
-          end,
-          inactive = function()
-            local filename = MiniStatusline.section_filename { trunc_width = 140 }
-            return MiniStatusline.combine_groups {
-              { hl = 'MiniStatuslineFilename', strings = { filename } },
-            }
-          end,
-        },
-      }
       vim.schedule(function()
         local ai = require('mini.ai')
         local extra_ai = require('mini.extra').gen_ai_spec
@@ -81,6 +40,7 @@ return {
           custom_textobjects = {
             i = extra_ai.indent(),
             g = extra_ai.buffer(),
+            l = extra_ai.line(),
             u = ai.gen_spec.function_call(),
             a = ai.gen_spec.treesitter { a = '@parameter.outer', i = '@parameter.inner' },
             k = ai.gen_spec.treesitter { a = '@assignment.lhs', i = '@assignment.lhs' },
@@ -114,28 +74,13 @@ return {
               end,
             },
           },
-          verbose = {
-            write = false,
-          },
         }
-        local jj_sesh = require('plugins.lib.session_jj')
-        local jj_id = jj_sesh.get_id()
-        if jj_sesh.check_exists(jj_id) then
-          vim.notify('Existing session for ' .. jj_id)
-        end
+        require('plugins.lib.session_jj').setup()
 
         local jump = require('mini.jump2d')
         jump.setup {
           view = { n_steps_ahead = 1, dim = true },
           spotter = jump.gen_spotter.vimpattern(),
-        }
-
-        require('plugins.lib.minipairs') {
-          modes = { insert = true, command = false, terminal = false },
-          skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
-          skip_ts = { 'string' },
-          skip_unbalanced = true,
-          markdown = true,
         }
 
         local diff = require('mini.diff')
@@ -210,7 +155,6 @@ return {
         })
 
         local multi = require('mini.keymap').map_multistep
-        multi({ 'i' }, '<BS>', { 'minipairs_bs' })
         multi({ 'i', 's' }, '<Tab>', { 'blink_accept', 'vimsnippet_next', 'increase_indent' })
         multi({ 'i', 's' }, '<S-Tab>', { 'vimsnippet_prev', 'decrease_indent' })
       end)

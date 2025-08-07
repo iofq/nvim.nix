@@ -3,7 +3,6 @@ vim.keymap.set('n', '\\t', function()
   vim.o.tabstop = vim.o.tabstop == 8 and 2 or 2 * vim.o.tabstop
 end, { silent = true, desc = 'toggle tabstop' })
 vim.keymap.set({ 'v', 'i' }, 'wq', '<esc>l', { noremap = true, silent = true })
-vim.keymap.set({ 'v', 'n' }, 'q:', '<nop>')
 vim.keymap.set('v', '<', '<gv')
 vim.keymap.set('v', '>', '>gv')
 vim.keymap.set('n', 'n', 'nzz', { noremap = true })

@@ -5,7 +5,6 @@ return {
     priority = 1000,
     opts = {
       bigfile = { enabled = true },
-      quickfile = { enabled = true },
       notifier = {
         enabled = true,
         timeout = 4000,
@@ -14,16 +13,16 @@ return {
         notification = {
           wo = { wrap = true },
         },
+        terminal = {
+          border = 'rounded',
+        },
       },
       terminal = { enabled = true },
       indent = { enabled = true },
       input = { enabled = true },
-      words = { enabled = true },
       picker = {
         enabled = true,
-        jump = {
-          reuse_win = true,
-        },
+        jump = { reuse_win = true },
         matcher = {
           frecency = true,
           history_bonus = true,
@@ -31,19 +30,23 @@ return {
         },
         layout = 'ivy_split',
         sources = {
-          files = { hidden = true },
           grep = { hidden = true },
           explorer = { hidden = true },
-          git_files = { untracked = true },
           lsp_symbols = {
             filter = { default = true },
             layout = 'left',
           },
           smart = {
+            sort = {
+              fields = {
+                'score:desc',
+                'idx',
+                '#text',
+              },
+            },
             multi = {
               'marks',
               { source = 'buffers', current = false },
-              'recent',
               { source = 'files', hidden = true },
               { source = 'git_files', untracked = true },
             },
@@ -51,14 +54,10 @@ return {
         },
         win = {
           input = {
-            keys = {
-              ['wq'] = { 'close', mode = 'i' },
-            },
+            keys = { ['wq'] = { 'close', mode = 'i' } },
           },
           list = {
-            keys = {
-              ['wq'] = { 'close', mode = 'i' },
-            },
+            keys = { ['wq'] = { 'close', mode = 'i' } },
           },
         },
       },
@@ -75,7 +74,7 @@ return {
       {
         '<C-/>',
         function()
-          Snacks.terminal.toggle('$SHELL')
+          Snacks.terminal.toggle('command -v fish >/dev/null && exec fish || exec bash')
         end,
         mode = { 'n', 't' },
         desc = 'terminal open',

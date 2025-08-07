@@ -15,6 +15,10 @@ let
   mkNeovim = pkgs.callPackage ./mkNeovim.nix { inherit pkgs-wrapNeovim; };
 
   dart-nvim-git = mkNvimPlugin inputs.dart "dart.nvim";
+  nvim-treesitter-textobjects-git = mkNvimPlugin inputs.nvim-treesitter-textobjects "nvim-treesitter-textobjects";
+  nvim-treesitter-git = pkgs.vimPlugins.nvim-treesitter.overrideAttrs (old: {
+    src = inputs.nvim-treesitter;
+  });
 
   all-plugins = with pkgs.vimPlugins; [
     blink-cmp
@@ -26,17 +30,17 @@ let
     friendly-snippets
     lazy-nvim
     mini-nvim
+    nvim-autopairs
     nvim-lint
     nvim-lspconfig
+    nvim-treesitter-git.withAllGrammars
     nvim-treesitter-context
-    nvim-treesitter-textobjects
+    nvim-treesitter-textobjects-git
     nvim-treesitter-textsubjects
-    nvim-treesitter.withAllGrammars
     quicker-nvim
     refactoring-nvim
     render-markdown-nvim
     snacks-nvim
-    trouble-nvim
   ];
 
   basePackages = with pkgs; [
@@ -69,6 +73,7 @@ in
     appName = "nvim";
     extraPackages = basePackages ++ extraPackages;
     withNodeJs = false;
+    withSqlite = true;
   };
 
   nvim-min-pkg = mkNeovim {
@@ -76,7 +81,7 @@ in
     appName = "nvim";
     extraPackages = basePackages;
     withNodeJs = false;
-    withSqlite = false;
+    withSqlite = true;
   };
 
   # This is meant to be used within a devshell.
