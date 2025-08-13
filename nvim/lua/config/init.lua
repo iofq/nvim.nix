@@ -19,7 +19,6 @@ vim.opt.tabstop = 2 -- 2 space tabs are based
 vim.opt.updatetime = 250 -- decrease update time
 vim.opt.virtualedit = 'onemore'
 vim.opt.winborder = 'rounded'
-vim.cmd('colorscheme iofq')
 
 -- Configure Neovim diagnostic messages
 vim.diagnostic.config {
@@ -32,5 +31,7 @@ vim.diagnostic.config {
     source = 'if_many',
   },
 }
-require('config.keymaps')
-require('config.autocmd')
+vim.schedule(function()
+  require('config.autocmd')
+  require('config.keymaps')
+end)

@@ -1,7 +1,8 @@
 return {
   {
     'iofq/dart.nvim',
-    event = 'VeryLazy',
+    lazy = false,
+    priority = 1001,
     config = true,
   },
   {
@@ -13,15 +14,12 @@ return {
     'nvim-treesitter/nvim-treesitter',
     event = 'VeryLazy',
     branch = 'main',
-    main = 'nvim-treesitter.configs',
-    config = true,
     dependencies = {
       {
         'nvim-treesitter/nvim-treesitter-textobjects',
         branch = 'main',
         config = true,
       },
-      'RRethy/nvim-treesitter-textsubjects',
       {
         'nvim-treesitter/nvim-treesitter-context',
         opts = {
@@ -49,6 +47,7 @@ return {
     'sindrets/diffview.nvim',
     event = 'VeryLazy',
     opts = {
+      use_icons = false,
       enhanced_diff_hl = true,
       default_args = {
         DiffviewOpen = { '--imply-local' },
@@ -105,12 +104,16 @@ return {
   {
     'stevearc/quicker.nvim',
     event = 'VeryLazy',
-    config = true,
+    opts = {
+      follow = {
+        enabled = true,
+      },
+    },
     keys = {
       {
         '<leader>qf',
         function()
-          require('quicker').toggle()
+          require('quicker').toggle { max_height = 20 }
         end,
         desc = 'Toggle qflist',
       },

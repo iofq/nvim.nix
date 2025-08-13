@@ -8,6 +8,7 @@ return {
         'phpactor',
         'gopls',
         'lua_ls',
+        'basedpyright',
       }
 
       vim.api.nvim_create_autocmd('LspAttach', {
