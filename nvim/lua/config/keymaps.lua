@@ -1,6 +1,7 @@
 -- Switch tab length on the fly
 vim.keymap.set('n', '\\t', function()
   vim.o.tabstop = vim.o.tabstop == 8 and 2 or 2 * vim.o.tabstop
+  vim.notify('tabstop: ' .. vim.o.tabstop)
 end, { silent = true, desc = 'toggle tabstop' })
 vim.keymap.set({ 'v', 'i' }, 'wq', '<esc>l', { noremap = true, silent = true })
 vim.keymap.set('v', '<', '<gv')

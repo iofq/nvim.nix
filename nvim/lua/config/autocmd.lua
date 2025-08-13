@@ -1,9 +1,3 @@
--- create undopath
-vim.api.nvim_create_autocmd('VimEnter', {
-  command = 'silent !mkdir -p ' .. vim.fn.stdpath('data') .. 'undo',
-  group = vim.api.nvim_create_augroup('Init', {}),
-})
-
 -- open :h in buffers
 vim.api.nvim_create_autocmd('BufWinEnter', {
   pattern = '*',
@@ -31,6 +25,7 @@ vim.api.nvim_create_autocmd({ 'FileType' }, {
       vim.cmd('copen')
       -- move cursor to stay at same index (or up one if at EOF)
       vim.api.nvim_win_set_cursor(vim.fn.win_getid(), { ln < #qf and ln or math.max(ln - 1, 1), 0 })
+      require('quicker').refresh()
     end, { buffer = true })
   end,
 })

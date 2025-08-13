@@ -17,23 +17,9 @@ return {
           if not client then
             return
           end
-          vim.keymap.set('n', 'grg', '<cmd>Trouble lsp toggle<CR>', { buffer = ev.buf, desc = 'Trouble LSP' })
-
           vim.keymap.set('n', 'gO', function()
             Snacks.picker.lsp_symbols { focus = 'list' }
           end, { buffer = ev.buf, desc = 'LSP symbols' })
-          vim.keymap.set('n', '<C-]>', function()
-            Snacks.picker.lsp_definitions { focus = 'list' }
-          end, { buffer = ev.buf, desc = 'LSP definition' })
-          vim.keymap.set('n', 'grt', function()
-            Snacks.picker.lsp_type_definitions { focus = 'list' }
-          end, { buffer = ev.buf, desc = 'LSP type definition' })
-          vim.keymap.set('n', 'grr', function()
-            Snacks.picker.lsp_references { focus = 'list' }
-          end, { buffer = ev.buf, desc = 'LSP refrences' })
-          vim.keymap.set('n', 'gri', function()
-            Snacks.picker.lsp_implementations { focus = 'list' }
-          end, { buffer = ev.buf, desc = 'LSP implementations' })
 
           vim.keymap.set('n', 'grh', function()
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
@@ -41,10 +27,10 @@ return {
           vim.keymap.set('n', 'grl', vim.lsp.codelens.run, { buffer = ev.buf, desc = 'vim.lsp.codelens.run()' })
 
           vim.keymap.set('n', 'gre', function()
-            require('plugins.lib.snacks').diagnostics { buf = true }
+            vim.diagnostic.setloclist()
           end, { buffer = ev.buf, desc = 'LSP buffer diagnostics' })
           vim.keymap.set('n', 'grE', function()
-            require('plugins.lib.snacks').diagnostics { cwd = false }
+            vim.diagnostic.setqflist()
           end, { buffer = ev.buf, desc = 'LSP diagnostics' })
 
           vim.keymap.set('n', 'grc', function()
@@ -55,7 +41,7 @@ return {
           end, { buffer = ev.buf, desc = 'LSP outgoing_calls' })
 
           -- Auto-refresh code lenses
-          if client.server_capabilities.codeLensProvider then
+          if client:supports_method('textDocument/codeLens') or client.server_capabilities.codeLensProvider then
             vim.api.nvim_create_autocmd({ 'InsertLeave', 'TextChanged' }, {
               group = vim.api.nvim_create_augroup(string.format('lsp-%s-%s', ev.buf, client.id), {}),
               callback = function()

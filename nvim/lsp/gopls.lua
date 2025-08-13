@@ -21,6 +21,7 @@ return {
         compositeLiteralTypes = true,
         constantValues = true,
         functionTypeParameters = true,
+        ignoredError = true,
         rangeVariableTypes = true,
         parameterNames = true,
       },

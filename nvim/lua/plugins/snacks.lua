@@ -80,20 +80,6 @@ return {
         desc = 'terminal open',
       },
       {
-        ']r',
-        function()
-          Snacks.words.jump(1, true)
-        end,
-        desc = 'next reference',
-      },
-      {
-        '[r',
-        function()
-          Snacks.words.jump(-1, true)
-        end,
-        desc = 'next reference',
-      },
-      {
         '<leader><leader>',
         function()
           vim.cmd.delmarks { args = { '0-9' } }
@@ -178,6 +164,13 @@ return {
           Snacks.picker.treesitter()
         end,
         desc = 'pick treesitter nodes',
+      },
+      {
+        '<leader>fq',
+        function()
+          Snacks.picker.qflist()
+        end,
+        desc = 'pick quickfix list',
       },
       {
         '<leader>jf',
