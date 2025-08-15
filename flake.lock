@@ -3,10 +3,10 @@
     "dart": {
       "flake": false,
       "locked": {
-        "lastModified": 1754291267,
+        "lastModified": 1755657012,
         "owner": "iofq",
         "repo": "dart.nvim",
-        "rev": "617587d40fd2f2727c18758c4e6decac78459529",
+        "rev": "c38b1e0d6daa47f8b9c58422e5a7ab57221810fd",
         "type": "github"
       },
       "original": {

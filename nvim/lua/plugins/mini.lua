@@ -40,7 +40,7 @@ return {
           custom_textobjects = {
             i = extra_ai.indent(),
             g = extra_ai.buffer(),
-            e = extra_ai.line(),
+            l = extra_ai.line(),
             u = ai.gen_spec.function_call(),
             a = ai.gen_spec.treesitter { a = '@parameter.outer', i = '@parameter.inner' },
             k = ai.gen_spec.treesitter { a = '@assignment.lhs', i = '@assignment.lhs' },

@@ -84,7 +84,6 @@ return {
       notify_no_formatters = false,
       formatters_by_ft = {
         json = { 'jq' },
-        puppet = { 'puppet-lint' },
         lua = { 'stylua' },
         python = { 'ruff' },
         nix = { 'nixfmt' },
@@ -111,7 +110,6 @@ return {
       require('lint').linters_by_ft = {
         docker = { 'hadolint' },
         yaml = { 'yamllint' },
-        puppet = { 'puppet-lint' },
         sh = { 'shellcheck' },
         go = { 'golangcilint' },
         ruby = { 'rubocop' },
@@ -124,7 +122,7 @@ return {
         group = vim.api.nvim_create_augroup('lint', { clear = true }),
         callback = function()
           if vim.bo.modifiable then
-            require('lint').try_lint()
+            require('lint').try_lint(nil, { ignore_errors = true })
           end
         end,
       })

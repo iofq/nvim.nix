@@ -1,3 +1,10 @@
+-- create undopath
+local undopath = vim.fn.stdpath('data') .. 'undo'
+vim.api.nvim_create_autocmd('VimEnter', {
+  command = 'silent !mkdir -p ' .. undopath,
+  group = vim.api.nvim_create_augroup('Init', {}),
+})
+
 -- open :h in buffers
 vim.api.nvim_create_autocmd('BufWinEnter', {
   pattern = '*',

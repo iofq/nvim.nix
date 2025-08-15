@@ -88,6 +88,6 @@
       }
     )
     // {
-      overlays.default = neovim-overlay;
+      overlays.default = final: prev: (plugin-overlay final prev) // (neovim-overlay final prev);
     };
 }
