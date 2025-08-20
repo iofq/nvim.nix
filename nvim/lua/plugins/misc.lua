@@ -3,12 +3,10 @@ return {
     'iofq/dart.nvim',
     lazy = false,
     priority = 1001,
-    config = true,
-  },
-  {
-    'windwp/nvim-autopairs',
-    event = 'VeryLazy',
-    config = true,
+    dependencies = 'nvim-mini/mini.nvim',
+    opts = {
+      label_marked_fg = 'cyan'
+    },
   },
   {
     'nvim-treesitter/nvim-treesitter',
@@ -20,19 +18,7 @@ return {
         branch = 'main',
         config = true,
       },
-      {
-        'nvim-treesitter/nvim-treesitter-context',
-        opts = {
-          max_lines = 5,
-          min_window_height = 50,
-        },
-      },
     },
-  },
-  {
-    'jinh0/eyeliner.nvim',
-    event = 'VeryLazy',
-    config = true,
   },
   {
     'MeanderingProgrammer/render-markdown.nvim',
@@ -83,21 +69,6 @@ return {
         '<cmd>DiffviewFileHistory<cr>',
         mode = { 'n', 'v' },
         desc = 'diffview history',
-      },
-    },
-  },
-  {
-    'ThePrimeagen/refactoring.nvim',
-    event = 'VeryLazy',
-    config = true,
-    keys = {
-      { '<leader>rv', '<cmd>Refactor inline_var<cr>dd', mode = { 'n', 'x' } },
-      {
-        '<leader>rr',
-        function()
-          require('refactoring').select_refactor { prefer_ex_cmd = true }
-        end,
-        mode = { 'n', 'x' },
       },
     },
   },

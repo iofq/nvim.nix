@@ -13,9 +13,6 @@ return {
         notification = {
           wo = { wrap = true },
         },
-        terminal = {
-          border = 'rounded',
-        },
       },
       terminal = { enabled = true },
       indent = { enabled = true },
@@ -89,13 +86,6 @@ return {
         desc = 'Fuzzy find smart',
       },
       {
-        '<leader>fe',
-        function()
-          Snacks.explorer()
-        end,
-        desc = 'snacks explorer',
-      },
-      {
         '<leader>ff',
         function()
           Snacks.picker.files()
@@ -152,13 +142,6 @@ return {
         desc = 'Fuzzy find buffers',
       },
       {
-        '<leader>fn',
-        function()
-          Snacks.picker.notifications()
-        end,
-        desc = 'pick notifications',
-      },
-      {
         'gO',
         function()
           Snacks.picker.treesitter()
@@ -176,13 +159,6 @@ return {
         '<leader>jf',
         function()
           require('plugins.lib.snacks_jj').status()
-        end,
-        desc = 'pick notifications',
-      },
-      {
-        '<leader>jj',
-        function()
-          require('plugins.lib.snacks_jj').revs()
         end,
         desc = 'pick notifications',
       },

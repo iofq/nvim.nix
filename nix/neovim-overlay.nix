@@ -4,6 +4,7 @@ final: prev:
 with final.pkgs.lib;
 let
   mkNeovim = prev.callPackage ./mkNeovim.nix { pkgs-wrapNeovim = prev; };
+  dart-nvim = inputs.dart.packages.x86_64-linux.default;
 
   plugins = with final.vimPlugins; [
     blink-cmp
@@ -11,18 +12,13 @@ let
     conform-nvim
     dart-nvim
     diffview-nvim
-    eyeliner-nvim
-    friendly-snippets
     lazy-nvim
     mini-nvim
-    nvim-autopairs
     nvim-lint
     nvim-lspconfig
     nvim-treesitter.withAllGrammars
-    nvim-treesitter-context
     nvim-treesitter-textobjects
     quicker-nvim
-    refactoring-nvim
     render-markdown-nvim
     snacks-nvim
   ];

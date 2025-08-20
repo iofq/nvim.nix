@@ -67,5 +67,4 @@ M.load = function()
   end
 end
 
-_G.M = M
 return M

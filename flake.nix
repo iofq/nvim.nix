@@ -10,16 +10,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     dart = {
-      url = "github:iofq/dart.nvim";
-      flake = false;
+      url = "path:/home/e/dev/dart.nvim";
     };
-    nvim-treesitter = {
-      url = "github:nvim-treesitter/nvim-treesitter/main";
-      flake = false;
-    };
-    nvim-treesitter-textobjects = {
-      url = "github:nvim-treesitter/nvim-treesitter-textobjects/main";
-      flake = false;
+    nvim-treesitter-main = {
+      url = "path:/home/e/dev/nvim-treesitter-main";
     };
     # Add bleeding-edge plugins here.
     # They can be updated with `nix flake update` (make sure to commit the generated flake.lock)
@@ -39,7 +33,6 @@
       systems = builtins.attrNames nixpkgs.legacyPackages;
 
       # This is where the Neovim derivation is built.
-      plugin-overlay = import ./nix/plugin-overlay.nix { inherit inputs; };
       neovim-overlay = import ./nix/neovim-overlay.nix { inherit inputs; };
     in
     flake-utils.lib.eachSystem systems (
@@ -50,7 +43,7 @@
           config.allowUnfree = true;
           overlays = [
             inputs.neovim-nightly-overlay.overlays.default
-            plugin-overlay
+            inputs.nvim-treesitter-main.overlays.default
             neovim-overlay
             # This adds a function can be used to generate a .luarc.json
             # containing the Neovim API all plugins in the workspace directory.
@@ -88,6 +81,6 @@
       }
     )
     // {
-      overlays.default = final: prev: (plugin-overlay final prev) // (neovim-overlay final prev);
+      overlays.default = final: prev: (neovim-overlay final prev);
     };
 }

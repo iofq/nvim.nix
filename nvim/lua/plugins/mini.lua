@@ -1,6 +1,6 @@
 return {
   {
-    'echasnovski/mini.nvim',
+    'nvim-mini/mini.nvim',
     lazy = false,
     keys = {
       {
@@ -24,37 +24,23 @@ return {
         '<Cmd>Git blame -- %<CR>',
         desc = 'git blame',
       },
-      {
-        '<leader>gg',
-        ':Git ',
-        desc = 'git command',
-      },
     },
     config = function()
       require('mini.basics').setup { mappings = { windows = true } }
+      require('mini.icons').setup()
       vim.schedule(function()
         local ai = require('mini.ai')
-        local extra_ai = require('mini.extra').gen_ai_spec
         ai.setup {
           n_lines = 300,
           custom_textobjects = {
-            i = extra_ai.indent(),
-            g = extra_ai.buffer(),
-            l = extra_ai.line(),
+            i = require('mini.extra').gen_ai_spec.indent(),
             u = ai.gen_spec.function_call(),
             a = ai.gen_spec.treesitter { a = '@parameter.outer', i = '@parameter.inner' },
-            k = ai.gen_spec.treesitter { a = '@assignment.lhs', i = '@assignment.lhs' },
-            v = ai.gen_spec.treesitter { a = '@assignment.rhs', i = '@assignment.rhs' },
             f = ai.gen_spec.treesitter { a = '@function.outer', i = '@function.inner' },
-            o = ai.gen_spec.treesitter {
-              a = { '@block.outer', '@conditional.outer', '@loop.outer' },
-              i = { '@block.inner', '@conditional.inner', '@loop.inner' },
-            },
           },
         }
         require('mini.align').setup()
-        require('mini.bracketed').setup { file = { suffix = 'm' } }
-        require('mini.icons').setup()
+        require('mini.pairs').setup()
         require('mini.git').setup()
         require('mini.surround').setup()
         require('mini.splitjoin').setup { detect = { separator = '[,;\n]' } }
@@ -111,7 +97,7 @@ return {
           clues = {
             miniclue.gen_clues.g(),
             miniclue.gen_clues.marks(),
-            miniclue.gen_clues.registers(),
+            miniclue.gen_clues.registers({show_contents = true}),
             miniclue.gen_clues.windows(),
             miniclue.gen_clues.z(),
           },
@@ -153,10 +139,6 @@ return {
             Snacks.rename.on_rename_file(event.data.from, event.data.to)
           end,
         })
-
-        local multi = require('mini.keymap').map_multistep
-        multi({ 'i', 's' }, '<Tab>', { 'blink_accept', 'vimsnippet_next', 'increase_indent' })
-        multi({ 'i', 's' }, '<S-Tab>', { 'vimsnippet_prev', 'decrease_indent' })
       end)
     end,
   },
