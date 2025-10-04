@@ -4,7 +4,7 @@ return {
     event = 'VeryLazy',
     config = function()
       vim.lsp.enable {
-        'nil_ls',
+        'nixd',
         'phpactor',
         'gopls',
         'lua_ls',
@@ -34,27 +34,18 @@ return {
             vim.diagnostic.setqflist()
           end, { buffer = ev.buf, desc = 'LSP diagnostics' })
 
-          vim.keymap.set('n', 'grc', function()
-            vim.lsp.buf.incoming_calls()
-          end, { buffer = ev.buf, desc = 'LSP incoming_calls' })
-          vim.keymap.set('n', 'gro', function()
-            vim.lsp.buf.outgoing_calls()
-          end, { buffer = ev.buf, desc = 'LSP outgoing_calls' })
-
           -- Auto-refresh code lenses
           if client:supports_method('textDocument/codeLens') or client.server_capabilities.codeLensProvider then
+            vim.lsp.codelens.refresh { bufnr = ev.buf }
             vim.api.nvim_create_autocmd({ 'InsertLeave', 'TextChanged' }, {
-              group = vim.api.nvim_create_augroup(string.format('lsp-%s-%s', ev.buf, client.id), {}),
               callback = function()
                 vim.lsp.codelens.refresh { bufnr = ev.buf }
               end,
               buffer = ev.buf,
             })
-            vim.lsp.codelens.refresh()
           end
         end,
       })
-      vim.api.nvim_exec_autocmds('FileType', {})
     end,
   },
   {
@@ -65,7 +56,7 @@ return {
         '\\f',
         function()
           vim.b.disable_autoformat = not vim.b.disable_autoformat
-          Snacks.notify(string.format('Buffer formatting disabled: %s', vim.b.disable_autoformat))
+          vim.notify(string.format('Buffer formatting disabled: %s', vim.b.disable_autoformat))
         end,
         mode = { 'n', 'x' },
         desc = 'toggle buffer formatting',
@@ -74,7 +65,7 @@ return {
         '\\F',
         function()
           vim.g.disable_autoformat = not vim.g.disable_autoformat
-          Snacks.notify(string.format('Global formatting disabled: %s', vim.g.disable_autoformat))
+          vim.notify(string.format('Global formatting disabled: %s', vim.g.disable_autoformat))
         end,
         mode = { 'n', 'x' },
         desc = 'toggle global formatting',
@@ -97,10 +88,6 @@ return {
         end
         return { timeout_ms = 1500, lsp_format = 'fallback' }
       end,
-      default_format_opts = {
-        timeout_ms = 1500,
-        lsp_format = 'fallback',
-      },
     },
   },
   {

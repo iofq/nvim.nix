@@ -28,7 +28,6 @@ if not LAZY_OPTS then
     },
   }
 end
-vim.cmd('packadd cfilter')
 vim.cmd('colorscheme iofq')
 require('lazy').setup(LAZY_OPTS)
 require('config')

@@ -40,11 +40,8 @@ let
     # LSPs
     gopls
     lua-language-server
-    nil
+    nixd
     basedpyright
-
-    #other
-    jujutsu
   ];
 in
 {

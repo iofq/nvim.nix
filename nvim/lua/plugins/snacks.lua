@@ -69,14 +69,6 @@ return {
         desc = 'terminal open',
       },
       {
-        '<C-/>',
-        function()
-          Snacks.terminal.toggle('command -v fish >/dev/null && exec fish || exec bash')
-        end,
-        mode = { 'n', 't' },
-        desc = 'terminal open',
-      },
-      {
         '<leader><leader>',
         function()
           vim.cmd.delmarks { args = { '0-9' } }

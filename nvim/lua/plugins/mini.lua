@@ -71,7 +71,6 @@ return {
 
         local diff = require('mini.diff')
         diff.setup {
-          options = { wrap_goto = true },
           source = {
             require('plugins.lib.minidiff_jj').gen_source(),
             diff.gen_source.git(),
@@ -109,7 +108,6 @@ return {
           },
           windows = {
             preview = true,
-            width_focus = 30,
             width_preview = 50,
           },
         }
@@ -120,12 +118,8 @@ return {
         vim.api.nvim_create_autocmd('User', {
           pattern = 'MiniFilesBufferCreate',
           callback = function(args)
-            vim.keymap.set('n', '<leader>nc', function()
-              files.synchronize()
-              files.close()
-            end, { buffer = args.data.buf_id })
             vim.keymap.set('n', '`', function()
-              local cur_entry_path = MiniFiles.get_fs_entry().path
+              local _, cur_entry_path = pcall(MiniFiles.get_fs_entry().path)
               local cur_directory = vim.fs.dirname(cur_entry_path)
               if cur_directory ~= '' then
                 vim.fn.chdir(cur_directory)

@@ -7,7 +7,7 @@ M.setup = function()
   end
 
   vim.keymap.set('n', '<leader>fs', function()
-    require('plugins.lib.session_jj').load()
+    M.load()
   end, { noremap = true, desc = 'mini session select' })
 end
 
@@ -50,7 +50,6 @@ M.load = function()
   if id == '' then
     return
   end
-  vim.opt.shadafile = vim.fn.stdpath('data') .. '/myshada/' .. id .. '.shada'
   if M.check_exists(id) then
     vim.ui.select({
       'Yes',
@@ -58,6 +57,7 @@ M.load = function()
     }, { prompt = 'Session found at ' .. id .. ', load it?' }, function(c)
       if c == 'Yes' then
         -- load session (buffers, etc) as well as shada (marks)
+        vim.opt.shadafile = vim.fn.stdpath('data') .. '/myshada/' .. id .. '.shada'
         MiniSessions.read(id)
         vim.notify('loaded jj session: ' .. id)
       end

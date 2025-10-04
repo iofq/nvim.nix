@@ -1,6 +1,7 @@
 vim.opt.autowrite = true
 vim.opt.backspace = 'indent,eol,start'
 vim.opt.confirm = true
+vim.opt.completeopt = "menuone,popup,noselect,fuzzy"
 vim.opt.diffopt = 'internal,filler,closeoff,inline:char'
 vim.opt.expandtab = true -- insert tabs as spaces
 vim.opt.inccommand = 'split' -- incremental live completion

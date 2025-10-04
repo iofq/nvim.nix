@@ -6,11 +6,9 @@ function M.status()
     local files = {}
 
     for status in status_raw:gmatch('[^\r\n]+') do
-      local state, text = string.match(status, '^(%a)%s(.+)$')
+      local state, file = string.match(status, '^(%a)%s(.+)$')
 
-      if state and text then
-        local file = text
-
+      if state and file then
         local hl = ''
         if state == 'A' then
           hl = 'SnacksPickerGitStatusAdded'
@@ -20,15 +18,13 @@ function M.status()
           hl = 'SnacksPickerGitStatusDeleted'
         elseif state == 'R' then
           hl = 'SnacksPickerGitStatusRenamed'
-          file = string.match(text, '{.-=>%s*(.-)}')
+          file = string.match(file, '{.-=>%s*(.-)}')
         end
 
-        local diff = vim.fn.system('jj diff ' .. file .. ' --ignore-working-copy --no-pager --stat --git')
+        local diff = vim.fn.system('jj diff ' .. file .. ' --no-pager --stat --git')
         table.insert(files, {
-          text = text,
           file = file,
           filename_hl = hl,
-          state = state,
           diff = diff,
         })
       end
@@ -37,11 +33,9 @@ function M.status()
     return files
   end
 
-  local files = get_files()
-
   Snacks.picker.pick {
     source = 'jj_status',
-    items = files,
+    items = get_files(),
     format = 'file',
     title = 'jj status',
     preview = function(ctx)
