@@ -58,3 +58,40 @@ vim.api.nvim_create_autocmd('FileType', {
     end, { buffer = bufnr, desc = 'swap prev arg' })
   end,
 })
+
+-- Init LSP
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+  callback = function(ev)
+    local client = vim.lsp.get_client_by_id(ev.data.client_id)
+    if not client then
+      return
+    end
+    vim.keymap.set('n', 'gO', function()
+      Snacks.picker.lsp_symbols { focus = 'list' }
+    end, { buffer = ev.buf, desc = 'LSP symbols' })
+
+    vim.keymap.set('n', 'grh', function()
+      vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+    end, { buffer = ev.buf, desc = 'LSP hints toggle' })
+    vim.keymap.set('n', 'grl', vim.lsp.codelens.run, { buffer = ev.buf, desc = 'vim.lsp.codelens.run()' })
+
+    vim.keymap.set('n', 'gre', function()
+      vim.diagnostic.setloclist()
+    end, { buffer = ev.buf, desc = 'LSP buffer diagnostics' })
+    vim.keymap.set('n', 'grE', function()
+      vim.diagnostic.setqflist()
+    end, { buffer = ev.buf, desc = 'LSP diagnostics' })
+
+    -- Auto-refresh code lenses
+    if client:supports_method('textDocument/codeLens') or client.server_capabilities.codeLensProvider then
+      vim.lsp.codelens.refresh { bufnr = ev.buf }
+      vim.api.nvim_create_autocmd({ 'InsertLeave', 'TextChanged' }, {
+        callback = function()
+          vim.lsp.codelens.refresh { bufnr = ev.buf }
+        end,
+        buffer = ev.buf,
+      })
+    end
+  end,
+})

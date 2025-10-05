@@ -1,33 +1,49 @@
 vim.g.mapleader = ' '
--- If lazy_opts is set, we're running in wrapped neovim via nix
-if not LAZY_OPTS then
-  -- Bootstrapping lazy.nvim
-  local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
-  if not vim.loop.fs_stat(lazypath) then
-    vim.fn.system {
-      'git',
-      'clone',
-      '--filter=blob:none',
-      'https://github.com/folke/lazy.nvim.git',
-      '--branch=stable', -- latest stable release
-      lazypath,
-    }
-  end
-  vim.opt.rtp:prepend(lazypath)
-  LAZY_OPTS = {
-    spec = { { import = 'plugins' } },
-    performance = {
-      reset_packpath = false,
-      rtp = {
-        reset = false,
-        disabled_plugins = {
-          'netrwPlugin',
-          'tutor',
-        },
-      },
-    },
-  }
-end
+vim.opt.autowrite = true
+vim.opt.backspace = 'indent,eol,start'
+vim.opt.confirm = true
+vim.opt.completeopt = 'menuone,popup,noselect,fuzzy'
+vim.opt.diffopt = 'internal,filler,closeoff,inline:char'
+vim.opt.expandtab = true -- insert tabs as spaces
+vim.opt.inccommand = 'split' -- incremental live completion
+vim.opt.laststatus = 1 -- statusline only if split
+vim.opt.nrformats:append('alpha') -- let Ctrl-a do letters as well
+vim.opt.path:append('**') -- enable fuzzy :find ing
+vim.opt.relativenumber = true
+vim.opt.shadafile = 'NONE' -- disable shada (unless session)
+vim.opt.shiftwidth = 0 -- >> shifts by tabstop
+vim.opt.showmatch = true -- highlight matching brackets
+vim.opt.showmode = true
+vim.opt.signcolumn = 'no'
+vim.opt.softtabstop = -1 -- backspace removes tabstop
+vim.opt.swapfile = false
+vim.opt.tabstop = 2 -- 2 space tabs are based
+vim.opt.updatetime = 250 -- decrease update time
+vim.opt.virtualedit = 'onemore'
+vim.opt.winborder = 'rounded'
+
+-- Configure Neovim diagnostic messages
+vim.diagnostic.config {
+  virtual_text = true,
+  underline = true,
+  severity_sort = true,
+  float = {
+    focusable = false,
+    style = 'minimal',
+    source = 'if_many',
+  },
+}
+
+vim.lsp.enable {
+  'nixd',
+  'phpactor',
+  'gopls',
+  'lua_ls',
+  'basedpyright',
+}
+
 vim.cmd('colorscheme iofq')
-require('lazy').setup(LAZY_OPTS)
-require('config')
+require('keymaps')
+require('autocmd')
+require('mini')
+require('plugins')

@@ -12,13 +12,13 @@ let
     conform-nvim
     dart-nvim
     diffview-nvim
-    lazy-nvim
     mini-nvim
     nvim-lint
     nvim-lspconfig
     nvim-treesitter.withAllGrammars
     nvim-treesitter-textobjects
     quicker-nvim
+    refactoring-nvim
     render-markdown-nvim
     snacks-nvim
   ];

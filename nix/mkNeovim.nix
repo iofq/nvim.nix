@@ -52,7 +52,6 @@ let
   externalPackages = extraPackages ++ (optionals withSqlite [ pkgs.sqlite ]);
 
   # Map all plugins to an attrset { plugin = <plugin>; config = <config>; optional = <tf>; ... }
-  normalizedPlugins = map (x: defaultPlugin // (if x ? plugin then x else { plugin = x; })) plugins;
 
   # This nixpkgs util function creates an attrset
   # that pkgs.wrapNeovimUnstable uses to configure the Neovim build.
@@ -65,45 +64,20 @@ let
       viAlias
       vimAlias
       ;
-    plugins = normalizedPlugins;
+
+    plugins = (pkgs.neovimUtils.normalizePlugins plugins);
   };
 
   packDir = pkgs.neovimUtils.packDir {
-    myNeovimPackages = pkgs.neovimUtils.normalizedPluginsToVimPackage normalizedPlugins;
+    iofq = pkgs.neovimUtils.normalizedPluginsToVimPackage (pkgs.neovimUtils.normalizePlugins plugins);
   };
 
-  # This uses the ignoreConfigRegexes list to filter
-  # the nvim directory
-  nvimRtpSrc =
-    let
-      src = ../nvim;
-    in
-    lib.cleanSourceWith {
-      inherit src;
-      name = "nvim-rtp-src";
-      filter =
-        path: tyoe:
-        let
-          srcPrefix = toString src + "/";
-          relPath = lib.removePrefix srcPrefix (toString path);
-        in
-        lib.all (regex: builtins.match regex relPath == null) ignoreConfigRegexes;
-    };
-
-  # Split runtimepath into 3 directories:
-  # - lua, to be prepended to the rtp at the beginning of init.lua
-  # - nvim, containing plugin, ftplugin, ... subdirectories
-  # - after, to be sourced last in the startup initialization
-  # See also: https://neovim.io/doc/user/starting.html
   nvimRtp = stdenv.mkDerivation {
     name = "nvim-rtp";
-    src = nvimRtpSrc;
-
-    buildPhase = ''
-      mkdir -p $out/
-    '';
+    src = ../nvim;
 
     installPhase = ''
+      mkdir -p $out/
       cp -r . $out/
     '';
   };
@@ -112,30 +86,9 @@ let
   # It wraps the user init.lua, prepends the lua lib directory to the RTP
   # and prepends the nvim and after directory to the RTP
   initLua = ''
-    LAZY_OPTS = {
-      performance = {
-        reset_packpath = false,
-        rtp = {
-          reset = false,
-          disabled_plugins = {
-            "netrwPlugin",
-            "tutor",
-          },
-        },
-      },
-      dev = {
-        path = "${packDir}/pack/myNeovimPackages/start",
-        patterns = {""},
-      },
-      checker = {
-        enabled = false,
-      },
-      install = { missing = false, },
-      spec = {{ import = "plugins" }},
-    }
     vim.opt.rtp:prepend('${nvimRtp}')
   ''
-  + (builtins.readFile ../nvim/init.lua);
+  + builtins.readFile ../nvim/init.lua;
 
   # Add arguments to the Neovim wrapper script
   extraMakeWrapperArgs = builtins.concatStringsSep " " (
