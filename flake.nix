@@ -10,10 +10,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     dart = {
-      url = "path:/home/e/dev/dart.nvim";
+      url = "github:iofq/dart.nvim";
     };
     nvim-treesitter-main = {
-      url = "path:/home/e/dev/nvim-treesitter-main";
+      url = "github:iofq/nvim-treesitter-main";
     };
     # Add bleeding-edge plugins here.
     # They can be updated with `nix flake update` (make sure to commit the generated flake.lock)

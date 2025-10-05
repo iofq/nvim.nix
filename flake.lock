@@ -6,14 +6,17 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1758080529,
-        "narHash": "sha256-Sup4+HacL6Xe6mTk23N6sD4uXoU9dcoqRgc9Mu0oQ5E=",
-        "path": "/home/e/dev/dart.nvim",
-        "type": "path"
+        "lastModified": 1757895736,
+        "narHash": "sha256-BBjs+YCOzgb6N2lew4vEmyS6s70y0z5xStKjGQaf55g=",
+        "owner": "iofq",
+        "repo": "dart.nvim",
+        "rev": "f059335a22811374d5a7e22c97889ea712db58d7",
+        "type": "github"
       },
       "original": {
-        "path": "/home/e/dev/dart.nvim",
-        "type": "path"
+        "owner": "iofq",
+        "repo": "dart.nvim",
+        "type": "github"
       }
     },
     "flake-compat": {
@@ -448,14 +451,17 @@
         "nvim-treesitter-textobjects": "nvim-treesitter-textobjects"
       },
       "locked": {
-        "lastModified": 1759555972,
-        "narHash": "sha256-vdIHsEjpZUdTYVzoJKsDsXjIlCyyIXMsBubg3dIp+cE=",
-        "path": "/home/e/dev/nvim-treesitter-main",
-        "type": "path"
+        "lastModified": 1759559567,
+        "narHash": "sha256-cNu8MIRumBeW1HJK8c8IM6ge1yalz4xS5j5RCDbhf0Y=",
+        "owner": "iofq",
+        "repo": "nvim-treesitter-main",
+        "rev": "1f19cc0a907328d8dbf467ee9fe216277628d366",
+        "type": "github"
       },
       "original": {
-        "path": "/home/e/dev/nvim-treesitter-main",
-        "type": "path"
+        "owner": "iofq",
+        "repo": "nvim-treesitter-main",
+        "type": "github"
       }
     },
     "nvim-treesitter-textobjects": {

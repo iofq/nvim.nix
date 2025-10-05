@@ -32,7 +32,5 @@ vim.diagnostic.config {
     source = 'if_many',
   },
 }
-vim.schedule(function()
-  require('config.autocmd')
-  require('config.keymaps')
-end)
+require('config.autocmd')
+require('config.keymaps')

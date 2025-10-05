@@ -34,7 +34,6 @@ return {
           n_lines = 300,
           custom_textobjects = {
             i = require('mini.extra').gen_ai_spec.indent(),
-            u = ai.gen_spec.function_call(),
             a = ai.gen_spec.treesitter { a = '@parameter.outer', i = '@parameter.inner' },
             f = ai.gen_spec.treesitter { a = '@function.outer', i = '@function.inner' },
           },
@@ -44,24 +43,6 @@ return {
         require('mini.git').setup()
         require('mini.surround').setup()
         require('mini.splitjoin').setup { detect = { separator = '[,;\n]' } }
-
-        require('mini.sessions').setup {
-          file = '',
-          autowrite = true,
-          hooks = {
-            pre = {
-              read = function(session) -- load Dart state *before* buffers are loaded
-                vim.cmd('rshada')
-                Dart.read_session(session['name'])
-              end,
-              write = function(session)
-                vim.cmd('wshada')
-                Dart.write_session(session['name'])
-              end,
-            },
-          },
-        }
-        require('plugins.lib.session_jj').setup()
 
         local jump = require('mini.jump2d')
         jump.setup {
