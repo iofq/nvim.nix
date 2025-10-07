@@ -1,3 +1,5 @@
+vim.cmd('colorscheme iofq')
+
 vim.g.mapleader = ' '
 vim.opt.autowrite = true
 vim.opt.backspace = 'indent,eol,start'
@@ -42,8 +44,21 @@ vim.lsp.enable {
   'basedpyright',
 }
 
-vim.cmd('colorscheme iofq')
-require('keymaps')
-require('autocmd')
-require('mini')
-require('plugins')
+local map = vim.keymap.set
+map('n', '\\t', function() -- Switch tab length on the fly
+  vim.o.tabstop = vim.o.tabstop == 8 and 2 or 2 * vim.o.tabstop
+  vim.notify('tabstop: ' .. vim.o.tabstop)
+end)
+map({ 'v', 'i' }, 'wq', '<esc>l')
+map('v', '<', '<gv')
+map('v', '>', '>gv')
+map('n', 'n', 'nzz', { noremap = true })
+map('n', 'N', 'Nzz', { noremap = true })
+map('n', '<C-u>', '<C-u>zz', { noremap = true })
+map('n', '<C-d>', '<C-d>zz', { noremap = true })
+map('n', 'gq', vim.cmd.bdelete, { noremap = true })
+map('n', 'gQ', function()
+  vim.cmd('bufdo bdelete')
+end, { noremap = true })
+
+vim.cmd.packadd('nvim.difftool')

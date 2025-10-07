@@ -1,21 +1,20 @@
 # This overlay, when applied to nixpkgs, adds the final neovim derivation to nixpkgs.
 { inputs }:
 final: prev:
-with final.pkgs.lib;
 let
-  mkNeovim = prev.callPackage ./mkNeovim.nix { pkgs-wrapNeovim = prev; };
+  mkNeovim = prev.callPackage ./mkNeovim.nix { pkgs = final; };
   dart-nvim = inputs.dart.packages.x86_64-linux.default;
 
-  plugins = with final.vimPlugins; [
+  plugins = with prev.vimPlugins; [
     blink-cmp
     blink-ripgrep-nvim
     conform-nvim
     dart-nvim
-    diffview-nvim
     mini-nvim
+    nvim-autopairs
     nvim-lint
     nvim-lspconfig
-    nvim-treesitter.withAllGrammars
+    nvim-treesitter
     nvim-treesitter-textobjects
     quicker-nvim
     refactoring-nvim
@@ -23,12 +22,12 @@ let
     snacks-nvim
   ];
 
-  basePackages = with final; [
+  basePackages = with prev; [
     ripgrep
     fd
   ];
   # Extra packages that should be included on nixos but don't need to be bundled
-  extraPackages = with final; [
+  extraPackages = with prev; [
     # linters
     yamllint
     jq
@@ -47,25 +46,14 @@ in
 {
   nvim-pkg = mkNeovim {
     inherit plugins;
-    extraPackages = basePackages ++ extraPackages;
+    packages = basePackages ++ extraPackages;
   };
 
   nvim-min-pkg = mkNeovim {
     inherit plugins;
-    extraPackages = basePackages;
+    packages = basePackages;
   };
 
-  # This is meant to be used within a devshell.
-  # Instead of loading the lua Neovim configuration from
-  # the Nix store, it is loaded from $XDG_CONFIG_HOME/nvim-dev
-  nvim-dev = mkNeovim {
-    inherit plugins;
-    extraPackages = basePackages ++ extraPackages;
-    appName = "nvim-dev";
-    wrapRc = false;
-  };
-
-  # This can be symlinked in the devShell's shellHook
   nvim-luarc-json = final.mk-luarc-json {
     inherit plugins;
   };

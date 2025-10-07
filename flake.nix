@@ -4,27 +4,23 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/master";
     flake-utils.url = "github:numtide/flake-utils";
-    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    neovim-nightly-overlay = {
+      url = "github:nix-community/neovim-nightly-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     gen-luarc = {
       url = "github:mrcjkb/nix-gen-luarc-json";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     dart = {
-      url = "github:iofq/dart.nvim";
+      url = "path:/home/e/dev/dart.nvim";
     };
     nvim-treesitter-main = {
       url = "github:iofq/nvim-treesitter-main";
     };
-    # Add bleeding-edge plugins here.
-    # They can be updated with `nix flake update` (make sure to commit the generated flake.lock)
-    # wf-nvim = {
-    #   url = "github:Cassin01/wf.nvim";
-    #   flake = false;
-    # };
   };
   outputs =
     inputs@{
-      self,
       nixpkgs,
       flake-utils,
       ...
@@ -34,20 +30,28 @@
 
       # This is where the Neovim derivation is built.
       neovim-overlay = import ./nix/neovim-overlay.nix { inherit inputs; };
+      finalOverlays = [
+        inputs.neovim-nightly-overlay.overlays.default
+        inputs.nvim-treesitter-main.overlays.default
+        (final: prev: {
+          vimPlugins = prev.vimPlugins.extend (
+            f: p: {
+              nvim-treesitter = p.nvim-treesitter.withAllGrammars;
+              nvim-treesitter-textobjects = p.nvim-treesitter-textobjects.overrideAttrs {
+                dependencies = [ f.nvim-treesitter ];
+              };
+            }
+          );
+        })
+        neovim-overlay
+      ];
     in
     flake-utils.lib.eachSystem systems (
       system:
       let
         pkgs = import nixpkgs {
           inherit system;
-          config.allowUnfree = true;
-          overlays = [
-            inputs.neovim-nightly-overlay.overlays.default
-            inputs.nvim-treesitter-main.overlays.default
-            neovim-overlay
-            # This adds a function can be used to generate a .luarc.json
-            # containing the Neovim API all plugins in the workspace directory.
-            # The generated file can be symlinked in the devShell's shellHook.
+          overlays = finalOverlays ++ [
             inputs.gen-luarc.overlays.default
           ];
         };
@@ -55,16 +59,13 @@
           name = "nvim-devShell";
           buildInputs = with pkgs; [
             lua-language-server
-            nil
+            nixd
             stylua
             luajitPackages.luacheck
-            nvim-dev
           ];
           shellHook = ''
             # symlink the .luarc.json generated in the overlay
             ln -fs ${pkgs.nvim-luarc-json} .luarc.json
-            # allow quick iteration of lua configs
-            ln -Tfns $PWD/nvim ~/.config/nvim-dev
           '';
         };
       in
@@ -73,7 +74,6 @@
           default = nvim;
           nvim = pkgs.nvim-pkg;
           nvim-min = pkgs.nvim-min-pkg;
-          nvim-dev = pkgs.nvim-dev;
         };
         devShells = {
           default = shell;
@@ -81,6 +81,6 @@
       }
     )
     // {
-      overlays.default = final: prev: (neovim-overlay final prev);
+      overlays.default = nixpkgs.lib.composeManyExtensions finalOverlays;
     };
 }
