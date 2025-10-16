@@ -6,14 +6,17 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1760318820,
-        "narHash": "sha256-3ETm+AZ/UEU0OYFSYviMSv/Ov4BN1cEsBH6KNGuTYS4=",
-        "path": "/home/e/dev/dart.nvim",
-        "type": "path"
+        "lastModified": 1760366615,
+        "narHash": "sha256-qGWNl+UQLvdFl8AAgywOHthizfKovk8az1xhRhQeVn8=",
+        "owner": "iofq",
+        "repo": "dart.nvim",
+        "rev": "5fac43b0f7b5500c69a51a3717aef8ccceacd178",
+        "type": "github"
       },
       "original": {
-        "path": "/home/e/dev/dart.nvim",
-        "type": "path"
+        "owner": "iofq",
+        "repo": "dart.nvim",
+        "type": "github"
       }
     },
     "flake-compat": {

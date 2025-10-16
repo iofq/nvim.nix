@@ -13,7 +13,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     dart = {
-      url = "path:/home/e/dev/dart.nvim";
+      url = "github:iofq/dart.nvim";
     };
     nvim-treesitter-main = {
       url = "github:iofq/nvim-treesitter-main";
