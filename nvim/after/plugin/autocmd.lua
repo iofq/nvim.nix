@@ -35,7 +35,7 @@ vim.api.nvim_create_autocmd('FileType', {
   group = vim.api.nvim_create_augroup('difftool', { clear = true }),
   callback = function(event)
     local function exec(fmt, str)
-      os.execute(string.format(fmt, str))
+      return os.execute(string.format(fmt, str))
     end
     local function refresh()
       local qf = vim.fn.getqflist()
