@@ -30,7 +30,7 @@ cmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
 })
 
 -- Configure difftool buffers
-vim.api.nvim_create_autocmd('FileType', {
+cmd('FileType', {
   pattern = 'qf',
   group = vim.api.nvim_create_augroup('difftool', { clear = true }),
   callback = function(event)
@@ -41,7 +41,7 @@ vim.api.nvim_create_autocmd('FileType', {
       local qf = vim.fn.getqflist()
 
       local entry = qf[1]
-      if not entry or not entry.user_data.diff then
+      if not entry or not entry.user_data or not entry.user_data.diff then
         return nil
       end
 
@@ -72,6 +72,32 @@ vim.api.nvim_create_autocmd('FileType', {
       refresh()
     end)
     vim.schedule(refresh)
+  end,
+})
+
+-- open conflicts in qflist
+cmd('BufWinEnter', {
+  callback = function(event)
+    if not vim.wo.diff then
+      return
+    end
+
+    local items = {}
+    while true do
+      local found = vim.fn.search('^<<<<<<<', 'W')
+      if found == 0 then
+        break
+      end
+      local line = vim.api.nvim_buf_get_lines(event.buf, found - 1, found, false)[1]
+      table.insert(items, { bufnr = event.buf, lnum = found, text = line })
+    end
+
+    if #items > 1 then
+      vim.fn.setqflist(items, 'r')
+      vim.schedule(function()
+        vim.cmd(string.format('%dcopen', math.min(10, #items)))
+      end)
+    end
   end,
 })
 

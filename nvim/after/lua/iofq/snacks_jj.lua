@@ -49,4 +49,42 @@ function M.status()
   }
 end
 
+function M.file_history(filename)
+  local function preview(ctx)
+    if ctx.item.rev then
+      Snacks.picker.preview.cmd(
+        { 'jj', 'log', '--ignore-working-copy', '--git', '-r', ctx.item.rev, '-p', filename },
+        ctx
+      )
+    else
+      ctx.preview:reset()
+      return 'No preview available.'
+    end
+  end
+
+  local function get_history(f)
+    local status_raw = vim.fn.system(
+      'jj log --ignore-working-copy --no-graph'
+        .. ' --template \'if(root, format_root_commit(self), label(if(current_working_copy, "working_copy"), concat(separate(" ", self.change_id().shortest(8), self.bookmarks()), " | ", if(empty, label("empty", "(empty)")), if(description, description.first_line(), label(if(empty, "empty"), description_placeholder),),) ++ "\n",),)\''
+        .. ' -- '
+        .. f
+    )
+    local lines = {}
+    for line in status_raw:gmatch('[^\r\n]+') do
+      local rev = string.match(line, '(%w+)%s.*')
+      table.insert(lines, {
+        text = line,
+        rev = rev,
+      })
+    end
+    return lines
+  end
+
+  Snacks.picker.pick {
+    format = 'text',
+    title = 'jj file history for ' .. filename,
+    items = get_history(filename),
+    preview = preview,
+  }
+end
 return M
