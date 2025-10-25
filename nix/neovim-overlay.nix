@@ -17,41 +17,18 @@ let
     nvim-treesitter
     nvim-treesitter-textobjects
     quicker-nvim
-    refactoring-nvim
     render-markdown-nvim
     snacks-nvim
   ];
 
-  basePackages = with prev; [
+  packages = with prev; [
     ripgrep
     fd
-  ];
-  # Extra packages that should be included on nixos but don't need to be bundled
-  extraPackages = with prev; [
-    # linters
-    yamllint
-    jq
-    hadolint
-    nixfmt
-    shellcheck
-    golangci-lint
-
-    # LSPs
-    gopls
-    lua-language-server
-    nixd
-    basedpyright
   ];
 in
 {
   nvim-pkg = mkNeovim {
-    inherit plugins;
-    packages = basePackages ++ extraPackages;
-  };
-
-  nvim-min-pkg = mkNeovim {
-    inherit plugins;
-    packages = basePackages;
+    inherit plugins packages;
   };
 
   nvim-luarc-json = final.mk-luarc-json {

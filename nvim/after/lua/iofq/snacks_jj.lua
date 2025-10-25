@@ -62,6 +62,21 @@ function M.file_history(filename)
     end
   end
 
+  local function confirm(picker, item)
+    picker:close()
+    local cmd = string.format('jj show --git -r %s', item.rev)
+    local out = vim.fn.systemlist(cmd)
+
+    local bufnr = vim.api.nvim_create_buf(false, true)
+    vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, out)
+    vim.bo[bufnr].bufhidden = 'wipe'
+    vim.bo[bufnr].buftype = 'nofile'
+    vim.bo[bufnr].filetype = 'diff'
+    vim.keymap.set('n', 'q', vim.cmd.bdelete, { buffer = bufnr, noremap = true })
+
+    vim.api.nvim_set_current_buf(bufnr)
+  end
+
   local function get_history(f)
     local status_raw = vim.fn.system(
       'jj log --ignore-working-copy --no-graph'
@@ -85,6 +100,7 @@ function M.file_history(filename)
     title = 'jj file history for ' .. filename,
     items = get_history(filename),
     preview = preview,
+    confirm = confirm,
   }
 end
 return M

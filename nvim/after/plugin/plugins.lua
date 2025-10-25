@@ -3,12 +3,7 @@ local map = vim.keymap.set
 require('mini.basics').setup { mappings = { windows = true } }
 require('mini.icons').setup()
 
-require('dart').setup {
-  tabline = {
-    icons = false,
-    label_marked_fg = 'cyan',
-  },
-}
+require('dart').setup {}
 
 require('snacks').setup {
   bigfile = { enabled = true },
@@ -65,12 +60,6 @@ vim.schedule(function()
   require('nvim-treesitter-textobjects').setup()
   require('nvim-autopairs').setup()
 
-  require('refactoring').setup()
-  map('n', '<leader>rr', require('refactoring').select_refactor)
-  map('n', '<leader>rv', function()
-    require('refactoring').refactor('Inline Variable')
-  end)
-
   require('quicker').setup()
   map('n', '<leader>qf', function()
     require('quicker').toggle { max_height = 20 }
@@ -82,7 +71,6 @@ vim.schedule(function()
       json = { 'jq' },
       lua = { 'stylua' },
       python = { 'ruff' },
-      nix = { 'nixfmt' },
       fish = { 'fish_indent' },
       ['*'] = { 'trim_whitespace' },
     },
@@ -128,7 +116,7 @@ vim.schedule(function()
     sources = {
       default = { 'lsp', 'path', 'snippets', 'ripgrep', 'buffer' },
       providers = {
-        lsp = { fallbacks = {} }, -- include buffer even when LSP is active
+        lsp = { fallbacks = {}, async = true }, -- include buffer even when LSP is active
         path = { opts = { get_cwd = vim.fn.getcwd } }, -- use nvim pwd instead of current file pwd
         ripgrep = {
           module = 'blink-ripgrep',
