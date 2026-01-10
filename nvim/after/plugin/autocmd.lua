@@ -48,7 +48,7 @@ cmd('FileType', {
       local ns = vim.api.nvim_create_namespace('nvim.difftool.hl')
       vim.api.nvim_buf_clear_namespace(event.buf, ns, 0, -1)
       for i, item in ipairs(qf) do
-        local path = vim.fn.fnamemodify(item.user_data.right, ':.')
+        local path = vim.fn.fnamemodify(item.user_data.right, ':t')
         local hl = 'Added'
         if
           exec('git diff --quiet -- %s', path) ~= 0
@@ -98,45 +98,6 @@ cmd('BufWinEnter', {
         vim.cmd(string.format('%dcopen', math.min(10, #items)))
       end)
     end
-
-    local function get_hunks(bufnr)
-      local conf_start = vim.fn.search('^<<<<<<<', 'bc')
-      local base_start = vim.fn.search('^|||||||', 'W')
-      local base_end = vim.fn.search('^=======', 'W')
-      local conf_end = vim.fn.search('^>>>>>>>', 'W')
-
-      local left = vim.api.nvim_buf_get_lines(bufnr, conf_start, base_start - 1, false)
-      local right = vim.api.nvim_buf_get_lines(bufnr, base_end, conf_end - 1, false)
-
-      return {
-        start = conf_start,
-        stop = conf_end,
-        left = left,
-        right = right,
-      }
-    end
-
-    local function apply_hunk(hunks, first)
-      local result = {}
-      if first == -1 then -- left first
-        vim.list_extend(result, hunks.left)
-        vim.list_extend(result, hunks.right)
-      else
-        vim.list_extend(result, hunks.right)
-        vim.list_extend(result, hunks.left)
-      end
-
-      -- apply hunk in place
-      vim.api.nvim_buf_set_lines(0, hunks.start - 1, hunks.stop, false, result)
-    end
-
-    -- "combine" mappings ala vscode's merge editor
-    vim.keymap.set('n', '<leader>dl', function()
-      apply_hunk(get_hunks(event.buf), -1)
-    end, { buffer = event.buf })
-    vim.keymap.set('n', '<leader>dr', function()
-      apply_hunk(get_hunks(event.buf), 1)
-    end, { buffer = event.buf })
   end,
 })
 

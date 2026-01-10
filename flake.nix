@@ -2,7 +2,7 @@
   description = "Neovim derivation";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/master";
     flake-utils.url = "github:numtide/flake-utils";
     neovim-nightly-overlay = {
       url = "github:nix-community/neovim-nightly-overlay";
@@ -14,9 +14,6 @@
     };
     dart = {
       url = "github:iofq/dart.nvim";
-    };
-    nvim-treesitter-main = {
-      url = "github:iofq/nvim-treesitter-main";
     };
   };
   outputs =
@@ -32,17 +29,6 @@
       neovim-overlay = import ./nix/neovim-overlay.nix { inherit inputs; };
       finalOverlays = [
         inputs.neovim-nightly-overlay.overlays.default
-        inputs.nvim-treesitter-main.overlays.default
-        (final: prev: {
-          vimPlugins = prev.vimPlugins.extend (
-            f: p: {
-              nvim-treesitter = p.nvim-treesitter.withAllGrammars;
-              nvim-treesitter-textobjects = p.nvim-treesitter-textobjects.overrideAttrs {
-                dependencies = [ f.nvim-treesitter ];
-              };
-            }
-          );
-        })
         neovim-overlay
       ];
     in
@@ -73,6 +59,7 @@
         packages = rec {
           default = nvim;
           nvim = pkgs.nvim-pkg;
+          nvim-min = pkgs.nvim-min-pkg;
         };
         devShells = {
           default = shell;

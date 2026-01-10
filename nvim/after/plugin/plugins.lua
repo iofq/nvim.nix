@@ -3,7 +3,12 @@ local map = vim.keymap.set
 require('mini.basics').setup { mappings = { windows = true } }
 require('mini.icons').setup()
 
-require('dart').setup {}
+require('dart').setup {
+  tabline = {
+    icons = false,
+    label_marked_fg = 'cyan',
+  },
+}
 
 require('snacks').setup {
   bigfile = { enabled = true },
@@ -71,6 +76,7 @@ vim.schedule(function()
       json = { 'jq' },
       lua = { 'stylua' },
       python = { 'ruff' },
+      nix = { 'nixfmt' },
       fish = { 'fish_indent' },
       ['*'] = { 'trim_whitespace' },
     },
@@ -93,14 +99,11 @@ vim.schedule(function()
 
   require('lint').linters_by_ft = {
     docker = { 'hadolint' },
-    yaml = { 'yamllint' },
     sh = { 'shellcheck' },
     go = { 'golangcilint' },
-    ruby = { 'rubocop' },
     fish = { 'fish' },
     bash = { 'bash' },
     nix = { 'nix' },
-    php = { 'php' },
   }
   vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
     callback = function()
@@ -116,7 +119,7 @@ vim.schedule(function()
     sources = {
       default = { 'lsp', 'path', 'snippets', 'ripgrep', 'buffer' },
       providers = {
-        lsp = { fallbacks = {}, async = true }, -- include buffer even when LSP is active
+        lsp = { fallbacks = {} }, -- include buffer even when LSP is active
         path = { opts = { get_cwd = vim.fn.getcwd } }, -- use nvim pwd instead of current file pwd
         ripgrep = {
           module = 'blink-ripgrep',

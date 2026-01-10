@@ -5,7 +5,7 @@
 ## Usage
 Try it out!
 ```bash
-nix run "github:iofq/nvim.nix" #nvim
+nix run "github:iofq/nvim.nix" #nvim-min
 ```
 
 Or use in a flake:
