@@ -4,12 +4,20 @@ final: prev:
 let
   mkNeovim = prev.callPackage ./mkNeovim.nix { pkgs = final; };
   dart-nvim = inputs.dart.packages.x86_64-linux.default;
+  mkPlugin =
+    src: pname:
+    prev.vimUtils.buildVimPlugin {
+      inherit pname src;
+      version = src.lastModifiedDate;
+    };
 
+  jj-nvim = mkPlugin inputs.jj-nvim "jj-nvim";
   plugins = with prev.vimPlugins; [
     blink-cmp
     blink-ripgrep-nvim
     conform-nvim
     dart-nvim
+    jj-nvim
     mini-nvim
     nvim-autopairs
     nvim-lint

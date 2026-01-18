@@ -15,6 +15,10 @@
     dart = {
       url = "github:iofq/dart.nvim";
     };
+    jj-nvim = {
+      url = "github:NicolasGB/jj.nvim";
+      flake = false;
+    };
   };
   outputs =
     inputs@{

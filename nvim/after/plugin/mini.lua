@@ -9,16 +9,11 @@ vim.schedule(function()
   ai.setup {
     n_lines = 300,
     custom_textobjects = {
+      i = require('mini.extra').gen_ai_spec.indent(),
       a = ai.gen_spec.treesitter { a = '@parameter.outer', i = '@parameter.inner' },
       f = ai.gen_spec.treesitter { a = '@function.outer', i = '@function.inner' },
     },
   }
-
-  require('mini.git').setup()
-  map('n', '<leader>gb', '<Cmd>Git blame -- %<CR>')
-  map('n', '<leader>go', function()
-    return MiniGit.show_at_cursor()
-  end)
 
   local jump = require('mini.jump2d')
   jump.setup {

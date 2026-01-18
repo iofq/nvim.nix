@@ -178,6 +178,22 @@
         "type": "github"
       }
     },
+    "jj-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1768169857,
+        "narHash": "sha256-8POSGuNYdAR2peyzN92vWR87GqWf+Y6I1arOwNxwd6U=",
+        "owner": "NicolasGB",
+        "repo": "jj.nvim",
+        "rev": "d13a5c9aec08318323f19fcdc1a1d2c469e00739",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NicolasGB",
+        "repo": "jj.nvim",
+        "type": "github"
+      }
+    },
     "luvit-meta": {
       "flake": false,
       "locked": {
@@ -296,6 +312,7 @@
         "dart": "dart",
         "flake-utils": "flake-utils_2",
         "gen-luarc": "gen-luarc",
+        "jj-nvim": "jj-nvim",
         "neovim-nightly-overlay": "neovim-nightly-overlay",
         "nixpkgs": "nixpkgs_2"
       }

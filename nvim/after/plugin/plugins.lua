@@ -55,15 +55,21 @@ map('n', '<leader>fj', Snacks.picker.jumps)
 map('n', '<leader>f.', Snacks.picker.resume)
 map('n', '<leader>fb', Snacks.picker.buffers)
 map('n', '<leader>fq', Snacks.picker.qflist)
-map('n', '<leader>jf', require('iofq.snacks_jj').status)
-map('n', '<leader>jh', function()
-  require('iofq.snacks_jj').file_history(vim.api.nvim_buf_get_name(0))
-end)
 
 vim.schedule(function()
   require('nvim-treesitter').setup()
   require('nvim-treesitter-textobjects').setup()
   require('nvim-autopairs').setup()
+
+  require('jj').setup {}
+  map('n', '<leader>gb', require('jj.annotate').file)
+  map('n', '<leader>jf', require('jj.picker').status)
+  map('n', '<leader>jj', require('jj.cmd').log)
+  map('n', '<leader>jh', require('jj.picker').file_history)
+  map('n', '<leader>je', require('iofq.jj').diffedit)
+  map('n', '<leader>jd', function()
+    require('jj.diff').open_vdiff { rev = 'trunk()' }
+  end)
 
   require('quicker').setup()
   map('n', '<leader>qf', function()
