@@ -24,6 +24,7 @@ let
     nvim-lspconfig
     nvim-treesitter.withAllGrammars
     nvim-treesitter-textobjects
+    nvim-treesitter-context
     quicker-nvim
     render-markdown-nvim
     snacks-nvim

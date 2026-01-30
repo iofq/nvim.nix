@@ -15,6 +15,12 @@ vim.schedule(function()
     },
   }
 
+  require('mini.git').setup()
+  map('n', '<leader>gb', '<Cmd>Git blame -- %<CR>')
+  map('n', '<leader>go', function()
+    return MiniGit.show_at_cursor()
+  end)
+
   local jump = require('mini.jump2d')
   jump.setup {
     mappings = {

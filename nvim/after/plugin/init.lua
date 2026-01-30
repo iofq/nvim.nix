@@ -42,6 +42,7 @@ vim.lsp.enable {
   'gopls',
   'lua_ls',
   'basedpyright',
+  'csharp_ls',
 }
 
 local map = vim.keymap.set
