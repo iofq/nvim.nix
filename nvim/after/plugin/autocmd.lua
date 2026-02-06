@@ -151,15 +151,8 @@ cmd('LspAttach', {
     vim.keymap.set('n', 'gre', vim.diagnostic.setloclist, { buffer = ev.buf })
     vim.keymap.set('n', 'grE', vim.diagnostic.setqflist, { buffer = ev.buf })
 
-    -- Auto-refresh code lenses
     if client:supports_method('textDocument/codeLens') or client.server_capabilities.codeLensProvider then
-      vim.lsp.codelens.refresh { bufnr = ev.buf }
-      cmd({ 'InsertLeave', 'TextChanged' }, {
-        callback = function()
-          vim.lsp.codelens.refresh { bufnr = ev.buf }
-        end,
-        buffer = ev.buf,
-      })
+      vim.lsp.codelens.enable(true, { bufnr = ev.buf })
     end
   end,
 })

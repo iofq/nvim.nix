@@ -59,6 +59,9 @@ map('n', '<leader>fq', Snacks.picker.qflist)
 vim.schedule(function()
   require('nvim-treesitter').setup()
   require('nvim-treesitter-textobjects').setup()
+  require('treesitter-context').setup {
+    max_lines = 2,
+  }
   vim.keymap.set('n', '[c', function()
     require('treesitter-context').go_to_context(vim.v.count1)
   end, { silent = true })
