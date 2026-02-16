@@ -14,7 +14,8 @@ M.is_jj_diffedit_open = function()
 end
 
 M.diffedit = function(opts)
-  vim.fn.jobstart('jj diffedit --tool diffview-new ' .. opts.args)
+  opts = opts or { args = '' }
+  vim.fn.jobstart('jj diffedit --tool difftool ' .. opts.args)
 end
 
 vim.api.nvim_create_user_command('Diffedit', M.diffedit, { nargs = '*' })
