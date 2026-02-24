@@ -132,12 +132,19 @@ vim.schedule(function()
       default = { 'lsp', 'path', 'snippets', 'ripgrep', 'buffer' },
       providers = {
         lsp = { fallbacks = {} }, -- include buffer even when LSP is active
-        path = { opts = { get_cwd = vim.fn.getcwd } }, -- use nvim pwd instead of current file pwd
+        path = { async = true, opts = { get_cwd = vim.fn.getcwd } }, -- use nvim pwd instead of current file pwd
         ripgrep = {
+          enabled = false,
           module = 'blink-ripgrep',
           name = 'rg',
           score_offset = -10,
           async = true,
+          opts = {
+            project_root_marker = { '.git', '.jj' },
+            backend = {
+              use = 'gitgrep-or-ripgrep',
+            },
+          },
         },
       },
     },
